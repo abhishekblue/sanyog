@@ -1,5 +1,7 @@
 import { locales, Language } from '../locales';
 
+import { ITranslator } from './i18n.types';
+
 type NestedKeyOf<T> = T extends object
   ? {
       [K in keyof T]: K extends string
@@ -10,14 +12,19 @@ type NestedKeyOf<T> = T extends object
     }[keyof T]
   : never;
 
-// Get nested value from object using dot notation
-function getNestedValue(obj: any, path: string): string {
+/**
+ * Get nested value from object using dot notation
+ * @param obj - The object to traverse
+ * @param path - Dot-separated path (e.g., "buttons.save")
+ * @returns The value at path, or the path itself if not found
+ */
+function getNestedValue(obj: Record<string, unknown>, path: string): string {
   const keys = path.split('.');
-  let result = obj;
+  let result: unknown = obj;
 
   for (const key of keys) {
     if (result && typeof result === 'object' && key in result) {
-      result = result[key];
+      result = (result as Record<string, unknown>)[key];
     } else {
       return path; // Return the key itself if not found
     }
@@ -35,18 +42,20 @@ function interpolate(text: string, params?: Record<string, string | number>): st
   });
 }
 
-// Create translation function for a specific language
-export function createTranslator(language: Language) {
+/**
+ * Create translation function for a specific language
+ * @param language - The language code ('en' or 'hi')
+ * @returns Translator object with common and t functions
+ */
+export function createTranslator(language: Language): ITranslator {
   const locale = locales[language];
 
   return {
-    // Translate from common.json
     common: (key: string, params?: Record<string, string | number>): string => {
       const text = getNestedValue(locale.common, key);
       return interpolate(text, params);
     },
 
-    // Translate from translation.json
     t: (key: string, params?: Record<string, string | number>): string => {
       const text = getNestedValue(locale.translation, key);
       return interpolate(text, params);

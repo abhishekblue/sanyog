@@ -1,8 +1,5 @@
-// English
 import enCommon from './en/common.json';
 import enTranslation from './en/translation.json';
-
-// Hindi
 import hiCommon from './hi/common.json';
 import hiTranslation from './hi/translation.json';
 

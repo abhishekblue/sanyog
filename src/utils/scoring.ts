@@ -1,7 +1,7 @@
 /**
  * Scoring logic for priority calculation
  * Based on spec: A=3, B=2, C=1, D=0 points
- * Average >= 2.0 → HIGH, >= 1.0 → MEDIUM, < 1.0 → FLEXIBLE
+ * Average \>= 2.0 = HIGH, \>= 1.0 = MEDIUM, \< 1.0 = FLEXIBLE
  */
 
 import { Dimension, assessmentQuestions } from '../data/assessmentQuestions';
@@ -22,13 +22,8 @@ const ANSWER_POINTS: Record<'A' | 'B' | 'C' | 'D', number> = {
  * @param answers - User's assessment answers
  * @returns Average score (0-3)
  */
-function calculateDimensionScore(
-  dimension: Dimension,
-  answers: IAssessmentAnswers
-): number {
-  const dimensionQuestions = assessmentQuestions.filter(
-    (q) => q.dimension === dimension
-  );
+function calculateDimensionScore(dimension: Dimension, answers: IAssessmentAnswers): number {
+  const dimensionQuestions = assessmentQuestions.filter((q) => q.dimension === dimension);
 
   if (dimensionQuestions.length === 0) return 0;
 
@@ -64,9 +59,7 @@ function scoreToPriority(score: number): PriorityLevel {
  * @param answers - User's assessment answers
  * @returns Priority profile for all dimensions
  */
-export function calculatePriorityProfile(
-  answers: IAssessmentAnswers
-): IPriorityProfile {
+export function calculatePriorityProfile(answers: IAssessmentAnswers): IPriorityProfile {
   const dimensions: Dimension[] = ['family', 'career', 'finances', 'lifestyle', 'values'];
 
   const profile: IPriorityProfile = {
@@ -90,9 +83,7 @@ export function calculatePriorityProfile(
  * @param answers - User's assessment answers
  * @returns Scores for each dimension
  */
-export function getDimensionScores(
-  answers: IAssessmentAnswers
-): Record<Dimension, number> {
+export function getDimensionScores(answers: IAssessmentAnswers): Record<Dimension, number> {
   return {
     family: calculateDimensionScore('family', answers),
     career: calculateDimensionScore('career', answers),

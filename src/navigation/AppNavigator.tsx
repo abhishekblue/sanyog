@@ -7,6 +7,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import { useApp } from '../context/AppContext';
 import { AssessmentScreen } from '../screens/AssessmentScreen';
 import { BasicInfoScreen } from '../screens/BasicInfoScreen';
+import { CoachScreen } from '../screens/CoachScreen';
 import { GuideScreen } from '../screens/GuideScreen';
 import { ProcessingScreen } from '../screens/ProcessingScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
@@ -79,6 +80,14 @@ function MainTabNavigator(): React.JSX.Element {
         options={{
           tabBarLabel: translator.t('guide.title'),
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📋</Text>,
+        }}
+      />
+      <MainTab.Screen
+        name="Coach"
+        component={CoachScreen}
+        options={{
+          tabBarLabel: translator.t('coach.title'),
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💬</Text>,
         }}
       />
       <MainTab.Screen

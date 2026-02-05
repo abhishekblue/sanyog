@@ -8,6 +8,7 @@ export type OnboardingStackParamList = {
 
 export type MainTabParamList = {
   Guide: undefined;
+  Coach: undefined;
   Settings: undefined;
 };
 

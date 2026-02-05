@@ -27,6 +27,7 @@ export interface IPriorityProfile {
 
 /** Chat message in AI Coach */
 export interface IChatMessage {
+  id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;

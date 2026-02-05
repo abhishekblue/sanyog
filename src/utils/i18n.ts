@@ -1,16 +1,6 @@
-import { locales, Language } from '../locales';
+import { Language, locales } from '../locales';
 
 import { ITranslator } from './i18n.types';
-
-type NestedKeyOf<T> = T extends object
-  ? {
-      [K in keyof T]: K extends string
-        ? T[K] extends object
-          ? `${K}.${NestedKeyOf<T[K]>}` | K
-          : K
-        : never;
-    }[keyof T]
-  : never;
 
 /**
  * Get nested value from object using dot notation

@@ -1,0 +1,29 @@
+{
+  "buttons": {
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "share": "Share",
+    "retry": "Retry",
+    "send": "Send",
+    "notNow": "Not now"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "saved": "Saved!",
+    "copied": "Copied to clipboard!"
+  },
+  "language": {
+    "english": "English",
+    "hindi": "हिंदी"
+  },
+  "priority": {
+    "high": "HIGH",
+    "medium": "MEDIUM",
+    "flexible": "FLEXIBLE"
+  }
+}

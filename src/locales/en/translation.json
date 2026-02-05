@@ -1,0 +1,100 @@
+{
+  "app": {
+    "name": "Samvaad"
+  },
+  "welcome": {
+    "tagline": "Walk into your first meeting with clarity and confidence",
+    "getStarted": "Get Started",
+    "privacyNote": "Your data stays on your device. We don't collect personal information."
+  },
+  "basicInfo": {
+    "title": "Tell us about yourself",
+    "gender": {
+      "label": "I am",
+      "male": "Male",
+      "female": "Female"
+    },
+    "age": {
+      "label": "My age"
+    },
+    "firstMeeting": {
+      "label": "Is this your first arranged marriage meeting?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "timeline": {
+      "label": "When is your next meeting?",
+      "thisWeek": "This week",
+      "withinMonth": "Within a month",
+      "exploring": "Just exploring"
+    }
+  },
+  "assessment": {
+    "questionOf": "Question {{current}} of {{total}}",
+    "dimensions": {
+      "family": "Family & Relationships",
+      "career": "Career & Ambition",
+      "finances": "Financial Values",
+      "lifestyle": "Lifestyle & Daily Life",
+      "values": "Values & Communication"
+    }
+  },
+  "processing": {
+    "analyzing": "Analyzing your priorities...",
+    "creating": "Creating your personalized guide..."
+  },
+  "results": {
+    "title": "Your Priority Profile",
+    "subtitle": "Here's what matters most to you",
+    "seeGuide": "See Your Conversation Guide"
+  },
+  "guide": {
+    "title": "Your Conversation Guide",
+    "subtitle": "Questions tailored to your priorities",
+    "whyMatters": "Why this matters",
+    "listenFor": "What to listen for",
+    "unlockTitle": "Unlock all questions + AI Conversation Coach",
+    "unlockDescription": "Get personalized advice for your specific situation",
+    "unlockPremium": "Unlock Premium — ₹499",
+    "unlockQuestions": "See all questions — ₹49",
+    "shareGuide": "Share Guide",
+    "saveForLater": "Save for Later",
+    "talkToCoach": "Talk to AI Coach"
+  },
+  "coach": {
+    "title": "AI Conversation Coach",
+    "subtitle": "Ask anything about your upcoming meeting",
+    "initialMessage": "Hi! I'm your conversation coach. I've seen your priority profile — I know what matters to you. You can ask me things like:\n\n• 'How should I bring up finances without being awkward?'\n• 'He said his mother will always live with them — what should I think?'\n• 'What should I ask in a follow-up meeting?'\n• 'I had my meeting yesterday — can you help me evaluate how it went?'\n\nWhat's on your mind?",
+    "chips": {
+      "prepare": "Help me prepare for my meeting",
+      "sensitive": "How to bring up sensitive topics",
+      "evaluate": "Evaluate my recent meeting",
+      "redFlags": "What red flags should I watch for"
+    },
+    "placeholder": "Type your message..."
+  },
+  "paywall": {
+    "title": "Unlock AI Conversation Coach",
+    "description": "Get personalized advice for your specific situation. Ask about sensitive topics, evaluate meetings, and prepare with confidence.",
+    "features": {
+      "unlimited": "Unlimited questions",
+      "cultural": "Culturally sensitive guidance",
+      "analysis": "Post-meeting analysis",
+      "followup": "Follow-up suggestions"
+    },
+    "unlock": "Unlock for ₹499",
+    "comingSoon": "Coming Soon — we'll notify you when ready"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Change Language",
+    "viewProfile": "View My Profile",
+    "retake": "Retake Assessment",
+    "clearData": "Clear All Data",
+    "about": "About the App",
+    "privacy": "Privacy",
+    "privacyText": "All data stored on your device. We don't collect or send personal information except when using the AI Coach feature.",
+    "confirmClear": "Are you sure you want to clear all data? This will reset the app.",
+    "confirmRetake": "Are you sure you want to retake the assessment? Your current results will be cleared."
+  }
+}

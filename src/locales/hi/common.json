@@ -1,0 +1,29 @@
+{
+  "buttons": {
+    "continue": "आगे बढ़ें",
+    "next": "अगला",
+    "back": "वापस",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "save": "सहेजें",
+    "share": "शेयर करें",
+    "retry": "फिर कोशिश करें",
+    "send": "भेजें",
+    "notNow": "अभी नहीं"
+  },
+  "status": {
+    "loading": "लोड हो रहा है...",
+    "error": "कुछ गड़बड़ हो गई",
+    "saved": "सहेजा गया!",
+    "copied": "कॉपी हो गया!"
+  },
+  "language": {
+    "english": "English",
+    "hindi": "हिंदी"
+  },
+  "priority": {
+    "high": "उच्च",
+    "medium": "मध्यम",
+    "flexible": "लचीला"
+  }
+}

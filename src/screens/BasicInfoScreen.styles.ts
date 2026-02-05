@@ -1,0 +1,108 @@
+import { StyleSheet } from 'react-native';
+
+import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: spacing.screenHorizontal,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.lg,
+  },
+  title: {
+    ...typography.h2,
+    color: colors.textPrimary,
+    marginBottom: spacing.xl,
+  },
+  section: {
+    marginBottom: spacing.lg,
+  },
+  label: {
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
+  },
+  optionRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  optionButton: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.borderRadius,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+  },
+  optionSelected: {
+    backgroundColor: colors.selectedBackground,
+    borderColor: colors.selectedBorder,
+  },
+  optionText: {
+    ...typography.body,
+    color: colors.textPrimary,
+  },
+  optionTextSelected: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  chip: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.borderRadiusRound,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  chipSelected: {
+    backgroundColor: colors.selectedBackground,
+    borderColor: colors.selectedBorder,
+  },
+  chipText: {
+    ...typography.bodySmall,
+    color: colors.textPrimary,
+  },
+  chipTextSelected: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  bottomSection: {
+    paddingHorizontal: spacing.screenHorizontal,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    backgroundColor: colors.background,
+  },
+  continueButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.buttonVertical,
+    paddingHorizontal: spacing.buttonHorizontal,
+    borderRadius: spacing.borderRadius,
+    alignItems: 'center',
+  },
+  continueButtonDisabled: {
+    backgroundColor: colors.border,
+  },
+  continueText: {
+    ...typography.button,
+    color: colors.textLight,
+  },
+  continueTextDisabled: {
+    color: colors.textSecondary,
+  },
+});

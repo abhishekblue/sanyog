@@ -1,0 +1,158 @@
+import React, { useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useApp } from '../context/AppContext';
+import { IBasicInfo } from '../utils/storage.types';
+
+import { styles } from './BasicInfoScreen.styles';
+import { IBasicInfoScreenProps } from './screens.types';
+
+const AGE_RANGES: IBasicInfo['ageRange'][] = ['23-25', '26-28', '29-32', '33-35', '35+'];
+
+const TIMELINE_OPTIONS: IBasicInfo['timeline'][] = ['thisWeek', 'withinMonth', 'exploring'];
+
+export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JSX.Element {
+  const { translator, setBasicInfo } = useApp();
+
+  const [gender, setGender] = useState<IBasicInfo['gender'] | null>(null);
+  const [ageRange, setAgeRange] = useState<IBasicInfo['ageRange'] | null>(null);
+  const [isFirstMeeting, setIsFirstMeeting] = useState<boolean | null>(null);
+  const [timeline, setTimeline] = useState<IBasicInfo['timeline'] | null>(null);
+
+  const isFormComplete =
+    gender !== null && ageRange !== null && isFirstMeeting !== null && timeline !== null;
+
+  const handleContinue = async (): Promise<void> => {
+    if (!isFormComplete) return;
+
+    await setBasicInfo({
+      gender: gender!,
+      ageRange: ageRange!,
+      isFirstMeeting: isFirstMeeting!,
+      timeline: timeline!,
+    });
+
+    onContinue();
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.title}>{translator.t('basicInfo.title')}</Text>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.gender.label')}</Text>
+          <View style={styles.optionRow}>
+            <TouchableOpacity
+              style={[styles.optionButton, gender === 'male' && styles.optionSelected]}
+              onPress={() => setGender('male')}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: gender === 'male' }}
+            >
+              <Text style={[styles.optionText, gender === 'male' && styles.optionTextSelected]}>
+                {translator.t('basicInfo.gender.male')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.optionButton, gender === 'female' && styles.optionSelected]}
+              onPress={() => setGender('female')}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: gender === 'female' }}
+            >
+              <Text style={[styles.optionText, gender === 'female' && styles.optionTextSelected]}>
+                {translator.t('basicInfo.gender.female')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.age.label')}</Text>
+          <View style={styles.chipRow}>
+            {AGE_RANGES.map((age) => (
+              <TouchableOpacity
+                key={age}
+                style={[styles.chip, ageRange === age && styles.chipSelected]}
+                onPress={() => setAgeRange(age)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: ageRange === age }}
+              >
+                <Text style={[styles.chipText, ageRange === age && styles.chipTextSelected]}>
+                  {age}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.firstMeeting.label')}</Text>
+          <View style={styles.optionRow}>
+            <TouchableOpacity
+              style={[styles.optionButton, isFirstMeeting === true && styles.optionSelected]}
+              onPress={() => setIsFirstMeeting(true)}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: isFirstMeeting === true }}
+            >
+              <Text
+                style={[styles.optionText, isFirstMeeting === true && styles.optionTextSelected]}
+              >
+                {translator.t('basicInfo.firstMeeting.yes')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.optionButton, isFirstMeeting === false && styles.optionSelected]}
+              onPress={() => setIsFirstMeeting(false)}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: isFirstMeeting === false }}
+            >
+              <Text
+                style={[styles.optionText, isFirstMeeting === false && styles.optionTextSelected]}
+              >
+                {translator.t('basicInfo.firstMeeting.no')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.timeline.label')}</Text>
+          <View style={styles.chipRow}>
+            {TIMELINE_OPTIONS.map((option) => (
+              <TouchableOpacity
+                key={option}
+                style={[styles.chip, timeline === option && styles.chipSelected]}
+                onPress={() => setTimeline(option)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: timeline === option }}
+              >
+                <Text style={[styles.chipText, timeline === option && styles.chipTextSelected]}>
+                  {translator.t(`basicInfo.timeline.${option}`)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+
+      <View style={styles.bottomSection}>
+        <TouchableOpacity
+          style={[styles.continueButton, !isFormComplete && styles.continueButtonDisabled]}
+          onPress={handleContinue}
+          disabled={!isFormComplete}
+          accessibilityRole="button"
+          accessibilityState={{ disabled: !isFormComplete }}
+        >
+          <Text style={[styles.continueText, !isFormComplete && styles.continueTextDisabled]}>
+            {translator.common('continue')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}

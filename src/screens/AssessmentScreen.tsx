@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { LayoutAnimation, Platform, Text, TouchableOpacity, UIManager, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
@@ -8,16 +8,13 @@ import { assessmentQuestions, TOTAL_QUESTIONS } from '../data/assessmentQuestion
 import { styles } from './AssessmentScreen.styles';
 import { IAssessmentScreenProps } from './screens.types';
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 export function AssessmentScreen({
   onComplete,
   onBack,
 }: IAssessmentScreenProps): React.JSX.Element {
   const { language, translator, assessmentAnswers, setAssessmentAnswer } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const currentQuestion = assessmentQuestions[currentIndex];
   const selectedAnswer = assessmentAnswers[currentQuestion.id];
@@ -30,20 +27,24 @@ export function AssessmentScreen({
     await setAssessmentAnswer(currentQuestion.id, optionId);
   };
 
-  const animateTransition = useCallback(() => {
-    LayoutAnimation.configureNext(
-      LayoutAnimation.create(
-        200,
-        LayoutAnimation.Types.easeInEaseOut,
-        LayoutAnimation.Properties.opacity
-      )
-    );
-  }, []);
+  const animateToIndex = (newIndex: number): void => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentIndex(newIndex);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
 
   const handleNext = (): void => {
     if (currentIndex < TOTAL_QUESTIONS - 1) {
-      animateTransition();
-      setCurrentIndex(currentIndex + 1);
+      animateToIndex(currentIndex + 1);
     } else {
       onComplete();
     }
@@ -51,8 +52,7 @@ export function AssessmentScreen({
 
   const handleBack = (): void => {
     if (currentIndex > 0) {
-      animateTransition();
-      setCurrentIndex(currentIndex - 1);
+      animateToIndex(currentIndex - 1);
     } else {
       onBack();
     }
@@ -75,35 +75,37 @@ export function AssessmentScreen({
         </Text>
       </View>
 
-      <View style={styles.questionContainer}>
+      <Animated.View style={[styles.questionContainer, { opacity: fadeAnim }]}>
         <Text style={styles.questionText}>{questionText}</Text>
-      </View>
 
-      <View style={styles.optionsContainer}>
-        {currentQuestion.options.map((option) => {
-          const isSelected = selectedAnswer === option.id;
-          const optionText = language === 'hi' ? option.text_hi : option.text_en;
+        <View style={styles.optionsContainer}>
+          {currentQuestion.options.map((option) => {
+            const isSelected = selectedAnswer === option.id;
+            const optionText = language === 'hi' ? option.text_hi : option.text_en;
 
-          return (
-            <TouchableOpacity
-              key={option.id}
-              style={[styles.optionButton, isSelected && styles.optionSelected]}
-              onPress={() => handleSelectOption(option.id)}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: isSelected }}
-            >
-              <View style={[styles.optionIndicator, isSelected && styles.optionIndicatorSelected]}>
-                <Text style={[styles.optionLetter, isSelected && styles.optionLetterSelected]}>
-                  {option.id}
+            return (
+              <TouchableOpacity
+                key={option.id}
+                style={[styles.optionButton, isSelected && styles.optionSelected]}
+                onPress={() => handleSelectOption(option.id)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: isSelected }}
+              >
+                <View
+                  style={[styles.optionIndicator, isSelected && styles.optionIndicatorSelected]}
+                >
+                  <Text style={[styles.optionLetter, isSelected && styles.optionLetterSelected]}>
+                    {option.id}
+                  </Text>
+                </View>
+                <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
+                  {optionText}
                 </Text>
-              </View>
-              <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
-                {optionText}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </Animated.View>
 
       <View style={styles.navigationContainer}>
         <TouchableOpacity style={styles.navButton} onPress={handleBack}>

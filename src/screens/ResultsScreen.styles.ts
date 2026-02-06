@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/spacing';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -71,6 +72,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.buttonHorizontal,
     borderRadius: spacing.borderRadius,
     alignItems: 'center',
+    ...shadows.subtle,
   },
   continueText: {
     ...typography.button,

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/spacing';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -132,6 +133,7 @@ export const styles = StyleSheet.create({
     color: colors.textLight,
     fontSize: 20,
     lineHeight: 44,
+    ...shadows.subtle,
   },
   sendButtonDisabled: {
     backgroundColor: colors.border,

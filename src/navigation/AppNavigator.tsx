@@ -98,9 +98,11 @@ function MainTabNavigator(): React.JSX.Element {
       backBehavior="initialRoute"
       screenOptions={{
         headerShown: false,
+        animation: 'shift',
         tabBarStyle: {
           backgroundColor: colors.surface,
           borderTopColor: colors.border,
+          marginBottom: 6,
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
@@ -110,7 +112,7 @@ function MainTabNavigator(): React.JSX.Element {
         name="Guide"
         component={GuideScreen}
         options={{
-          tabBarLabel: translator.t('guide.title'),
+          tabBarLabel: translator.t('guide.tabLabel'),
           tabBarIcon: ({ color, size }) => <Feather name="book-open" size={size} color={color} />,
         }}
       />
@@ -118,7 +120,7 @@ function MainTabNavigator(): React.JSX.Element {
         name="Coach"
         component={CoachScreen}
         options={{
-          tabBarLabel: translator.t('coach.title'),
+          tabBarLabel: translator.t('coach.tabLabel'),
           tabBarIcon: ({ color, size }) => (
             <Feather name="message-circle" size={size} color={color} />
           ),

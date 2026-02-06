@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/spacing';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -37,6 +38,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     overflow: 'hidden',
+    ...shadows.subtle,
   },
   questionHeader: {
     flexDirection: 'row',
@@ -51,6 +53,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.sm,
+    ...shadows.subtle,
   },
   questionNumberText: {
     ...typography.captionSmall,

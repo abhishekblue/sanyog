@@ -65,6 +65,7 @@
     "seeGuide": "See Your Conversation Guide"
   },
   "guide": {
+    "tabLabel": "Guide",
     "title": "Your Conversation Guide",
     "subtitle": "Questions tailored to your priorities",
     "whyMatters": "Why this matters",
@@ -78,6 +79,7 @@
     "talkToCoach": "Talk to AI Coach"
   },
   "coach": {
+    "tabLabel": "AI Coach",
     "title": "AI Conversation Coach",
     "subtitle": "Ask anything about your upcoming meeting",
     "initialMessage": "Hi! I'm your conversation coach. I've seen your priority profile - I know what matters to you. You can ask me things like:\n\n• 'How should I bring up finances without being awkward?'\n• 'He said his mother will always live with them - what should I think?'\n• 'What should I ask in a follow-up meeting?'\n• 'I had my meeting yesterday - can you help me evaluate how it went?'\n\nWhat's on your mind?",

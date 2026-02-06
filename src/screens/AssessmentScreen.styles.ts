@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { shadows } from '../theme/spacing';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -32,16 +33,17 @@ export const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   questionContainer: {
+    flex: 1,
     paddingHorizontal: spacing.screenHorizontal,
     paddingBottom: spacing.lg,
   },
   questionText: {
     ...typography.h3,
     color: colors.textPrimary,
+    marginBottom: spacing.lg,
   },
   optionsContainer: {
     flex: 1,
-    paddingHorizontal: spacing.screenHorizontal,
     gap: spacing.sm,
   },
   optionButton: {
@@ -67,6 +69,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.md,
+    ...shadows.subtle,
   },
   optionIndicatorSelected: {
     backgroundColor: colors.primary,
@@ -102,6 +105,7 @@ export const styles = StyleSheet.create({
     borderRadius: spacing.borderRadius,
     borderWidth: 1,
     borderColor: colors.border,
+    backgroundColor: colors.surface,
   },
   navButtonDisabled: {
     opacity: 0.4,
@@ -119,6 +123,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: spacing.borderRadius,
     alignItems: 'center',
+    ...shadows.subtle,
   },
   nextButtonDisabled: {
     backgroundColor: colors.border,

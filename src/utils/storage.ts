@@ -23,6 +23,8 @@ const KEYS: Record<StorageKey, string> = {
   savedGuide: `${STORAGE_PREFIX}savedGuide`,
   chatHistory: `${STORAGE_PREFIX}chatHistory`,
   isPremium: `${STORAGE_PREFIX}isPremium`,
+  guideSummary: `${STORAGE_PREFIX}guideSummary`,
+  retakeCount: `${STORAGE_PREFIX}retakeCount`,
 };
 
 /** Default values for storage */
@@ -35,6 +37,8 @@ const DEFAULTS: IStorageData = {
   savedGuide: [],
   chatHistory: [],
   isPremium: false,
+  guideSummary: null,
+  retakeCount: 0,
 };
 
 /**
@@ -142,12 +146,19 @@ export const storage = {
   getIsPremium: (): Promise<boolean> => getStorageItem('isPremium'),
   setIsPremium: (value: boolean): Promise<void> => setStorageItem('isPremium', value),
 
+  getGuideSummary: (): Promise<string | null> => getStorageItem('guideSummary'),
+  setGuideSummary: (value: string | null): Promise<void> => setStorageItem('guideSummary', value),
+
+  getRetakeCount: (): Promise<number> => getStorageItem('retakeCount'),
+  setRetakeCount: (value: number): Promise<void> => setStorageItem('retakeCount', value),
+
   /**
    * Clear all app data (reset to defaults)
    */
   clearAll: async (): Promise<void> => {
     try {
-      const keys = Object.values(KEYS);
+      const preserved = new Set([KEYS.retakeCount, KEYS.isPremium]);
+      const keys = Object.values(KEYS).filter((k) => !preserved.has(k));
       await AsyncStorage.multiRemove(keys);
     } catch (error) {
       console.error('Error clearing storage:', error);
@@ -164,6 +175,7 @@ export const storage = {
         KEYS.priorityProfile,
         KEYS.assessmentComplete,
         KEYS.savedGuide,
+        KEYS.guideSummary,
       ]);
     } catch (error) {
       console.error('Error clearing assessment:', error);

@@ -46,6 +46,8 @@ export interface IStorageData {
   savedGuide: string[];
   chatHistory: IChatMessage[];
   isPremium: boolean;
+  guideSummary: string | null;
+  retakeCount: number;
 }
 
 /** Daily message count for rate limiting */

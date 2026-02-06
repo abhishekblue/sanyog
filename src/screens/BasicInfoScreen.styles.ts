@@ -18,10 +18,15 @@ export const styles = StyleSheet.create({
     paddingTop: spacing.xl,
     paddingBottom: spacing.lg,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+  },
   title: {
     ...typography.h2,
     color: colors.textPrimary,
-    marginBottom: spacing.xl,
   },
   section: {
     marginBottom: spacing.lg,

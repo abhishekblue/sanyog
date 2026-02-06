@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, BackHandler, ToastAndroid, View } from 'react-native';
@@ -27,7 +27,7 @@ const MainTab = createBottomTabNavigator<MainTabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function OnboardingNavigator(): React.JSX.Element {
-  const { basicInfo } = useApp();
+  const { basicInfo, setAssessmentComplete } = useApp();
   const initialRoute = basicInfo ? 'Assessment' : 'Welcome';
 
   return (
@@ -53,7 +53,7 @@ function OnboardingNavigator(): React.JSX.Element {
         {({ navigation }) => (
           <AssessmentScreen
             onComplete={() => navigation.navigate('Processing')}
-            onBack={() => navigation.goBack()}
+            onBack={navigation.canGoBack() ? () => navigation.goBack() : undefined}
           />
         )}
       </OnboardingStack.Screen>
@@ -63,9 +63,10 @@ function OnboardingNavigator(): React.JSX.Element {
       <OnboardingStack.Screen name="Results">
         {({ navigation }) => (
           <ResultsScreen
-            onContinue={() =>
-              navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Main' }] })
-            }
+            onContinue={async () => {
+              await setAssessmentComplete(true);
+              navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Main' }] });
+            }}
           />
         )}
       </OnboardingStack.Screen>
@@ -75,10 +76,14 @@ function OnboardingNavigator(): React.JSX.Element {
 
 function MainTabNavigator(): React.JSX.Element {
   const { translator } = useApp();
+  const isFocused = useIsFocused();
+  const isFocusedRef = useRef(isFocused);
+  isFocusedRef.current = isFocused;
   const lastBackPress = useRef(0);
 
   useEffect(() => {
     const onBackPress = (): boolean => {
+      if (!isFocusedRef.current) return false;
       const now = Date.now();
       if (now - lastBackPress.current < 2000) {
         BackHandler.exitApp();
@@ -126,15 +131,6 @@ function MainTabNavigator(): React.JSX.Element {
           ),
         }}
       />
-      <MainTab.Screen
-        name="Settings"
-        options={{
-          tabBarLabel: translator.t('settings.title'),
-          tabBarIcon: ({ color, size }) => <Feather name="settings" size={size} color={color} />,
-        }}
-      >
-        {() => <SettingsScreen />}
-      </MainTab.Screen>
     </MainTab.Navigator>
   );
 }
@@ -165,6 +161,11 @@ export function AppNavigator(): React.JSX.Element {
         ) : (
           <RootStack.Screen name="Onboarding" component={OnboardingNavigator} />
         )}
+        <RootStack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );

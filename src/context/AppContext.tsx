@@ -48,6 +48,14 @@ interface IAppState {
   // Premium status
   isPremium: boolean;
 
+  // Guide summary
+  guideSummary: string | null;
+  setGuideSummary: (summary: string | null) => Promise<void>;
+
+  // Retake limit
+  retakeCount: number;
+  incrementRetakeCount: () => Promise<void>;
+
   // Reset functions
   clearAllData: () => Promise<void>;
   clearAssessmentData: () => Promise<void>;
@@ -74,6 +82,8 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
   const [priorityProfile, setPriorityProfileState] = useState<IPriorityProfile | null>(null);
   const [chatHistory, setChatHistoryState] = useState<IChatMessage[]>([]);
   const [isPremium, setIsPremiumState] = useState(false);
+  const [guideSummary, setGuideSummaryState] = useState<string | null>(null);
+  const [retakeCount, setRetakeCountState] = useState(0);
 
   // Create translator based on current language
   const translator = createTranslator(language);
@@ -90,6 +100,8 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
           storedProfile,
           storedChat,
           storedPremium,
+          storedSummary,
+          storedRetakeCount,
         ] = await Promise.all([
           storage.getLanguage(),
           storage.getBasicInfo(),
@@ -98,6 +110,8 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
           storage.getPriorityProfile(),
           storage.getChatHistory(),
           storage.getIsPremium(),
+          storage.getGuideSummary(),
+          storage.getRetakeCount(),
         ]);
 
         setLanguageState(storedLanguage);
@@ -107,6 +121,8 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
         setPriorityProfileState(storedProfile);
         setChatHistoryState(storedChat);
         setIsPremiumState(storedPremium);
+        setGuideSummaryState(storedSummary);
+        setRetakeCountState(storedRetakeCount);
       } catch (error) {
         console.error('Error loading app data:', error);
       } finally {
@@ -158,6 +174,17 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     await storage.setChatHistory([]);
   };
 
+  const setGuideSummary = async (summary: string | null): Promise<void> => {
+    setGuideSummaryState(summary);
+    await storage.setGuideSummary(summary);
+  };
+
+  const incrementRetakeCount = async (): Promise<void> => {
+    const newCount = retakeCount + 1;
+    setRetakeCountState(newCount);
+    await storage.setRetakeCount(newCount);
+  };
+
   const clearAllData = async (): Promise<void> => {
     await storage.clearAll();
     setLanguageState('en');
@@ -166,7 +193,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     setAssessmentCompleteState(false);
     setPriorityProfileState(null);
     setChatHistoryState([]);
-    setIsPremiumState(false);
+    setGuideSummaryState(null);
   };
 
   const clearAssessmentData = async (): Promise<void> => {
@@ -174,6 +201,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     setAssessmentAnswersState({});
     setAssessmentCompleteState(false);
     setPriorityProfileState(null);
+    setGuideSummaryState(null);
   };
 
   const value: IAppState = {
@@ -193,6 +221,10 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     addChatMessage,
     clearChatHistory,
     isPremium,
+    guideSummary,
+    setGuideSummary,
+    retakeCount,
+    incrementRetakeCount,
     clearAllData,
     clearAssessmentData,
   };

@@ -9,10 +9,10 @@ export type OnboardingStackParamList = {
 export type MainTabParamList = {
   Guide: undefined;
   Coach: undefined;
-  Settings: undefined;
 };
 
 export type RootStackParamList = {
   Onboarding: undefined;
   Main: undefined;
+  Settings: undefined;
 };

@@ -3,6 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedAccordion } from '../components/AnimatedAccordion';
+import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { IOutputQuestion } from '../data/outputQuestions';
 import { selectQuestionsByProfile } from '../utils/questionSelector';
@@ -10,7 +11,7 @@ import { selectQuestionsByProfile } from '../utils/questionSelector';
 import { styles } from './GuideScreen.styles';
 
 export function GuideScreen(): React.JSX.Element {
-  const { translator, language, priorityProfile } = useApp();
+  const { translator, language, priorityProfile, guideSummary } = useApp();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const questions = useMemo(() => {
@@ -64,7 +65,10 @@ export function GuideScreen(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.title}>{translator.t('guide.title')}</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{translator.t('guide.title')}</Text>
+          <SettingsButton />
+        </View>
         <Text style={styles.subtitle}>{translator.t('guide.subtitle')}</Text>
       </View>
 
@@ -73,6 +77,11 @@ export function GuideScreen(): React.JSX.Element {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {guideSummary ? (
+          <View style={styles.summaryCard}>
+            <Text style={styles.summaryText}>{guideSummary}</Text>
+          </View>
+        ) : null}
         {questions.map((question, index) => renderQuestion(question, index))}
       </ScrollView>
     </SafeAreaView>

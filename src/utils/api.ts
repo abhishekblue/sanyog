@@ -8,7 +8,7 @@ import {
   IGeminiRequestBody,
   IGeminiResponse,
 } from './api.types';
-import { IChatMessage } from './storage.types';
+import { IBasicInfo, IChatMessage, IPriorityProfile } from './storage.types';
 
 const MODEL = 'gemini-2.5-flash-preview-05-20';
 
@@ -140,5 +140,58 @@ export async function sendChatMessage(request: IChatRequest): Promise<IChatRespo
       message: '',
       error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
+  }
+}
+
+export async function generateGuideSummary(
+  basicInfo: IBasicInfo | null,
+  priorityProfile: IPriorityProfile,
+  language: 'en' | 'hi'
+): Promise<string | null> {
+  const apiKey = getApiKey();
+  if (!apiKey) return null;
+
+  const langInstruction =
+    language === 'hi'
+      ? 'Respond in Hindi (Devanagari script). You may use common English words that are widely understood.'
+      : 'Respond in English.';
+
+  const userContext = basicInfo
+    ? `The user is a ${basicInfo.gender}, age ${basicInfo.ageRange}, ${basicInfo.isFirstMeeting ? 'first time' : 'experienced'} with arranged marriage meetings, timeline: ${basicInfo.timeline}.`
+    : '';
+
+  const prompt = `You are a conversation coach for arranged marriage meetings in India.
+
+${langInstruction}
+
+${userContext}
+
+Based on this priority profile:
+- Family & Relationships: ${priorityProfile.family.toUpperCase()} priority
+- Career & Ambition: ${priorityProfile.career.toUpperCase()} priority
+- Financial Values: ${priorityProfile.finances.toUpperCase()} priority
+- Lifestyle & Daily Life: ${priorityProfile.lifestyle.toUpperCase()} priority
+- Values & Communication: ${priorityProfile.values.toUpperCase()} priority
+
+Write a warm, personalized 2-3 sentence summary for the user about what matters most to them and how their conversation guide is tailored to their priorities. Address the user directly with "you". Be specific about their HIGH priority areas. Do NOT use bullet points or lists — write flowing sentences.`;
+
+  const requestBody: IGeminiRequestBody = {
+    contents: [{ role: 'user', parts: [{ text: 'Generate my guide summary.' }] }],
+    systemInstruction: { parts: [{ text: prompt }] },
+  };
+
+  try {
+    const response = await fetch(getApiUrl(apiKey), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) return null;
+
+    const data: IGeminiResponse = await response.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+  } catch {
+    return null;
   }
 }

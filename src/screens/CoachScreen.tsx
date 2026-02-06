@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { sendChatMessage } from '../utils/api';
 import { canSendMessage, getRemainingMessages, incrementDailyMessageCount } from '../utils/storage';
@@ -135,7 +136,10 @@ export function CoachScreen(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.title}>{translator.t('coach.title')}</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{translator.t('coach.title')}</Text>
+          <SettingsButton />
+        </View>
         <Text style={styles.subtitle}>{translator.t('coach.subtitle')}</Text>
       </View>
 

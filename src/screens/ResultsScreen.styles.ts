@@ -18,11 +18,15 @@ export const styles = StyleSheet.create({
     paddingTop: spacing.xl,
     paddingBottom: spacing.lg,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
   title: {
     ...typography.h2,
     color: colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
   },
   subtitle: {
     ...typography.body,

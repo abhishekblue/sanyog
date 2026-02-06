@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { colors } from '../theme/colors';
 import { IBasicInfo } from '../utils/storage.types';
@@ -64,7 +65,10 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{translator.t('basicInfo.title')}</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{translator.t('basicInfo.title')}</Text>
+          <SettingsButton />
+        </View>
 
         <View style={styles.section}>
           <Text style={styles.label}>{translator.t('basicInfo.name.label')}</Text>

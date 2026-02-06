@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { assessmentQuestions, TOTAL_QUESTIONS } from '../data/assessmentQuestions';
 
@@ -53,19 +54,23 @@ export function AssessmentScreen({
   const handleBack = (): void => {
     if (currentIndex > 0) {
       animateToIndex(currentIndex - 1);
-    } else {
+    } else if (onBack) {
       onBack();
     }
   };
 
   const isLastQuestion = currentIndex === TOTAL_QUESTIONS - 1;
   const canProceed = selectedAnswer !== undefined;
+  const canGoBack = currentIndex > 0 || !!onBack;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.progressContainer}>
-        <View style={styles.progressBackground}>
-          <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+        <View style={styles.progressRow}>
+          <View style={styles.progressBackground}>
+            <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+          </View>
+          <SettingsButton />
         </View>
         <Text style={styles.progressText}>
           {translator.t('assessment.questionOf', {
@@ -108,8 +113,14 @@ export function AssessmentScreen({
       </Animated.View>
 
       <View style={styles.navigationContainer}>
-        <TouchableOpacity style={styles.navButton} onPress={handleBack}>
-          <Text style={styles.navButtonText}>{translator.common('buttons.back')}</Text>
+        <TouchableOpacity
+          style={[styles.navButton, !canGoBack && styles.navButtonDisabled]}
+          onPress={handleBack}
+          disabled={!canGoBack}
+        >
+          <Text style={[styles.navButtonText, !canGoBack && styles.navButtonTextDisabled]}>
+            {translator.common('buttons.back')}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity

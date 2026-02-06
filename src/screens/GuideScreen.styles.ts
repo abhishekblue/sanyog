@@ -15,6 +15,11 @@ export const styles = StyleSheet.create({
     paddingTop: spacing.md,
     paddingBottom: spacing.lg,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   title: {
     ...typography.h2,
     color: colors.textPrimary,
@@ -31,6 +36,18 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.screenHorizontal,
     paddingBottom: spacing.xl,
     gap: spacing.md,
+  },
+  summaryCard: {
+    backgroundColor: colors.selectedBackground,
+    borderRadius: spacing.borderRadius,
+    borderWidth: 1,
+    borderColor: colors.selectedBorder,
+    padding: spacing.md,
+  },
+  summaryText: {
+    ...typography.bodySmall,
+    color: colors.textPrimary,
+    lineHeight: 20,
   },
   questionCard: {
     backgroundColor: colors.surface,

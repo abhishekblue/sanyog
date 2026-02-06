@@ -56,8 +56,10 @@
     }
   },
   "processing": {
-    "analyzing": "Analyzing your priorities...",
-    "creating": "Creating your personalized guide..."
+    "step1": "Analyzing your priorities...",
+    "step2": "Mapping your conversation style...",
+    "step3": "Creating your personalized guide...",
+    "step4": "Almost ready..."
   },
   "results": {
     "title": "Your Priority Profile",
@@ -111,6 +113,8 @@
     "language": "Change Language",
     "viewProfile": "View My Profile",
     "retake": "Retake Assessment",
+    "retakesRemaining": "{{count}} retakes remaining",
+    "noRetakesLeft": "No retakes remaining",
     "clearData": "Clear All Data",
     "about": "About the App",
     "privacy": "Privacy",

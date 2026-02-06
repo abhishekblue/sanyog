@@ -8,7 +8,7 @@ export interface IBasicInfoScreenProps {
 
 export interface IAssessmentScreenProps {
   onComplete: () => void;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 export interface IProcessingScreenProps {

@@ -15,7 +15,13 @@ export const styles = StyleSheet.create({
     paddingTop: spacing.md,
     paddingBottom: spacing.lg,
   },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   progressBackground: {
+    flex: 1,
     height: 6,
     backgroundColor: colors.border,
     borderRadius: 3,
@@ -69,7 +75,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.md,
-    ...shadows.subtle,
   },
   optionIndicatorSelected: {
     backgroundColor: colors.primary,

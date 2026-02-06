@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { Dimension } from '../data/assessmentQuestions';
 import { colors } from '../theme/colors';
@@ -43,7 +44,10 @@ export function ResultsScreen({ onContinue }: IResultsScreenProps): React.JSX.El
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{translator.t('results.title')}</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{translator.t('results.title')}</Text>
+          <SettingsButton />
+        </View>
         <Text style={styles.subtitle}>{translator.t('results.subtitle')}</Text>
 
         <View style={styles.cardsContainer}>

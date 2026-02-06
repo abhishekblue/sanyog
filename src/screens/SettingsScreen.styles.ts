@@ -10,6 +10,9 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: spacing.screenHorizontal,
     paddingTop: spacing.md,
     paddingBottom: spacing.lg,
@@ -56,6 +59,14 @@ export const styles = StyleSheet.create({
   settingLabel: {
     ...typography.body,
     color: colors.textPrimary,
+  },
+  settingLabelDisabled: {
+    color: colors.textSecondary,
+  },
+  retakeHint: {
+    ...typography.captionSmall,
+    color: colors.textSecondary,
+    marginTop: 2,
   },
   settingValue: {
     ...typography.bodySmall,

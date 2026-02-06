@@ -1,14 +1,33 @@
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
 import { Language } from '../locales';
+import { RootStackParamList } from '../navigation/AppNavigator.types';
+import { colors } from '../theme/colors';
 
 import { styles } from './SettingsScreen.styles';
 
+const MAX_RETAKES = 3;
+
 export function SettingsScreen(): React.JSX.Element {
-  const { translator, language, setLanguage, clearAllData, clearAssessmentData } = useApp();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const {
+    translator,
+    language,
+    setLanguage,
+    clearAllData,
+    clearAssessmentData,
+    retakeCount,
+    incrementRetakeCount,
+  } = useApp();
+
+  const retakesRemaining = MAX_RETAKES - retakeCount;
+  const canRetake = retakesRemaining > 0;
 
   const handleLanguageToggle = async (): Promise<void> => {
     const newLang: Language = language === 'en' ? 'hi' : 'en';
@@ -16,12 +35,15 @@ export function SettingsScreen(): React.JSX.Element {
   };
 
   const handleRetakeAssessment = (): void => {
+    if (!canRetake) return;
     Alert.alert(translator.t('settings.retake'), translator.t('settings.confirmRetake'), [
       { text: translator.common('buttons.cancel'), style: 'cancel' },
       {
         text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
+          await incrementRetakeCount();
+          navigation.goBack();
           await clearAssessmentData();
         },
       },
@@ -35,6 +57,7 @@ export function SettingsScreen(): React.JSX.Element {
         text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
+          navigation.goBack();
           await clearAllData();
         },
       },
@@ -45,6 +68,12 @@ export function SettingsScreen(): React.JSX.Element {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.title}>{translator.t('settings.title')}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Feather name="x" size={22} color={colors.textSecondary} />
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -65,9 +94,21 @@ export function SettingsScreen(): React.JSX.Element {
             <TouchableOpacity
               style={[styles.settingItem, styles.settingItemLast]}
               onPress={handleRetakeAssessment}
+              disabled={!canRetake}
             >
-              <Text style={styles.settingLabel}>{translator.t('settings.retake')}</Text>
-              <Text style={styles.settingChevron}>›</Text>
+              <View>
+                <Text style={[styles.settingLabel, !canRetake && styles.settingLabelDisabled]}>
+                  {translator.t('settings.retake')}
+                </Text>
+                <Text style={styles.retakeHint}>
+                  {canRetake
+                    ? translator.t('settings.retakesRemaining', {
+                        count: retakesRemaining,
+                      })
+                    : translator.t('settings.noRetakesLeft')}
+                </Text>
+              </View>
+              {canRetake && <Text style={styles.settingChevron}>›</Text>}
             </TouchableOpacity>
           </View>
         </View>

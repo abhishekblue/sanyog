@@ -2,6 +2,9 @@ import { Language } from '../locales';
 
 /** User's basic info from onboarding */
 export interface IBasicInfo {
+  name: string;
+  email: string;
+  phone: string;
   gender: 'male' | 'female';
   ageRange: '23-25' | '26-28' | '29-32' | '33-35' | '35+';
   isFirstMeeting: boolean;

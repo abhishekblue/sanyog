@@ -40,7 +40,10 @@ function OnboardingNavigator(): React.JSX.Element {
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Assessment">
         {({ navigation }) => (
-          <AssessmentScreen onComplete={() => navigation.navigate('Processing')} />
+          <AssessmentScreen
+            onComplete={() => navigation.navigate('Processing')}
+            onBack={() => navigation.goBack()}
+          />
         )}
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Processing">

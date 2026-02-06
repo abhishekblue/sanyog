@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
+import { colors } from '../theme/colors';
 import { IBasicInfo } from '../utils/storage.types';
 
 import { styles } from './BasicInfoScreen.styles';
@@ -15,18 +16,38 @@ const TIMELINE_OPTIONS: IBasicInfo['timeline'][] = ['thisWeek', 'withinMonth', '
 export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JSX.Element {
   const { translator, setBasicInfo } = useApp();
 
+  const emailRef = useRef<TextInput>(null);
+  const phoneRef = useRef<TextInput>(null);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [gender, setGender] = useState<IBasicInfo['gender'] | null>(null);
   const [ageRange, setAgeRange] = useState<IBasicInfo['ageRange'] | null>(null);
   const [isFirstMeeting, setIsFirstMeeting] = useState<boolean | null>(null);
   const [timeline, setTimeline] = useState<IBasicInfo['timeline'] | null>(null);
 
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidPhone = /^\d{10}$/.test(phone.trim());
+  const emailError = email.length > 0 && !isValidEmail;
+  const phoneError = phone.length > 0 && !isValidPhone;
+
   const isFormComplete =
-    gender !== null && ageRange !== null && isFirstMeeting !== null && timeline !== null;
+    name.trim() !== '' &&
+    isValidEmail &&
+    isValidPhone &&
+    gender !== null &&
+    ageRange !== null &&
+    isFirstMeeting !== null &&
+    timeline !== null;
 
   const handleContinue = async (): Promise<void> => {
     if (!isFormComplete) return;
 
     await setBasicInfo({
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
       gender: gender!,
       ageRange: ageRange!,
       isFirstMeeting: isFirstMeeting!,
@@ -44,6 +65,59 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.title}>{translator.t('basicInfo.title')}</Text>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.name.label')}</Text>
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+            placeholder={translator.t('basicInfo.name.placeholder')}
+            placeholderTextColor={colors.textSecondary}
+            autoCapitalize="words"
+            returnKeyType="next"
+            onSubmitEditing={() => emailRef.current?.focus()}
+            blurOnSubmit={false}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.email.label')}</Text>
+          <TextInput
+            ref={emailRef}
+            style={[styles.textInput, emailError && styles.textInputError]}
+            value={email}
+            onChangeText={setEmail}
+            placeholder={translator.t('basicInfo.email.placeholder')}
+            placeholderTextColor={colors.textSecondary}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            returnKeyType="next"
+            onSubmitEditing={() => phoneRef.current?.focus()}
+            blurOnSubmit={false}
+          />
+          {emailError && (
+            <Text style={styles.errorText}>{translator.t('basicInfo.errors.invalidEmail')}</Text>
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>{translator.t('basicInfo.phone.label')}</Text>
+          <TextInput
+            ref={phoneRef}
+            style={[styles.textInput, phoneError && styles.textInputError]}
+            value={phone}
+            onChangeText={setPhone}
+            placeholder={translator.t('basicInfo.phone.placeholder')}
+            placeholderTextColor={colors.textSecondary}
+            keyboardType="phone-pad"
+            maxLength={10}
+            returnKeyType="done"
+          />
+          {phoneError && (
+            <Text style={styles.errorText}>{translator.t('basicInfo.errors.invalidPhone')}</Text>
+          )}
+        </View>
 
         <View style={styles.section}>
           <Text style={styles.label}>{translator.t('basicInfo.gender.label')}</Text>
@@ -149,7 +223,7 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
           accessibilityState={{ disabled: !isFormComplete }}
         >
           <Text style={[styles.continueText, !isFormComplete && styles.continueTextDisabled]}>
-            {translator.common('continue')}
+            {translator.common('buttons.continue')}
           </Text>
         </TouchableOpacity>
       </View>

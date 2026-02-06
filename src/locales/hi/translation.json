@@ -9,6 +9,18 @@
   },
   "basicInfo": {
     "title": "अपने बारे में बताएं",
+    "name": {
+      "label": "आपका नाम",
+      "placeholder": "अपना नाम लिखें"
+    },
+    "email": {
+      "label": "ईमेल",
+      "placeholder": "अपना ईमेल लिखें"
+    },
+    "phone": {
+      "label": "फ़ोन नंबर",
+      "placeholder": "अपना फ़ोन नंबर लिखें"
+    },
     "gender": {
       "label": "मैं हूँ",
       "male": "पुरुष",
@@ -27,6 +39,10 @@
       "thisWeek": "इस हफ्ते",
       "withinMonth": "एक महीने में",
       "exploring": "बस जानकारी ले रहे हैं"
+    },
+    "errors": {
+      "invalidEmail": "कृपया सही ईमेल पता दर्ज करें",
+      "invalidPhone": "कृपया सही 10 अंकों का फ़ोन नंबर दर्ज करें"
     }
   },
   "assessment": {

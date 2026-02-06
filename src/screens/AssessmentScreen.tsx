@@ -8,7 +8,10 @@ import { assessmentQuestions, TOTAL_QUESTIONS } from '../data/assessmentQuestion
 import { styles } from './AssessmentScreen.styles';
 import { IAssessmentScreenProps } from './screens.types';
 
-export function AssessmentScreen({ onComplete }: IAssessmentScreenProps): React.JSX.Element {
+export function AssessmentScreen({
+  onComplete,
+  onBack,
+}: IAssessmentScreenProps): React.JSX.Element {
   const { language, translator, assessmentAnswers, setAssessmentAnswer } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -34,6 +37,8 @@ export function AssessmentScreen({ onComplete }: IAssessmentScreenProps): React.
   const handleBack = (): void => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else {
+      onBack();
     }
   };
 
@@ -85,14 +90,8 @@ export function AssessmentScreen({ onComplete }: IAssessmentScreenProps): React.
       </View>
 
       <View style={styles.navigationContainer}>
-        <TouchableOpacity
-          style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
-          onPress={handleBack}
-          disabled={currentIndex === 0}
-        >
-          <Text style={[styles.navButtonText, currentIndex === 0 && styles.navButtonTextDisabled]}>
-            {translator.common('back')}
-          </Text>
+        <TouchableOpacity style={styles.navButton} onPress={handleBack}>
+          <Text style={styles.navButtonText}>{translator.common('buttons.back')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -101,7 +100,9 @@ export function AssessmentScreen({ onComplete }: IAssessmentScreenProps): React.
           disabled={!canProceed}
         >
           <Text style={[styles.nextButtonText, !canProceed && styles.nextButtonTextDisabled]}>
-            {isLastQuestion ? translator.common('finish') : translator.common('next')}
+            {isLastQuestion
+              ? translator.common('buttons.finish')
+              : translator.common('buttons.next')}
           </Text>
         </TouchableOpacity>
       </View>

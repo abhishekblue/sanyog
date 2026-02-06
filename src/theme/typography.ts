@@ -74,11 +74,13 @@ export const typography = {
     fontSize: 16,
     fontWeight: '600' as const,
     lineHeight: 24,
+    textTransform: 'capitalize' as const,
   },
   buttonSmall: {
     fontFamily,
     fontSize: 14,
     fontWeight: '600' as const,
     lineHeight: 20,
+    textTransform: 'capitalize' as const,
   },
 };

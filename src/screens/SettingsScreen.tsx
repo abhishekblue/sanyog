@@ -18,9 +18,9 @@ export function SettingsScreen({ onRetakeAssessment }: ISettingsScreenProps): Re
 
   const handleRetakeAssessment = (): void => {
     Alert.alert(translator.t('settings.retake'), translator.t('settings.confirmRetake'), [
-      { text: translator.common('cancel'), style: 'cancel' },
+      { text: translator.common('buttons.cancel'), style: 'cancel' },
       {
-        text: translator.common('confirm'),
+        text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
           await clearAssessmentData();
@@ -32,9 +32,9 @@ export function SettingsScreen({ onRetakeAssessment }: ISettingsScreenProps): Re
 
   const handleClearData = (): void => {
     Alert.alert(translator.t('settings.clearData'), translator.t('settings.confirmClear'), [
-      { text: translator.common('cancel'), style: 'cancel' },
+      { text: translator.common('buttons.cancel'), style: 'cancel' },
       {
-        text: translator.common('confirm'),
+        text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
           await clearAllData();

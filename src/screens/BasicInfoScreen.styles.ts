@@ -30,6 +30,27 @@ export const styles = StyleSheet.create({
     color: colors.textPrimary,
     marginBottom: spacing.sm,
   },
+  textInput: {
+    ...typography.body,
+    color: colors.textPrimary,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: spacing.borderRadius,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+  },
+  textInputFocused: {
+    borderColor: colors.selectedBorder,
+  },
+  textInputError: {
+    borderColor: colors.error,
+  },
+  errorText: {
+    ...typography.captionSmall,
+    color: colors.error,
+    marginTop: spacing.xs,
+  },
   optionRow: {
     flexDirection: 'row',
     gap: spacing.sm,

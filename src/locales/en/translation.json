@@ -9,6 +9,18 @@
   },
   "basicInfo": {
     "title": "Tell us about yourself",
+    "name": {
+      "label": "Your name",
+      "placeholder": "Enter your name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "phone": {
+      "label": "Phone number",
+      "placeholder": "Enter your phone number"
+    },
     "gender": {
       "label": "I am",
       "male": "Male",
@@ -27,6 +39,10 @@
       "thisWeek": "This week",
       "withinMonth": "Within a month",
       "exploring": "Just exploring"
+    },
+    "errors": {
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid 10-digit phone number"
     }
   },
   "assessment": {

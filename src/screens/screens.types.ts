@@ -18,7 +18,3 @@ export interface IProcessingScreenProps {
 export interface IResultsScreenProps {
   onContinue: () => void;
 }
-
-export interface ISettingsScreenProps {
-  onRetakeAssessment: () => void;
-}

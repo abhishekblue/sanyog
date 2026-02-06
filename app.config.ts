@@ -9,7 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'light',
-  newArchEnabled: true,
+  newArchEnabled: false,
   splash: {
     image: './assets/splash-icon.png',
     resizeMode: 'contain',
@@ -29,6 +29,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/favicon.png',
   },
   extra: {
-    claudeApiKey: process.env.CLAUDE_API_KEY || '',
+    geminiApiKey: process.env.GEMINI_API_KEY || '',
   },
 });

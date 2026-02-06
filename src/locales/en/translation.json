@@ -87,7 +87,10 @@
       "evaluate": "Evaluate my recent meeting",
       "redFlags": "What red flags should I watch for"
     },
-    "placeholder": "Type your message..."
+    "placeholder": "Type your message...",
+    "remaining": "{{count}} conversations left today",
+    "limitReached": "Daily limit reached",
+    "resetsIn": "Resets at midnight"
   },
   "paywall": {
     "title": "Unlock AI Conversation Coach",

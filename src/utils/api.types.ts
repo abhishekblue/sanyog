@@ -19,22 +19,35 @@ export interface IChatResponse {
   error?: string;
 }
 
-/** Claude API message format */
-export interface IClaudeMessage {
-  role: 'user' | 'assistant';
-  content: string;
+/** Gemini API message part */
+export interface IGeminiPart {
+  text: string;
 }
 
-/** Claude API request body */
-export interface IClaudeRequestBody {
-  model: string;
-  max_tokens: number;
-  system: string;
-  messages: IClaudeMessage[];
+/** Gemini API message content */
+export interface IGeminiContent {
+  role: 'user' | 'model';
+  parts: IGeminiPart[];
 }
 
-/** Claude API response */
-export interface IClaudeResponse {
-  content: { type: string; text: string }[];
-  error?: { message: string };
+/** Gemini API request body */
+export interface IGeminiRequestBody {
+  contents: IGeminiContent[];
+  systemInstruction: {
+    parts: IGeminiPart[];
+  };
+}
+
+/** Gemini API response candidate */
+export interface IGeminiCandidate {
+  content: {
+    parts: IGeminiPart[];
+    role: string;
+  };
+}
+
+/** Gemini API response */
+export interface IGeminiResponse {
+  candidates?: IGeminiCandidate[];
+  error?: { message: string; code: number };
 }

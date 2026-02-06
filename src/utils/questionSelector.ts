@@ -8,9 +8,6 @@ import { IOutputQuestion, outputQuestions } from '../data/outputQuestions';
 
 import { IPriorityProfile } from './storage.types';
 
-/** Number of free questions visible */
-const FREE_QUESTION_COUNT = 10;
-
 /** Questions per dimension for MEDIUM priority */
 const MEDIUM_PRIORITY_QUESTIONS = 2;
 
@@ -73,31 +70,4 @@ export function selectQuestionsByProfile(profile: IPriorityProfile): IOutputQues
   );
 
   return uniqueQuestions;
-}
-
-/**
- * Get free questions (first 7)
- * @param questions - All selected questions
- * @returns First 7 questions (free tier)
- */
-export function getFreeQuestions(questions: IOutputQuestion[]): IOutputQuestion[] {
-  return questions.slice(0, FREE_QUESTION_COUNT);
-}
-
-/**
- * Get locked questions (after first 7)
- * @param questions - All selected questions
- * @returns Questions after first 7 (locked for premium)
- */
-export function getLockedQuestions(questions: IOutputQuestion[]): IOutputQuestion[] {
-  return questions.slice(FREE_QUESTION_COUNT);
-}
-
-/**
- * Check if a question is locked
- * @param questionIndex - Index of the question
- * @returns True if question is locked (premium only)
- */
-export function isQuestionLocked(questionIndex: number): boolean {
-  return questionIndex >= FREE_QUESTION_COUNT;
 }

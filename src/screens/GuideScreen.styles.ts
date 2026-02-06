@@ -38,9 +38,6 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     overflow: 'hidden',
   },
-  questionCardLocked: {
-    opacity: 0.6,
-  },
   questionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -85,65 +82,5 @@ export const styles = StyleSheet.create({
   sectionText: {
     ...typography.bodySmall,
     color: colors.textSecondary,
-  },
-  lockedOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lockIcon: {
-    color: colors.textSecondary,
-  },
-  paywallBanner: {
-    marginHorizontal: spacing.screenHorizontal,
-    marginBottom: spacing.md,
-    padding: spacing.md,
-    backgroundColor: colors.surface,
-    borderRadius: spacing.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.secondary,
-  },
-  paywallTitle: {
-    ...typography.bodyMedium,
-    color: colors.textPrimary,
-    marginBottom: spacing.xs,
-  },
-  paywallDescription: {
-    ...typography.captionSmall,
-    color: colors.textSecondary,
-    marginBottom: spacing.md,
-  },
-  paywallButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-    borderRadius: spacing.borderRadius,
-    alignItems: 'center',
-  },
-  paywallButtonText: {
-    ...typography.buttonSmall,
-    color: colors.textLight,
-  },
-  bottomSection: {
-    paddingHorizontal: spacing.screenHorizontal,
-    paddingVertical: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    backgroundColor: colors.background,
-  },
-  coachButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.buttonVertical,
-    borderRadius: spacing.borderRadius,
-    alignItems: 'center',
-  },
-  coachButtonText: {
-    ...typography.button,
-    color: colors.textLight,
   },
 });

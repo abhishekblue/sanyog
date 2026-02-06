@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, LayoutChangeEvent, View } from 'react-native';
 
 // eslint-disable-next-line local-rules/no-inline-interfaces
 interface IAnimatedAccordionProps {
@@ -14,8 +13,7 @@ export function AnimatedAccordion({
   isExpanded,
   children,
 }: IAnimatedAccordionProps): React.JSX.Element {
-  const height = useSharedValue(0);
-  const opacity = useSharedValue(0);
+  const animValue = useRef(new Animated.Value(0)).current;
   const [contentHeight, setContentHeight] = useState(0);
 
   const onLayout = useCallback((event: LayoutChangeEvent) => {
@@ -26,31 +24,43 @@ export function AnimatedAccordion({
   }, []);
 
   useEffect(() => {
-    if (isExpanded && contentHeight > 0) {
-      height.value = withTiming(contentHeight, { duration: DURATION });
-      opacity.value = withTiming(1, { duration: DURATION });
-    } else {
-      height.value = withTiming(0, { duration: DURATION });
-      opacity.value = withTiming(0, { duration: DURATION * 0.6 });
-    }
-  }, [isExpanded, contentHeight, height, opacity]);
+    Animated.timing(animValue, {
+      toValue: isExpanded ? 1 : 0,
+      duration: DURATION,
+      useNativeDriver: false,
+    }).start();
+  }, [isExpanded, animValue]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    height: height.value,
-    opacity: opacity.value,
-    overflow: 'hidden' as const,
-  }));
+  const animatedHeight = animValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, contentHeight],
+  });
+
+  const animatedOpacity = animValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0, 1],
+  });
 
   return (
     <>
-      <Animated.View style={animatedStyle}>
+      <Animated.View
+        style={{
+          height: contentHeight > 0 ? animatedHeight : 0,
+          opacity: contentHeight > 0 ? animatedOpacity : 0,
+          overflow: 'hidden',
+        }}
+      >
         <View>{children}</View>
       </Animated.View>
 
       {/* Hidden measurer — renders off-screen to get content height */}
       {contentHeight === 0 && (
         <View
-          style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
+          style={{
+            position: 'absolute',
+            opacity: 0,
+            pointerEvents: 'none',
+          }}
           onLayout={onLayout}
         >
           {children}

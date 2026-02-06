@@ -64,6 +64,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: spacing.md,
     borderRadius: spacing.borderRadius,
+    marginLeft: spacing.screenHorizontal,
   },
   loadingText: {
     ...typography.bodySmall,
@@ -77,9 +78,6 @@ export const styles = StyleSheet.create({
     borderTopColor: colors.border,
     backgroundColor: colors.background,
   },
-  chipsScroll: {
-    flexDirection: 'row',
-  },
   chip: {
     backgroundColor: colors.surface,
     paddingVertical: spacing.xs,
@@ -92,6 +90,15 @@ export const styles = StyleSheet.create({
   chipText: {
     ...typography.captionSmall,
     color: colors.textPrimary,
+  },
+  remainingBar: {
+    alignItems: 'center',
+    paddingVertical: spacing.xs,
+    backgroundColor: colors.background,
+  },
+  remainingText: {
+    ...typography.captionSmall,
+    color: colors.textSecondary,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -119,66 +126,31 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: colors.textLight,
+    fontSize: 20,
+    lineHeight: 44,
   },
   sendButtonDisabled: {
     backgroundColor: colors.border,
   },
-  sendButtonText: {
-    color: colors.textLight,
-    fontSize: 20,
-  },
-  lockedContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  limitBanner: {
     alignItems: 'center',
-    padding: spacing.xl,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.screenHorizontal,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    backgroundColor: colors.surface,
   },
-  lockedIcon: {
-    marginBottom: spacing.md,
-  },
-  lockedTitle: {
-    ...typography.h3,
-    color: colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-  },
-  lockedDescription: {
-    ...typography.body,
+  limitText: {
+    ...typography.bodySmall,
     color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: spacing.lg,
   },
-  featuresList: {
-    alignSelf: 'stretch',
-    marginBottom: spacing.lg,
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  featureIcon: {
-    marginRight: spacing.sm,
-  },
-  featureText: {
-    ...typography.body,
-    color: colors.textPrimary,
-  },
-  unlockButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.buttonVertical,
-    paddingHorizontal: spacing.xl,
-    borderRadius: spacing.borderRadius,
-    marginBottom: spacing.sm,
-  },
-  unlockButtonText: {
-    ...typography.button,
-    color: colors.textLight,
-  },
-  comingSoonText: {
+  countdownText: {
     ...typography.captionSmall,
     color: colors.textSecondary,
+    marginTop: spacing.xs,
   },
 });

@@ -2,9 +2,8 @@ import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useCallback, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, BackHandler, ToastAndroid, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
 import { AssessmentScreen } from '../screens/AssessmentScreen';
@@ -28,8 +27,12 @@ const MainTab = createBottomTabNavigator<MainTabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function OnboardingNavigator(): React.JSX.Element {
+  const { basicInfo } = useApp();
+  const initialRoute = basicInfo ? 'Assessment' : 'Welcome';
+
   return (
     <OnboardingStack.Navigator
+      initialRouteName={initialRoute}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
@@ -72,22 +75,23 @@ function OnboardingNavigator(): React.JSX.Element {
 
 function MainTabNavigator(): React.JSX.Element {
   const { translator } = useApp();
-  const insets = useSafeAreaInsets();
   const lastBackPress = useRef(0);
 
-  const handleBeforeRemove = useCallback(
-    (e: { preventDefault: () => void }) => {
+  useEffect(() => {
+    const onBackPress = (): boolean => {
       const now = Date.now();
       if (now - lastBackPress.current < 2000) {
         BackHandler.exitApp();
-        return;
+        return true;
       }
-      e.preventDefault();
       lastBackPress.current = now;
       ToastAndroid.show(translator.common('status.pressBackToExit'), ToastAndroid.SHORT);
-    },
-    [translator]
-  );
+      return true;
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => subscription.remove();
+  }, [translator]);
 
   return (
     <MainTab.Navigator
@@ -97,7 +101,6 @@ function MainTabNavigator(): React.JSX.Element {
         tabBarStyle: {
           backgroundColor: colors.surface,
           borderTopColor: colors.border,
-          paddingBottom: insets.bottom,
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
@@ -106,9 +109,6 @@ function MainTabNavigator(): React.JSX.Element {
       <MainTab.Screen
         name="Guide"
         component={GuideScreen}
-        listeners={{
-          beforeRemove: handleBeforeRemove,
-        }}
         options={{
           tabBarLabel: translator.t('guide.title'),
           tabBarIcon: ({ color, size }) => <Feather name="book-open" size={size} color={color} />,
@@ -131,13 +131,7 @@ function MainTabNavigator(): React.JSX.Element {
           tabBarIcon: ({ color, size }) => <Feather name="settings" size={size} color={color} />,
         }}
       >
-        {({ navigation }) => (
-          <SettingsScreen
-            onRetakeAssessment={() =>
-              navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Onboarding' }] })
-            }
-          />
-        )}
+        {() => <SettingsScreen />}
       </MainTab.Screen>
     </MainTab.Navigator>
   );

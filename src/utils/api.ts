@@ -3,19 +3,21 @@ import Constants from 'expo-constants';
 import {
   IChatRequest,
   IChatResponse,
-  IClaudeMessage,
-  IClaudeRequestBody,
-  IClaudeResponse,
   ICoachContext,
+  IGeminiContent,
+  IGeminiRequestBody,
+  IGeminiResponse,
 } from './api.types';
 import { IChatMessage } from './storage.types';
 
-const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-3-haiku-20240307';
-const MAX_TOKENS = 1024;
+const MODEL = 'gemini-2.5-flash-preview-05-20';
 
 function getApiKey(): string {
-  return Constants.expoConfig?.extra?.claudeApiKey || '';
+  return Constants.expoConfig?.extra?.geminiApiKey || '';
+}
+
+function getApiUrl(apiKey: string): string {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`;
 }
 
 function buildSystemPrompt(context: ICoachContext): string {
@@ -76,10 +78,10 @@ Do NOT:
 - Push Western relationship norms inappropriately`;
 }
 
-function formatMessagesForClaude(messages: IChatMessage[]): IClaudeMessage[] {
+function formatMessagesForGemini(messages: IChatMessage[]): IGeminiContent[] {
   return messages.map((msg) => ({
-    role: msg.role,
-    content: msg.content,
+    role: msg.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: msg.content }],
   }));
 }
 
@@ -89,27 +91,25 @@ export async function sendChatMessage(request: IChatRequest): Promise<IChatRespo
   if (!apiKey) {
     return {
       message: '',
-      error: 'API key not configured. Please add CLAUDE_API_KEY to your environment.',
+      error: 'API key not configured. Please add GEMINI_API_KEY to your environment.',
     };
   }
 
   const systemPrompt = buildSystemPrompt(request.context);
-  const messages = formatMessagesForClaude(request.messages);
+  const contents = formatMessagesForGemini(request.messages);
 
-  const requestBody: IClaudeRequestBody = {
-    model: MODEL,
-    max_tokens: MAX_TOKENS,
-    system: systemPrompt,
-    messages,
+  const requestBody: IGeminiRequestBody = {
+    contents,
+    systemInstruction: {
+      parts: [{ text: systemPrompt }],
+    },
   };
 
   try {
-    const response = await fetch(CLAUDE_API_URL, {
+    const response = await fetch(getApiUrl(apiKey), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(requestBody),
     });
@@ -122,7 +122,7 @@ export async function sendChatMessage(request: IChatRequest): Promise<IChatRespo
       };
     }
 
-    const data: IClaudeResponse = await response.json();
+    const data: IGeminiResponse = await response.json();
 
     if (data.error) {
       return {
@@ -131,9 +131,9 @@ export async function sendChatMessage(request: IChatRequest): Promise<IChatRespo
       };
     }
 
-    const textContent = data.content.find((c) => c.type === 'text');
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     return {
-      message: textContent?.text || '',
+      message: text,
     };
   } catch (error) {
     return {

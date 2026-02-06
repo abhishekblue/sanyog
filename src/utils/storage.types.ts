@@ -48,5 +48,11 @@ export interface IStorageData {
   isPremium: boolean;
 }
 
+/** Daily message count for rate limiting */
+export interface IDailyCount {
+  date: string;
+  count: number;
+}
+
 /** Storage key names */
 export type StorageKey = keyof IStorageData;

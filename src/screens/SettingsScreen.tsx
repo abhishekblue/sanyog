@@ -5,10 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../context/AppContext';
 import { Language } from '../locales';
 
-import { ISettingsScreenProps } from './screens.types';
 import { styles } from './SettingsScreen.styles';
 
-export function SettingsScreen({ onRetakeAssessment }: ISettingsScreenProps): React.JSX.Element {
+export function SettingsScreen(): React.JSX.Element {
   const { translator, language, setLanguage, clearAllData, clearAssessmentData } = useApp();
 
   const handleLanguageToggle = async (): Promise<void> => {
@@ -24,7 +23,6 @@ export function SettingsScreen({ onRetakeAssessment }: ISettingsScreenProps): Re
         style: 'destructive',
         onPress: async () => {
           await clearAssessmentData();
-          onRetakeAssessment();
         },
       },
     ]);

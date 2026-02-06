@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { LayoutAnimation, Platform, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
@@ -7,6 +7,10 @@ import { assessmentQuestions, TOTAL_QUESTIONS } from '../data/assessmentQuestion
 
 import { styles } from './AssessmentScreen.styles';
 import { IAssessmentScreenProps } from './screens.types';
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export function AssessmentScreen({
   onComplete,
@@ -26,8 +30,19 @@ export function AssessmentScreen({
     await setAssessmentAnswer(currentQuestion.id, optionId);
   };
 
+  const animateTransition = useCallback(() => {
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(
+        200,
+        LayoutAnimation.Types.easeInEaseOut,
+        LayoutAnimation.Properties.opacity
+      )
+    );
+  }, []);
+
   const handleNext = (): void => {
     if (currentIndex < TOTAL_QUESTIONS - 1) {
+      animateTransition();
       setCurrentIndex(currentIndex + 1);
     } else {
       onComplete();
@@ -36,6 +51,7 @@ export function AssessmentScreen({
 
   const handleBack = (): void => {
     if (currentIndex > 0) {
+      animateTransition();
       setCurrentIndex(currentIndex - 1);
     } else {
       onBack();

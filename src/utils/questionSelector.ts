@@ -9,7 +9,7 @@ import { IOutputQuestion, outputQuestions } from '../data/outputQuestions';
 import { IPriorityProfile } from './storage.types';
 
 /** Number of free questions visible */
-const FREE_QUESTION_COUNT = 7;
+const FREE_QUESTION_COUNT = 10;
 
 /** Questions per dimension for MEDIUM priority */
 const MEDIUM_PRIORITY_QUESTIONS = 2;

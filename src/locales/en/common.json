@@ -16,7 +16,8 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "saved": "Saved!",
-    "copied": "Copied to clipboard!"
+    "copied": "Copied to clipboard!",
+    "pressBackToExit": "Press back again to exit"
   },
   "language": {
     "english": "English",

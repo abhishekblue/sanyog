@@ -27,7 +27,8 @@ export const outputQuestions: IOutputQuestion[] = [
     dimension: 'family',
     priorityLevel: 'essential',
     question_en: 'What role do you see your parents playing in our daily lives after marriage?',
-    question_hi: 'शादी के बाद आप अपने माता-पिता की हमारी रोज़मर्रा की ज़िंदगी में क्या भूमिका देखते हैं?',
+    question_hi:
+      'शादी के बाद आप अपने माता-पिता की हमारी रोज़मर्रा की ज़िंदगी में क्या भूमिका देखते हैं?',
     whyItMatters_en:
       'This reveals expectations about boundaries, family involvement, and potential sources of daily friction.',
     whyItMatters_hi:
@@ -48,9 +49,9 @@ export const outputQuestions: IOutputQuestion[] = [
     whyItMatters_hi:
       'परिवार में झगड़े सुलझाने का तरीका अक्सर शादी में भी आता है। उनके परिवार के तरीके को समझने से पता चलता है क्या उम्मीद करें।',
     whatToListenFor_en:
-      "Whether they describe healthy discussion or dominance by one person. If 'my father's word is final' — understand what that means for your voice.",
+      "Whether they describe healthy discussion or dominance by one person. If 'my father's word is final' - understand what that means for your voice.",
     whatToListenFor_hi:
-      "क्या वे स्वस्थ चर्चा का वर्णन करते हैं या एक व्यक्ति का दबदबा। अगर 'पिताजी की बात आखिरी है' — समझें इसका मतलब आपकी आवाज़ के लिए क्या है।",
+      "क्या वे स्वस्थ चर्चा का वर्णन करते हैं या एक व्यक्ति का दबदबा। अगर 'पिताजी की बात आखिरी है' - समझें इसका मतलब आपकी आवाज़ के लिए क्या है।",
   },
   {
     id: 'family_out_03',
@@ -102,12 +103,13 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'Tell me about your relationship with your siblings.',
     question_hi: 'अपने भाई-बहनों के साथ अपने रिश्ते के बारे में बताइए।',
     whyItMatters_en:
-      'Sibling dynamics often influence married life — financial obligations, family events, emotional bonds.',
+      'Sibling dynamics often influence married life - financial obligations, family events, emotional bonds.',
     whyItMatters_hi:
-      'भाई-बहनों के रिश्ते अक्सर शादीशुदा जीवन को प्रभावित करते हैं — आर्थिक जिम्मेदारियां, पारिवारिक कार्यक्रम, भावनात्मक बंधन।',
+      'भाई-बहनों के रिश्ते अक्सर शादीशुदा जीवन को प्रभावित करते हैं - आर्थिक जिम्मेदारियां, पारिवारिक कार्यक्रम, भावनात्मक बंधन।',
     whatToListenFor_en:
       'Warmth, involvement level, any complications that might affect your married life.',
-    whatToListenFor_hi: 'गर्मजोशी, भागीदारी का स्तर, कोई जटिलता जो आपकी शादीशुदा जीवन को प्रभावित कर सकती है।',
+    whatToListenFor_hi:
+      'गर्मजोशी, भागीदारी का स्तर, कोई जटिलता जो आपकी शादीशुदा जीवन को प्रभावित कर सकती है।',
   },
 
   // ============================================
@@ -125,7 +127,8 @@ export const outputQuestions: IOutputQuestion[] = [
       'पता चलता है कि वे जीने के लिए काम करते हैं या काम के लिए जीते हैं। यह शादी में समय, ऊर्जा और प्राथमिकताओं को प्रभावित करता है।',
     whatToListenFor_en:
       'Passion vs. practicality. Neither is wrong, but alignment with your own approach matters.',
-    whatToListenFor_hi: 'जुनून बनाम व्यावहारिकता। दोनों सही हैं, पर आपके अपने नज़रिये से मेल ज़रूरी है।',
+    whatToListenFor_hi:
+      'जुनून बनाम व्यावहारिकता। दोनों सही हैं, पर आपके अपने नज़रिये से मेल ज़रूरी है।',
   },
   {
     id: 'career_out_02',
@@ -137,8 +140,10 @@ export const outputQuestions: IOutputQuestion[] = [
       'Ambition level and direction. May involve relocation, long hours, or career switches that affect both of you.',
     whyItMatters_hi:
       'महत्वाकांक्षा का स्तर और दिशा। इसमें स्थानांतरण, लंबे घंटे, या करियर बदलाव शामिल हो सकते हैं जो दोनों को प्रभावित करें।',
-    whatToListenFor_en: "Specificity shows planning. Vagueness might mean they haven't thought ahead.",
-    whatToListenFor_hi: 'विशिष्टता योजना दिखाती है। अस्पष्टता का मतलब हो सकता है उन्होंने आगे नहीं सोचा।',
+    whatToListenFor_en:
+      "Specificity shows planning. Vagueness might mean they haven't thought ahead.",
+    whatToListenFor_hi:
+      'विशिष्टता योजना दिखाती है। अस्पष्टता का मतलब हो सकता है उन्होंने आगे नहीं सोचा।',
   },
   {
     id: 'career_out_03',
@@ -166,8 +171,7 @@ export const outputQuestions: IOutputQuestion[] = [
       'काम का तनाव अवश्यंभावी है। वे इसे कैसे संभालते हैं, यह दैनिक जीवन की गुणवत्ता को प्रभावित करता है।',
     whatToListenFor_en:
       "Self-awareness. Someone who says 'I tend to get quiet/irritable' shows they know themselves.",
-    whatToListenFor_hi:
-      "आत्म-जागरूकता। जो कहे 'मैं चुप/चिड़चिड़ा हो जाता हूं' वह खुद को जानता है।",
+    whatToListenFor_hi: "आत्म-जागरूकता। जो कहे 'मैं चुप/चिड़चिड़ा हो जाता हूं' वह खुद को जानता है।",
   },
   {
     id: 'career_out_05',
@@ -190,15 +194,16 @@ export const outputQuestions: IOutputQuestion[] = [
     id: 'finance_out_01',
     dimension: 'finances',
     priorityLevel: 'essential',
-    question_en: 'How would you describe your approach to money — spender or saver?',
-    question_hi: 'पैसों के मामले में आप कैसे हैं — खर्च करने वाले या बचाने वाले?',
+    question_en: 'How would you describe your approach to money - spender or saver?',
+    question_hi: 'पैसों के मामले में आप कैसे हैं - खर्च करने वाले या बचाने वाले?',
     whyItMatters_en:
       'Financial incompatibility is a leading cause of marital conflict. Understanding their basic relationship with money is foundational.',
     whyItMatters_hi:
       'आर्थिक असंगतता वैवाहिक विवाद का प्रमुख कारण है। पैसे के साथ उनके बुनियादी रिश्ते को समझना आधार है।',
     whatToListenFor_en:
       'Honesty and self-awareness. Also whether their approach complements or clashes with yours.',
-    whatToListenFor_hi: 'ईमानदारी और आत्म-जागरूकता। और क्या उनका तरीका आपके साथ मेल खाता है या टकराता है।',
+    whatToListenFor_hi:
+      'ईमानदारी और आत्म-जागरूकता। और क्या उनका तरीका आपके साथ मेल खाता है या टकराता है।',
   },
   {
     id: 'finance_out_02',
@@ -207,8 +212,8 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'What financial goals are important to you in the next 5 years?',
     question_hi: 'अगले 5 सालों में आपके लिए कौन से financial goals ज़रूरी हैं?',
     whyItMatters_en:
-      'Reveals priorities — home ownership, investments, lifestyle, travel, family support.',
-    whyItMatters_hi: 'प्राथमिकताओं का पता चलता है — घर, निवेश, जीवनशैली, यात्रा, परिवार की मदद।',
+      'Reveals priorities - home ownership, investments, lifestyle, travel, family support.',
+    whyItMatters_hi: 'प्राथमिकताओं का पता चलता है - घर, निवेश, जीवनशैली, यात्रा, परिवार की मदद।',
     whatToListenFor_en:
       'Whether goals are realistic and whether they include planning for two people, not just themselves.',
     whatToListenFor_hi:
@@ -221,8 +226,9 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'How do you think a couple should manage finances together?',
     question_hi: 'आपके हिसाब से पति-पत्नी को मिलकर पैसे कैसे मैनेज करने चाहिए?',
     whyItMatters_en:
-      'Joint vs. separate accounts, spending autonomy, transparency expectations — all critical.',
-    whyItMatters_hi: 'जॉइंट बनाम अलग अकाउंट, खर्च की स्वतंत्रता, पारदर्शिता की उम्मीदें — सब महत्वपूर्ण।',
+      'Joint vs. separate accounts, spending autonomy, transparency expectations - all critical.',
+    whyItMatters_hi:
+      'जॉइंट बनाम अलग अकाउंट, खर्च की स्वतंत्रता, पारदर्शिता की उम्मीदें - सब महत्वपूर्ण।',
     whatToListenFor_en:
       "Whether they've thought about this at all. And whether their approach respects both partners' autonomy.",
     whatToListenFor_hi:
@@ -235,9 +241,9 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'Are there any significant financial commitments I should know about?',
     question_hi: 'क्या कोई बड़ी financial commitment है जो मुझे पता होनी चाहिए?',
     whyItMatters_en:
-      'Loans, family financial obligations, investments — these directly affect your shared financial life.',
+      'Loans, family financial obligations, investments - these directly affect your shared financial life.',
     whyItMatters_hi:
-      'लोन, परिवार की आर्थिक जिम्मेदारियां, निवेश — ये सीधे आपकी साझा आर्थिक जीवन को प्रभावित करते हैं।',
+      'लोन, परिवार की आर्थिक जिम्मेदारियां, निवेश - ये सीधे आपकी साझा आर्थिक जीवन को प्रभावित करते हैं।',
     whatToListenFor_en: 'Openness. Reluctance to discuss may be a yellow flag.',
     whatToListenFor_hi: 'खुलापन। चर्चा करने में हिचकिचाहट एक पीला झंडा हो सकता है।',
   },
@@ -253,7 +259,8 @@ export const outputQuestions: IOutputQuestion[] = [
       'भारतीय परिवारों में माता-पिता/भाई-बहनों को आर्थिक सहायता आम है। उम्मीदों का मेल ज़रूरी है।',
     whatToListenFor_en:
       'Whether expectations are reasonable and discussed openly, or assumed without discussion.',
-    whatToListenFor_hi: 'क्या उम्मीदें उचित हैं और खुले तौर पर चर्चा की गई हैं, या बिना चर्चा मान लिया गया है।',
+    whatToListenFor_hi:
+      'क्या उम्मीदें उचित हैं और खुले तौर पर चर्चा की गई हैं, या बिना चर्चा मान लिया गया है।',
   },
 
   // ============================================
@@ -270,9 +277,9 @@ export const outputQuestions: IOutputQuestion[] = [
     whyItMatters_hi:
       'वीकेंड की आदतें जीवनशैली, ऊर्जा स्तर, सामाजिक पसंद और दैनिक संगतता प्रकट करती हैं।',
     whatToListenFor_en:
-      "Energy match — if you're a homebody and they're out every weekend, that's worth noting.",
+      "Energy match - if you're a homebody and they're out every weekend, that's worth noting.",
     whatToListenFor_hi:
-      'ऊर्जा मेल — अगर आप घर पर रहना पसंद करते हैं और वे हर वीकेंड बाहर, यह ध्यान देने योग्य है।',
+      'ऊर्जा मेल - अगर आप घर पर रहना पसंद करते हैं और वे हर वीकेंड बाहर, यह ध्यान देने योग्य है।',
   },
   {
     id: 'lifestyle_out_02',
@@ -281,9 +288,9 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'How do you like to unwind after a long day?',
     question_hi: 'लंबे दिन के बाद आप कैसे relax करते हैं?',
     whyItMatters_en:
-      'Daily de-stress habits affect shared living. TV binging, gym, reading, socializing — all different.',
+      'Daily de-stress habits affect shared living. TV binging, gym, reading, socializing - all different.',
     whyItMatters_hi:
-      'दैनिक तनाव-मुक्ति की आदतें साथ रहने को प्रभावित करती हैं। TV, जिम, पढ़ना, मिलना-जुलना — सब अलग हैं।',
+      'दैनिक तनाव-मुक्ति की आदतें साथ रहने को प्रभावित करती हैं। TV, जिम, पढ़ना, मिलना-जुलना - सब अलग हैं।',
     whatToListenFor_en: 'Whether their unwinding style gives you space or creates friction.',
     whatToListenFor_hi: 'क्या उनकी relax करने की शैली आपको space देती है या टकराव पैदा करती है।',
   },
@@ -295,10 +302,12 @@ export const outputQuestions: IOutputQuestion[] = [
     question_hi: 'आपकी social life कैसी है?',
     whyItMatters_en:
       'Friends, socializing frequency, and social expectations affect married life significantly.',
-    whyItMatters_hi: 'दोस्त, मिलने-जुलने की frequency, और सामाजिक उम्मीदें शादीशुदा जीवन को काफी प्रभावित करती हैं।',
+    whyItMatters_hi:
+      'दोस्त, मिलने-जुलने की frequency, और सामाजिक उम्मीदें शादीशुदा जीवन को काफी प्रभावित करती हैं।',
     whatToListenFor_en:
-      'Balance. Very active social life or no friends at all — both worth understanding.',
-    whatToListenFor_hi: 'संतुलन। बहुत active social life या बिल्कुल दोस्त नहीं — दोनों समझने योग्य।',
+      'Balance. Very active social life or no friends at all - both worth understanding.',
+    whatToListenFor_hi:
+      'संतुलन। बहुत active social life या बिल्कुल दोस्त नहीं - दोनों समझने योग्य।',
   },
   {
     id: 'lifestyle_out_04',
@@ -306,8 +315,9 @@ export const outputQuestions: IOutputQuestion[] = [
     priorityLevel: 'high',
     question_en: 'How important is health and fitness in your daily routine?',
     question_hi: 'आपकी daily routine में health और fitness कितनी ज़रूरी है?',
-    whyItMatters_en: 'Health habits, diet, exercise — these shape daily life and long-term health.',
-    whyItMatters_hi: 'स्वास्थ्य की आदतें, खान-पान, व्यायाम — ये दैनिक जीवन और दीर्घकालिक स्वास्थ्य को आकार देते हैं।',
+    whyItMatters_en: 'Health habits, diet, exercise - these shape daily life and long-term health.',
+    whyItMatters_hi:
+      'स्वास्थ्य की आदतें, खान-पान, व्यायाम - ये दैनिक जीवन और दीर्घकालिक स्वास्थ्य को आकार देते हैं।',
     whatToListenFor_en: "Whether it's a genuine priority or just talk.",
     whatToListenFor_hi: 'क्या यह वास्तविक प्राथमिकता है या सिर्फ बातें।',
   },
@@ -317,8 +327,7 @@ export const outputQuestions: IOutputQuestion[] = [
     priorityLevel: 'high',
     question_en: 'Are you a morning person or night owl?',
     question_hi: 'आप सुबह जल्दी उठने वाले हैं या रात को देर तक जागने वाले?',
-    whyItMatters_en:
-      'Sounds trivial but daily rhythm mismatch is a real source of friction.',
+    whyItMatters_en: 'Sounds trivial but daily rhythm mismatch is a real source of friction.',
     whyItMatters_hi: 'मामूली लगता है पर दैनिक लय में बेमेल वास्तविक टकराव का कारण है।',
     whatToListenFor_en: 'How rigid they are about it.',
     whatToListenFor_hi: 'वे इस बारे में कितने कठोर हैं।',
@@ -327,10 +336,11 @@ export const outputQuestions: IOutputQuestion[] = [
     id: 'lifestyle_out_06',
     dimension: 'lifestyle',
     priorityLevel: 'high',
-    question_en: "What are your hobbies — things you'd never want to give up?",
-    question_hi: 'आपकी hobbies क्या हैं — ऐसी चीज़ें जो आप कभी नहीं छोड़ना चाहेंगे?',
+    question_en: "What are your hobbies - things you'd never want to give up?",
+    question_hi: 'आपकी hobbies क्या हैं - ऐसी चीज़ें जो आप कभी नहीं छोड़ना चाहेंगे?',
     whyItMatters_en: 'Non-negotiable hobbies need space in married life. Better to know now.',
-    whyItMatters_hi: 'जो hobbies छोड़ी नहीं जा सकतीं उन्हें शादीशुदा जीवन में जगह चाहिए। अभी जानना बेहतर है।',
+    whyItMatters_hi:
+      'जो hobbies छोड़ी नहीं जा सकतीं उन्हें शादीशुदा जीवन में जगह चाहिए। अभी जानना बेहतर है।',
     whatToListenFor_en:
       'Time and money commitment to hobbies. Weekend biking is different from competitive gaming 4 hours daily.',
     whatToListenFor_hi:
@@ -347,9 +357,9 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'What values were you raised with that you want to carry forward?',
     question_hi: 'आपको बचपन में कौन से संस्कार मिले जो आप आगे ले जाना चाहते हैं?',
     whyItMatters_en:
-      "Core values drive everything — from daily decisions to life philosophy. This question reveals what's non-negotiable.",
+      "Core values drive everything - from daily decisions to life philosophy. This question reveals what's non-negotiable.",
     whyItMatters_hi:
-      'मूल मूल्य सब कुछ चलाते हैं — दैनिक निर्णयों से लेकर जीवन दर्शन तक। यह सवाल बताता है क्या non-negotiable है।',
+      'मूल मूल्य सब कुछ चलाते हैं - दैनिक निर्णयों से लेकर जीवन दर्शन तक। यह सवाल बताता है क्या non-negotiable है।',
     whatToListenFor_en:
       "Depth and conviction. Surface answers like 'honesty' are fine, but follow up with 'what does that look like in practice?'",
     whatToListenFor_hi:
@@ -362,9 +372,9 @@ export const outputQuestions: IOutputQuestion[] = [
     question_en: 'What does spirituality or religion look like in your daily life?',
     question_hi: 'आपकी रोज़मर्रा की ज़िंदगी में धर्म या अध्यात्म कैसा दिखता है?',
     whyItMatters_en:
-      "Not whether they're religious, but how it shows up practically — temple visits, dietary restrictions, festival observance.",
+      "Not whether they're religious, but how it shows up practically - temple visits, dietary restrictions, festival observance.",
     whyItMatters_hi:
-      'वे धार्मिक हैं या नहीं यह नहीं, बल्कि व्यावहारिक रूप से कैसे दिखता है — मंदिर जाना, खान-पान प्रतिबंध, त्योहार मनाना।',
+      'वे धार्मिक हैं या नहीं यह नहीं, बल्कि व्यावहारिक रूप से कैसे दिखता है - मंदिर जाना, खान-पान प्रतिबंध, त्योहार मनाना।',
     whatToListenFor_en:
       'Practical implications for your shared life. Daily puja is different from festival-only observance.',
     whatToListenFor_hi:
@@ -380,7 +390,8 @@ export const outputQuestions: IOutputQuestion[] = [
     whyItMatters_hi: 'उनके non-negotiables को पहले जानना समय और दिल टूटने से बचाता है।',
     whatToListenFor_en:
       'Clarity and conviction. Also whether their deal-breakers conflict with who you are.',
-    whatToListenFor_hi: 'स्पष्टता और दृढ़ विश्वास। और क्या उनके deal-breakers आपके व्यक्तित्व से टकराते हैं।',
+    whatToListenFor_hi:
+      'स्पष्टता और दृढ़ विश्वास। और क्या उनके deal-breakers आपके व्यक्तित्व से टकराते हैं।',
   },
   {
     id: 'values_out_04',
@@ -420,7 +431,7 @@ export const outputQuestions: IOutputQuestion[] = [
     whyItMatters_en: 'Understanding love languages early prevents years of miscommunication.',
     whyItMatters_hi: 'प्रेम भाषाओं को जल्दी समझना वर्षों की गलतफहमी से बचाता है।',
     whatToListenFor_en:
-      'Whether it\'s words, actions, time, gifts, or touch. Match with how you naturally express love.',
+      "Whether it's words, actions, time, gifts, or touch. Match with how you naturally express love.",
     whatToListenFor_hi:
       'क्या यह शब्द, कार्य, समय, उपहार, या स्पर्श है। इसे अपने प्यार व्यक्त करने के तरीके से मिलाएं।',
   },
@@ -437,7 +448,9 @@ export function getOutputQuestionsByDimension(dimension: Dimension): IOutputQues
  * Get only essential questions for a dimension
  */
 export function getEssentialQuestions(dimension: Dimension): IOutputQuestion[] {
-  return outputQuestions.filter((q) => q.dimension === dimension && q.priorityLevel === 'essential');
+  return outputQuestions.filter(
+    (q) => q.dimension === dimension && q.priorityLevel === 'essential'
+  );
 }
 
 /** Total output questions count */

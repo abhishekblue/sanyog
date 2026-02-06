@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.background,
   },
   title: {
     ...typography.h3,
@@ -136,7 +136,6 @@ export const styles = StyleSheet.create({
     padding: spacing.xl,
   },
   lockedIcon: {
-    fontSize: 48,
     marginBottom: spacing.md,
   },
   lockedTitle: {
@@ -161,9 +160,7 @@ export const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   featureIcon: {
-    fontSize: 16,
     marginRight: spacing.sm,
-    color: colors.success,
   },
   featureText: {
     ...typography.body,

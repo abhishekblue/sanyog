@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import {
   FlatList,
@@ -13,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
+import { colors } from '../theme/colors';
 import { IChatMessage } from '../utils/storage.types';
 
 import { styles } from './CoachScreen.styles';
@@ -120,25 +122,25 @@ export function CoachScreen(): React.JSX.Element {
         </View>
 
         <View style={styles.lockedContainer}>
-          <Text style={styles.lockedIcon}>🔒</Text>
+          <Feather name="lock" size={48} color={colors.textSecondary} style={styles.lockedIcon} />
           <Text style={styles.lockedTitle}>{translator.t('paywall.title')}</Text>
           <Text style={styles.lockedDescription}>{translator.t('paywall.description')}</Text>
 
           <View style={styles.featuresList}>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}>✓</Text>
+              <Feather name="check" size={16} color={colors.success} style={styles.featureIcon} />
               <Text style={styles.featureText}>{translator.t('paywall.features.unlimited')}</Text>
             </View>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}>✓</Text>
+              <Feather name="check" size={16} color={colors.success} style={styles.featureIcon} />
               <Text style={styles.featureText}>{translator.t('paywall.features.cultural')}</Text>
             </View>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}>✓</Text>
+              <Feather name="check" size={16} color={colors.success} style={styles.featureIcon} />
               <Text style={styles.featureText}>{translator.t('paywall.features.analysis')}</Text>
             </View>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}>✓</Text>
+              <Feather name="check" size={16} color={colors.success} style={styles.featureIcon} />
               <Text style={styles.featureText}>{translator.t('paywall.features.followup')}</Text>
             </View>
           </View>

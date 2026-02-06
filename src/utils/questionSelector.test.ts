@@ -300,11 +300,11 @@ describe('getFreeQuestions', () => {
     const allQuestions = selectQuestionsByProfile(profile);
     const freeQuestions = getFreeQuestions(allQuestions);
 
-    expect(freeQuestions.length).toBe(7);
-    expect(freeQuestions).toEqual(allQuestions.slice(0, 7));
+    expect(freeQuestions.length).toBe(10);
+    expect(freeQuestions).toEqual(allQuestions.slice(0, 10));
   });
 
-  it('returns all questions if less than 7 total', () => {
+  it('returns all questions if less than 10 total', () => {
     const profile: IPriorityProfile = {
       family: 'flexible',
       career: 'flexible',
@@ -316,10 +316,10 @@ describe('getFreeQuestions', () => {
     const allQuestions = selectQuestionsByProfile(profile);
     const freeQuestions = getFreeQuestions(allQuestions);
 
-    if (allQuestions.length <= 7) {
+    if (allQuestions.length <= 10) {
       expect(freeQuestions.length).toBe(allQuestions.length);
     } else {
-      expect(freeQuestions.length).toBe(7);
+      expect(freeQuestions.length).toBe(10);
     }
   });
 
@@ -329,7 +329,7 @@ describe('getFreeQuestions', () => {
 });
 
 describe('getLockedQuestions', () => {
-  it('returns questions after the first 7', () => {
+  it('returns questions after the first 10', () => {
     const profile: IPriorityProfile = {
       family: 'high',
       career: 'high',
@@ -341,11 +341,11 @@ describe('getLockedQuestions', () => {
     const allQuestions = selectQuestionsByProfile(profile);
     const lockedQuestions = getLockedQuestions(allQuestions);
 
-    expect(lockedQuestions.length).toBe(allQuestions.length - 7);
-    expect(lockedQuestions).toEqual(allQuestions.slice(7));
+    expect(lockedQuestions.length).toBe(allQuestions.length - 10);
+    expect(lockedQuestions).toEqual(allQuestions.slice(10));
   });
 
-  it('returns empty array when 7 or fewer questions', () => {
+  it('returns empty array when 10 or fewer questions', () => {
     const shortList = Array(5).fill({
       id: 'test',
       dimension: 'family',
@@ -367,24 +367,24 @@ describe('getLockedQuestions', () => {
 });
 
 describe('isQuestionLocked', () => {
-  it('returns false for indices 0-6', () => {
-    for (let i = 0; i < 7; i++) {
+  it('returns false for indices 0-9', () => {
+    for (let i = 0; i < 10; i++) {
       expect(isQuestionLocked(i)).toBe(false);
     }
   });
 
-  it('returns true for index 7 and above', () => {
-    expect(isQuestionLocked(7)).toBe(true);
-    expect(isQuestionLocked(8)).toBe(true);
+  it('returns true for index 10 and above', () => {
+    expect(isQuestionLocked(10)).toBe(true);
+    expect(isQuestionLocked(11)).toBe(true);
     expect(isQuestionLocked(100)).toBe(true);
   });
 
-  it('returns false for index 6 (last free question)', () => {
-    expect(isQuestionLocked(6)).toBe(false);
+  it('returns false for index 9 (last free question)', () => {
+    expect(isQuestionLocked(9)).toBe(false);
   });
 
-  it('returns true for index 7 (first locked question)', () => {
-    expect(isQuestionLocked(7)).toBe(true);
+  it('returns true for index 10 (first locked question)', () => {
+    expect(isQuestionLocked(10)).toBe(true);
   });
 
   it('returns false for index 0', () => {

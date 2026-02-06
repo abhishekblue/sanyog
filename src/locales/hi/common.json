@@ -16,7 +16,8 @@
     "loading": "लोड हो रहा है...",
     "error": "कुछ गड़बड़ हो गई",
     "saved": "सहेजा गया!",
-    "copied": "कॉपी हो गया!"
+    "copied": "कॉपी हो गया!",
+    "pressBackToExit": "बाहर जाने के लिए फिर से वापस दबाएं"
   },
   "language": {
     "english": "English",

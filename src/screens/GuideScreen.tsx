@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AnimatedAccordion } from '../components/AnimatedAccordion';
 import { useApp } from '../context/AppContext';
 import { IOutputQuestion } from '../data/outputQuestions';
 import { isQuestionLocked, selectQuestionsByProfile } from '../utils/questionSelector';
@@ -49,14 +50,16 @@ export function GuideScreen(): React.JSX.Element {
           <Text style={styles.expandIcon}>{isExpanded ? '▲' : '▼'}</Text>
         </View>
 
-        {isExpanded && !isLocked && (
-          <View style={styles.expandedContent}>
-            <Text style={styles.sectionTitle}>{translator.t('guide.whyMatters')}</Text>
-            <Text style={styles.sectionText}>{whyItMatters}</Text>
+        {!isLocked && (
+          <AnimatedAccordion isExpanded={isExpanded}>
+            <View style={styles.expandedContent}>
+              <Text style={styles.sectionTitle}>{translator.t('guide.whyMatters')}</Text>
+              <Text style={styles.sectionText}>{whyItMatters}</Text>
 
-            <Text style={styles.sectionTitle}>{translator.t('guide.listenFor')}</Text>
-            <Text style={styles.sectionText}>{whatToListenFor}</Text>
-          </View>
+              <Text style={styles.sectionTitle}>{translator.t('guide.listenFor')}</Text>
+              <Text style={styles.sectionText}>{whatToListenFor}</Text>
+            </View>
+          </AnimatedAccordion>
         )}
 
         {isLocked && (
@@ -97,7 +100,15 @@ export function GuideScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={styles.bottomSection}>
-        <TouchableOpacity style={styles.coachButton} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.coachButton}
+          activeOpacity={0.8}
+          onPress={() => {
+            if (Platform.OS === 'android') {
+              ToastAndroid.show(translator.t('paywall.comingSoon'), ToastAndroid.SHORT);
+            }
+          }}
+        >
           <Text style={styles.coachButtonText}>{translator.t('guide.talkToCoach')}</Text>
         </TouchableOpacity>
       </View>

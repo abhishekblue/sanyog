@@ -43,7 +43,7 @@ export function ProcessingScreen({ onComplete }: IProcessingScreenProps): React.
       await setPriorityProfile(profile);
 
       // Fire AI summary in background (don't block navigation)
-      generateGuideSummary(basicInfo, profile, language).then((summary) => {
+      generateGuideSummary(basicInfo, profile, language, assessmentAnswers).then((summary) => {
         if (summary) setGuideSummary(summary);
       });
     }

@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { BackHandler, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedAccordion } from '../components/AnimatedAccordion';
@@ -13,6 +14,24 @@ import { styles } from './GuideScreen.styles';
 export function GuideScreen(): React.JSX.Element {
   const { translator, language, priorityProfile, guideSummary } = useApp();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const lastBackPress = useRef(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = (): boolean => {
+        const now = Date.now();
+        if (now - lastBackPress.current < 2000) {
+          BackHandler.exitApp();
+          return true;
+        }
+        lastBackPress.current = now;
+        ToastAndroid.show(translator.common('status.pressBackToExit'), ToastAndroid.SHORT);
+        return true;
+      };
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => subscription.remove();
+    }, [translator])
+  );
 
   const questions = useMemo(() => {
     if (!priorityProfile) return [];
@@ -79,6 +98,7 @@ export function GuideScreen(): React.JSX.Element {
       >
         {guideSummary ? (
           <View style={styles.summaryCard}>
+            <Text style={styles.summaryTitle}>{translator.t('guide.summaryTitle')}</Text>
             <Text style={styles.summaryText}>{guideSummary}</Text>
           </View>
         ) : null}

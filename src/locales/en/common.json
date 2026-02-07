@@ -17,7 +17,8 @@
     "error": "Something went wrong",
     "saved": "Saved!",
     "copied": "Copied to clipboard!",
-    "pressBackToExit": "Press back again to exit"
+    "pressBackToExit": "Press back again to exit",
+    "thinking": "Thinking..."
   },
   "language": {
     "english": "English",

@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
   subtitle: {
     ...typography.body,
     color: colors.textSecondary,
-    textAlign: 'center',
     marginBottom: spacing.xl,
   },
   cardsContainer: {

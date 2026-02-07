@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: spacing.md,
   },
   progressBackground: {
     flex: 1,

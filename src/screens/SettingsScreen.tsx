@@ -1,8 +1,8 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, BackHandler, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
@@ -28,6 +28,15 @@ export function SettingsScreen(): React.JSX.Element {
 
   const retakesRemaining = MAX_RETAKES - retakeCount;
   const canRetake = retakesRemaining > 0;
+
+  useEffect(() => {
+    const onBackPress = (): boolean => {
+      navigation.goBack();
+      return true;
+    };
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => subscription.remove();
+  }, [navigation]);
 
   const handleLanguageToggle = async (): Promise<void> => {
     const newLang: Language = language === 'en' ? 'hi' : 'en';

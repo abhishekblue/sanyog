@@ -1,9 +1,9 @@
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, BackHandler, ToastAndroid, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 import { useApp } from '../context/AppContext';
 import { AssessmentScreen } from '../screens/AssessmentScreen';
@@ -76,27 +76,6 @@ function OnboardingNavigator(): React.JSX.Element {
 
 function MainTabNavigator(): React.JSX.Element {
   const { translator } = useApp();
-  const isFocused = useIsFocused();
-  const isFocusedRef = useRef(isFocused);
-  isFocusedRef.current = isFocused;
-  const lastBackPress = useRef(0);
-
-  useEffect(() => {
-    const onBackPress = (): boolean => {
-      if (!isFocusedRef.current) return false;
-      const now = Date.now();
-      if (now - lastBackPress.current < 2000) {
-        BackHandler.exitApp();
-        return true;
-      }
-      lastBackPress.current = now;
-      ToastAndroid.show(translator.common('status.pressBackToExit'), ToastAndroid.SHORT);
-      return true;
-    };
-
-    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return () => subscription.remove();
-  }, [translator]);
 
   return (
     <MainTab.Navigator

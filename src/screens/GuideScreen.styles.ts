@@ -44,6 +44,12 @@ export const styles = StyleSheet.create({
     borderColor: colors.selectedBorder,
     padding: spacing.md,
   },
+  summaryTitle: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '800',
+    marginBottom: spacing.xs,
+  },
   summaryText: {
     ...typography.bodySmall,
     color: colors.textPrimary,

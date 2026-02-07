@@ -1,15 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, Keyboard, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ChatInput, MessageBubble, SuggestedChips } from '../components/coach';
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { sendChatMessage } from '../utils/api';
@@ -17,6 +10,8 @@ import { canSendMessage, getRemainingMessages, incrementDailyMessageCount } from
 import { IChatMessage } from '../utils/storage.types';
 
 import { styles } from './CoachScreen.styles';
+
+const INITIAL_MESSAGE_ID = 'initial';
 
 export function CoachScreen(): React.JSX.Element {
   const { translator, chatHistory, addChatMessage, language, basicInfo, priorityProfile } =
@@ -45,11 +40,18 @@ export function CoachScreen(): React.JSX.Element {
     refreshLimit();
   }, [refreshLimit]);
 
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd({ animated: true });
+    }, 150);
+  }, []);
+
   const handleSend = async (text?: string): Promise<void> => {
     const messageText = text || inputText.trim();
     if (!messageText || isLoading || limitReached) return;
 
     setInputText('');
+    Keyboard.dismiss();
     setIsLoading(true);
 
     const userMessage: IChatMessage = {
@@ -60,10 +62,7 @@ export function CoachScreen(): React.JSX.Element {
     };
 
     await addChatMessage(userMessage);
-
-    setTimeout(() => {
-      flatListRef.current?.scrollToEnd({ animated: true });
-    }, 100);
+    scrollToBottom();
 
     try {
       const allMessages = [...chatHistory, userMessage];
@@ -93,10 +92,7 @@ export function CoachScreen(): React.JSX.Element {
       await addChatMessage(errorMessage);
     } finally {
       setIsLoading(false);
-
-      setTimeout(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      }, 100);
+      scrollToBottom();
     }
   };
 
@@ -107,31 +103,28 @@ export function CoachScreen(): React.JSX.Element {
     }
   };
 
-  const renderMessage = ({ item }: { item: IChatMessage }): React.JSX.Element => (
-    <View
-      style={[
-        styles.messageBubble,
-        item.role === 'user' ? styles.userBubble : styles.assistantBubble,
-      ]}
-    >
-      <Text style={item.role === 'user' ? styles.userText : styles.assistantText}>
-        {item.content}
-      </Text>
-    </View>
-  );
-
-  const getInitialMessages = (): IChatMessage[] => {
-    if (chatHistory.length > 0) return chatHistory;
+  const displayMessages = useMemo((): IChatMessage[] => {
+    if (chatHistory.length > 0) {
+      if (isLoading) {
+        return [
+          ...chatHistory,
+          { id: 'loading', role: 'assistant', content: '...', timestamp: Date.now() },
+        ];
+      }
+      return chatHistory;
+    }
 
     return [
       {
-        id: 'initial',
+        id: INITIAL_MESSAGE_ID,
         role: 'assistant',
         content: translator.t('coach.initialMessage'),
         timestamp: Date.now(),
       },
     ];
-  };
+  }, [chatHistory, isLoading, translator]);
+
+  const canSendNow = inputText.trim().length > 0 && !isLoading;
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -144,75 +137,37 @@ export function CoachScreen(): React.JSX.Element {
       </View>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboardAvoid}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <FlatList
           ref={flatListRef}
           style={styles.messagesList}
           contentContainerStyle={styles.messagesContent}
-          data={getInitialMessages()}
-          renderItem={renderMessage}
+          data={displayMessages}
+          renderItem={({ item }) => <MessageBubble message={item} translator={translator} />}
           keyExtractor={(item) => item.id}
-          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+          onContentSizeChange={scrollToBottom}
+          keyboardShouldPersistTaps="handled"
         />
 
-        {isLoading && (
-          <View style={styles.loadingBubble}>
-            <Text style={styles.loadingText}>Thinking...</Text>
-          </View>
-        )}
-
         {chatHistory.length === 0 && !limitReached && (
-          <View style={styles.chipsContainer}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {suggestedChips.map((chip) => (
-                <View key={chip.key} style={styles.chip}>
-                  <Text style={styles.chipText} onPress={() => handleChipPress(chip.key)}>
-                    {chip.label}
-                  </Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
+          <SuggestedChips chips={suggestedChips} onChipPress={handleChipPress} />
         )}
 
-        {limitReached ? (
-          <View style={styles.limitBanner}>
-            <Text style={styles.limitText}>{translator.t('coach.limitReached')}</Text>
-            <Text style={styles.countdownText}>{translator.t('coach.resetsIn')}</Text>
-          </View>
-        ) : (
-          <>
-            <View style={styles.remainingBar}>
-              <Text style={styles.remainingText}>
-                {translator.t('coach.remaining', { count: remaining })}
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.textInput}
-                value={inputText}
-                onChangeText={setInputText}
-                placeholder={translator.t('coach.placeholder')}
-                placeholderTextColor="#999"
-                multiline
-                maxLength={700}
-              />
-              <Text
-                style={[
-                  styles.sendButton,
-                  (!inputText.trim() || isLoading) && styles.sendButtonDisabled,
-                ]}
-                onPress={() => {
-                  if (inputText.trim() && !isLoading) handleSend();
-                }}
-              >
-                ↑
-              </Text>
-            </View>
-          </>
-        )}
+        <ChatInput
+          inputText={inputText}
+          onChangeText={setInputText}
+          onSend={() => {
+            if (canSendNow) handleSend();
+          }}
+          canSend={canSendNow}
+          remaining={remaining}
+          limitReached={limitReached}
+          translator={translator}
+          onFocus={scrollToBottom}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

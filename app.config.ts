@@ -17,8 +17,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
+    bundleIdentifier: 'samvaad.app',
   },
   android: {
+    package: 'samvaad.app',
+    googleServicesFile: './google-services.json',
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FDF6E3',
@@ -31,4 +34,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     geminiApiKey: process.env.GEMINI_API_KEY || '',
   },
+  plugins: [
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    '@react-native-google-signin/google-signin',
+  ],
 });

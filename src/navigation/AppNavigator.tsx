@@ -6,7 +6,9 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { AssessmentScreen } from '../screens/AssessmentScreen';
+import { AuthScreen } from '../screens/AuthScreen';
 import { BasicInfoScreen } from '../screens/BasicInfoScreen';
 import { CoachScreen } from '../screens/CoachScreen';
 import { GuideScreen } from '../screens/GuideScreen';
@@ -116,8 +118,9 @@ function MainTabNavigator(): React.JSX.Element {
 
 export function AppNavigator(): React.JSX.Element {
   const { isLoading, assessmentComplete } = useApp();
+  const { user, isAuthLoading } = useAuth();
 
-  if (isLoading) {
+  if (isLoading || isAuthLoading) {
     return (
       <View
         style={{
@@ -135,7 +138,9 @@ export function AppNavigator(): React.JSX.Element {
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        {assessmentComplete ? (
+        {!user ? (
+          <RootStack.Screen name="Auth" component={AuthScreen} />
+        ) : assessmentComplete ? (
           <RootStack.Screen name="Main" component={MainTabNavigator} />
         ) : (
           <RootStack.Screen name="Onboarding" component={OnboardingNavigator} />

@@ -66,7 +66,6 @@ export function SettingsScreen(): React.JSX.Element {
         text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
-          navigation.goBack();
           await clearAllData();
         },
       },

@@ -9,6 +9,7 @@ export async function callGemini(body: IGeminiRequestBody): Promise<IGeminiRespo
     const result = await callable({
       contents: body.contents,
       systemInstruction: body.systemInstruction,
+      safetySettings: body.safetySettings,
     });
 
     const data = result.data as { message: string };

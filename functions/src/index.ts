@@ -41,7 +41,7 @@ export const callGemini = onCall(
     }
 
     const uid = request.auth.uid;
-    const { contents, systemInstruction } = request.data;
+    const { contents, systemInstruction, safetySettings } = request.data;
 
     if (!contents || !Array.isArray(contents)) {
       throw new HttpsError("invalid-argument", "Missing contents array.");
@@ -81,6 +81,9 @@ export const callGemini = onCall(
     const body: Record<string, unknown> = { contents };
     if (systemInstruction) {
       body.systemInstruction = systemInstruction;
+    }
+    if (safetySettings) {
+      body.safetySettings = safetySettings;
     }
 
     const response = await fetch(url, {

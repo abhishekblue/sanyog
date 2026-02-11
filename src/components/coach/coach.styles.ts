@@ -36,6 +36,30 @@ export const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontStyle: 'italic',
   },
+  errorBubble: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#FDF2F2',
+    borderWidth: 1,
+    borderColor: colors.error,
+  },
+  errorText: {
+    ...typography.body,
+    color: colors.error,
+  },
+  retryButton: {
+    marginTop: spacing.sm,
+    alignSelf: 'flex-start',
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.borderRadius,
+    borderWidth: 1,
+    borderColor: colors.error,
+  },
+  retryButtonText: {
+    ...typography.captionSmall,
+    color: colors.error,
+    fontWeight: '600',
+  },
 
   // SuggestedChips
   chipsContainer: {

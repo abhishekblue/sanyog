@@ -35,6 +35,7 @@ export interface IChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;
+  isError?: boolean;
 }
 
 /** All storage data structure */

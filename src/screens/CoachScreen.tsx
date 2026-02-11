@@ -7,11 +7,13 @@ import { PaywallModal } from '../components/PaywallModal';
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { sendChatMessage } from '../utils/api';
+import { sanitizeUserMessage } from '../utils/api/sanitize';
 import { IChatMessage } from '../utils/storage.types';
 
 import { styles } from './CoachScreen.styles';
 
 const INITIAL_MESSAGE_ID = 'initial';
+const CHIP_KEYS = ['prepare', 'sensitive', 'evaluate', 'redFlags'] as const;
 
 export function CoachScreen(): React.JSX.Element {
   const {
@@ -26,21 +28,22 @@ export function CoachScreen(): React.JSX.Element {
     getRemainingMessages,
     incrementDailyMessageCount,
   } = useApp();
+  const { t, common } = translator;
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [remaining, setRemaining] = useState(5);
   const [limitReached, setLimitReached] = useState(false);
   const [paywallVisible, setPaywallVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<IChatMessage | null>(null);
+  const retryMessagesRef = useRef<IChatMessage[] | null>(null);
   const flatListRef = useRef<FlatList>(null);
 
   const isPremium = subscriptionTier === 'premium';
 
-  const suggestedChips = [
-    { key: 'prepare', label: translator.t('coach.chips.prepare') },
-    { key: 'sensitive', label: translator.t('coach.chips.sensitive') },
-    { key: 'evaluate', label: translator.t('coach.chips.evaluate') },
-    { key: 'redFlags', label: translator.t('coach.chips.redFlags') },
-  ];
+  const suggestedChips = CHIP_KEYS.map((key) => ({
+    key,
+    label: t(`coach.chips.${key}`),
+  }));
 
   const refreshLimit = useCallback(async () => {
     const canSend = await canSendMessage();
@@ -59,54 +62,90 @@ export function CoachScreen(): React.JSX.Element {
     }, 150);
   }, []);
 
-  const handleSend = async (text?: string): Promise<void> => {
-    const messageText = text || inputText.trim();
-    if (!messageText || isLoading || limitReached) return;
-
-    setInputText('');
-    Keyboard.dismiss();
+  const fetchResponse = async (
+    allMessages: IChatMessage[],
+  ): Promise<void> => {
+    setErrorMessage(null);
     setIsLoading(true);
-
-    const userMessage: IChatMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: messageText,
-      timestamp: Date.now(),
-    };
-
-    await addChatMessage(userMessage);
     scrollToBottom();
 
     try {
-      const allMessages = [...chatHistory, userMessage];
       const response = await sendChatMessage({
         messages: allMessages,
         context: { basicInfo, priorityProfile, language },
       });
 
-      const assistantMessage: IChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: response.error || response.message || translator.common('status.error'),
-        timestamp: Date.now(),
-      };
-
-      await addChatMessage(assistantMessage);
-      await incrementDailyMessageCount();
-      await refreshLimit();
+      if (response.error) {
+        const isBlocked = response.errorType === 'blocked';
+        setErrorMessage({
+          id: 'error',
+          role: 'assistant',
+          content: t(`coach.errors.${response.errorType ?? 'server'}`),
+          timestamp: Date.now(),
+          isError: true,
+        });
+        retryMessagesRef.current = isBlocked ? null : allMessages;
+      } else {
+        await addChatMessage({
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: response.message || common('status.error'),
+          timestamp: Date.now(),
+        });
+        await incrementDailyMessageCount();
+        await refreshLimit();
+        retryMessagesRef.current = null;
+      }
     } catch {
-      const errorMessage: IChatMessage = {
-        id: (Date.now() + 1).toString(),
+      setErrorMessage({
+        id: 'error',
         role: 'assistant',
-        content: translator.common('status.error'),
+        content: t('coach.errors.network'),
         timestamp: Date.now(),
-      };
-
-      await addChatMessage(errorMessage);
+        isError: true,
+      });
+      retryMessagesRef.current = allMessages;
     } finally {
       setIsLoading(false);
       scrollToBottom();
     }
+  };
+
+  const handleSend = async (text?: string): Promise<void> => {
+    const messageText = text || inputText.trim();
+    if (!messageText || isLoading || limitReached) return;
+
+    const check = sanitizeUserMessage(messageText);
+    if (!check.safe) {
+      setErrorMessage({
+        id: 'error',
+        role: 'assistant',
+        content: t('coach.errors.blocked'),
+        timestamp: Date.now(),
+        isError: true,
+      });
+      setInputText('');
+      return;
+    }
+
+    setInputText('');
+    Keyboard.dismiss();
+
+    const userMessage: IChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: check.sanitizedText,
+      timestamp: Date.now(),
+    };
+
+    await addChatMessage(userMessage);
+    const allMessages = [...chatHistory, userMessage];
+    await fetchResponse(allMessages);
+  };
+
+  const handleRetry = (): void => {
+    if (!retryMessagesRef.current || isLoading) return;
+    fetchResponse(retryMessagesRef.current);
   };
 
   const handleChipPress = (chipKey: string): void => {
@@ -117,25 +156,28 @@ export function CoachScreen(): React.JSX.Element {
   };
 
   const displayMessages = useMemo((): IChatMessage[] => {
-    if (chatHistory.length > 0) {
-      if (isLoading) {
-        return [
-          ...chatHistory,
-          { id: 'loading', role: 'assistant', content: '...', timestamp: Date.now() },
-        ];
-      }
-      return chatHistory;
-    }
-
-    return [
-      {
+    const base: IChatMessage[] = chatHistory.length > 0
+      ? chatHistory
+      : [{
         id: INITIAL_MESSAGE_ID,
         role: 'assistant',
-        content: translator.t('coach.initialMessage'),
+        content: t('coach.initialMessage'),
         timestamp: Date.now(),
-      },
-    ];
-  }, [chatHistory, isLoading, translator]);
+      }];
+
+    if (isLoading) {
+      return [
+        ...base,
+        { id: 'loading', role: 'assistant', content: '...', timestamp: Date.now() },
+      ];
+    }
+
+    if (errorMessage) {
+      return [...base, errorMessage];
+    }
+
+    return base;
+  }, [chatHistory, isLoading, errorMessage, t]);
 
   const canSendNow = inputText.trim().length > 0 && !isLoading;
 
@@ -143,10 +185,10 @@ export function CoachScreen(): React.JSX.Element {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <View style={styles.headerRow}>
-          <Text style={styles.title}>{translator.t('coach.title')}</Text>
+          <Text style={styles.title}>{t('coach.title')}</Text>
           <SettingsButton />
         </View>
-        <Text style={styles.subtitle}>{translator.t('coach.subtitle')}</Text>
+        <Text style={styles.subtitle}>{t('coach.subtitle')}</Text>
       </View>
 
       <KeyboardAvoidingView
@@ -159,7 +201,13 @@ export function CoachScreen(): React.JSX.Element {
           style={styles.messagesList}
           contentContainerStyle={styles.messagesContent}
           data={displayMessages}
-          renderItem={({ item }) => <MessageBubble message={item} translator={translator} />}
+          renderItem={({ item }) => (
+            <MessageBubble
+              message={item}
+              translator={translator}
+              onRetry={item.isError ? handleRetry : undefined}
+            />
+          )}
           keyExtractor={(item) => item.id}
           onContentSizeChange={scrollToBottom}
           keyboardShouldPersistTaps="handled"

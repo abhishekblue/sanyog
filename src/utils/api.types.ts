@@ -13,10 +13,13 @@ export interface IChatRequest {
   context: ICoachContext;
 }
 
+export type ChatErrorType = 'rateLimit' | 'network' | 'server' | 'blocked';
+
 /** Response from chat API */
 export interface IChatResponse {
   message: string;
   error?: string;
+  errorType?: ChatErrorType;
 }
 
 /** Gemini API message part */
@@ -30,12 +33,31 @@ export interface IGeminiContent {
   parts: IGeminiPart[];
 }
 
+/** Gemini API safety setting */
+export type GeminiHarmCategory =
+  | 'HARM_CATEGORY_HARASSMENT'
+  | 'HARM_CATEGORY_HATE_SPEECH'
+  | 'HARM_CATEGORY_SEXUALLY_EXPLICIT'
+  | 'HARM_CATEGORY_DANGEROUS_CONTENT';
+
+export type GeminiBlockThreshold =
+  | 'BLOCK_NONE'
+  | 'BLOCK_LOW_AND_ABOVE'
+  | 'BLOCK_MEDIUM_AND_ABOVE'
+  | 'BLOCK_ONLY_HIGH';
+
+export interface IGeminiSafetySetting {
+  category: GeminiHarmCategory;
+  threshold: GeminiBlockThreshold;
+}
+
 /** Gemini API request body */
 export interface IGeminiRequestBody {
   contents: IGeminiContent[];
   systemInstruction: {
     parts: IGeminiPart[];
   };
+  safetySettings?: IGeminiSafetySetting[];
 }
 
 /** Gemini API response candidate */

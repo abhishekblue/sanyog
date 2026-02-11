@@ -92,6 +92,12 @@
       "evaluate": "Evaluate my recent meeting",
       "redFlags": "What red flags should I watch for"
     },
+    "errors": {
+      "rateLimit": "You've reached your daily message limit. Upgrade to Premium for unlimited conversations.",
+      "network": "Couldn't connect. Please check your internet and try again.",
+      "server": "Something went wrong on our end. Please try again.",
+      "blocked": "This message couldn't be sent. Please ask something about your arranged marriage meeting."
+    },
     "placeholder": "Type your message...",
     "remaining": "{{count}} conversations left today",
     "limitReached": "Daily limit reached",

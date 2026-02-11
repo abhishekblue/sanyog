@@ -4,6 +4,7 @@ import { IChatMessage } from '../../utils/storage.types';
 export interface IMessageBubbleProps {
   message: IChatMessage;
   translator: ITranslator;
+  onRetry?: () => void;
 }
 
 export interface IChip {

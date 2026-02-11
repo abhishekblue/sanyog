@@ -104,10 +104,10 @@ export const styles = StyleSheet.create({
     borderRadius: spacing.borderRadius,
     borderWidth: 1,
     borderColor: colors.border,
-    ...typography.body,
+    ...typography.h3,
     color: colors.textPrimary,
     textAlign: 'center',
-    letterSpacing: 8,
+    letterSpacing: 4,
   },
   verifyButton: {
     backgroundColor: colors.primary,

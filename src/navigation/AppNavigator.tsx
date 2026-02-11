@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import firestore from '@react-native-firebase/firestore';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -30,6 +31,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function OnboardingNavigator(): React.JSX.Element {
   const { basicInfo, setAssessmentComplete } = useApp();
+  const { user } = useAuth();
   const initialRoute = basicInfo ? 'Assessment' : 'Welcome';
 
   return (
@@ -63,11 +65,16 @@ function OnboardingNavigator(): React.JSX.Element {
         {({ navigation }) => <ProcessingScreen onComplete={() => navigation.navigate('Results')} />}
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Results">
-        {({ navigation }) => (
+        {() => (
           <ResultsScreen
             onContinue={async () => {
-              await setAssessmentComplete(true);
-              navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Main' }] });
+              if (user) {
+                await firestore()
+                  .collection('users')
+                  .doc(user.uid)
+                  .set({ assessmentComplete: true }, { merge: true });
+              }
+              setAssessmentComplete(true);
             }}
           />
         )}

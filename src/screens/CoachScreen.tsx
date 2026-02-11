@@ -6,7 +6,6 @@ import { ChatInput, MessageBubble, SuggestedChips } from '../components/coach';
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { sendChatMessage } from '../utils/api';
-import { canSendMessage, getRemainingMessages, incrementDailyMessageCount } from '../utils/storage';
 import { IChatMessage } from '../utils/storage.types';
 
 import { styles } from './CoachScreen.styles';
@@ -14,8 +13,17 @@ import { styles } from './CoachScreen.styles';
 const INITIAL_MESSAGE_ID = 'initial';
 
 export function CoachScreen(): React.JSX.Element {
-  const { translator, chatHistory, addChatMessage, language, basicInfo, priorityProfile } =
-    useApp();
+  const {
+    translator,
+    chatHistory,
+    addChatMessage,
+    language,
+    basicInfo,
+    priorityProfile,
+    canSendMessage,
+    getRemainingMessages,
+    incrementDailyMessageCount,
+  } = useApp();
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [remaining, setRemaining] = useState(7);
@@ -34,7 +42,7 @@ export function CoachScreen(): React.JSX.Element {
     const count = await getRemainingMessages();
     setRemaining(count);
     setLimitReached(!canSend);
-  }, []);
+  }, [canSendMessage, getRemainingMessages]);
 
   useEffect(() => {
     refreshLimit();

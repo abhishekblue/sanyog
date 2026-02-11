@@ -6,6 +6,7 @@ import { Alert, BackHandler, ScrollView, Text, TouchableOpacity, View } from 're
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { Language } from '../locales';
 import { RootStackParamList } from '../navigation/AppNavigator.types';
 import { colors } from '../theme/colors';
@@ -25,6 +26,7 @@ export function SettingsScreen(): React.JSX.Element {
     retakeCount,
     incrementRetakeCount,
   } = useApp();
+  const { user, signOut } = useAuth();
 
   const retakesRemaining = MAX_RETAKES - retakeCount;
   const canRetake = retakesRemaining > 0;
@@ -66,7 +68,23 @@ export function SettingsScreen(): React.JSX.Element {
         text: translator.common('buttons.confirm'),
         style: 'destructive',
         onPress: async () => {
+          navigation.goBack();
           await clearAllData();
+          await signOut();
+        },
+      },
+    ]);
+  };
+
+  const handleSignOut = (): void => {
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: translator.common('buttons.cancel'), style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: async () => {
+          navigation.goBack();
+          await signOut();
         },
       },
     ]);
@@ -130,6 +148,9 @@ export function SettingsScreen(): React.JSX.Element {
 
         <View style={styles.section}>
           <View style={styles.card}>
+            <TouchableOpacity style={styles.settingItem} onPress={handleSignOut}>
+              <Text style={styles.destructiveText}>Sign Out</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.settingItem, styles.settingItemLast]}
               onPress={handleClearData}
@@ -140,6 +161,9 @@ export function SettingsScreen(): React.JSX.Element {
         </View>
 
         <Text style={styles.versionText}>Samvaad v1.0.0</Text>
+        {user && (
+          <Text style={styles.versionText}>{user.email || user.phoneNumber || user.uid}</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

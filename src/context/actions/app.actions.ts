@@ -1,5 +1,5 @@
 import { Language } from '../../locales';
-import { storage } from '../../utils/storage';
+import { IFirestoreStorage } from '../../utils/firestore.types';
 import {
   IAssessmentAnswers,
   IBasicInfo,
@@ -23,14 +23,17 @@ export interface IAppActions {
   clearAssessmentData: () => Promise<void>;
 }
 
-export function createAppActions(setters: IAppSetters): IAppActions {
+export function createAppActions(
+  setters: IAppSetters,
+  store: IFirestoreStorage | null
+): IAppActions {
   const setLanguage = async (lang: Language): Promise<void> => {
     setters.setLanguageState(lang);
-    await storage.setLanguage(lang);
+    await store?.setLanguage(lang);
   };
 
   const clearAllData = async (): Promise<void> => {
-    await storage.clearAll();
+    await store?.clearAll();
     setters.setLanguageState('en');
     setters.setBasicInfoState(null);
     setters.setAssessmentAnswersState({});
@@ -41,7 +44,7 @@ export function createAppActions(setters: IAppSetters): IAppActions {
   };
 
   const clearAssessmentData = async (): Promise<void> => {
-    await storage.clearAssessment();
+    await store?.clearAssessment();
     setters.setAssessmentAnswersState({});
     setters.setAssessmentCompleteState(false);
     setters.setPriorityProfileState(null);

@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '../context/AuthContext';
@@ -13,11 +22,14 @@ export function AuthScreen(): React.JSX.Element {
   const [phone, setPhone] = useState('');
   const [verificationId, setVerificationId] = useState<string | null>(null);
   const [otp, setOtp] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [phoneLoading, setPhoneLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const isLoading = googleLoading || phoneLoading;
+
   const handleGoogleSignIn = async (): Promise<void> => {
-    setLoading(true);
+    setGoogleLoading(true);
     setError(null);
     try {
       await signInWithGoogle();
@@ -25,7 +37,7 @@ export function AuthScreen(): React.JSX.Element {
       const message = err instanceof Error ? err.message : 'Google Sign-In failed';
       setError(message);
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
 
@@ -34,7 +46,7 @@ export function AuthScreen(): React.JSX.Element {
     if (!trimmed) return;
 
     const formatted = trimmed.startsWith('+') ? trimmed : `+91${trimmed}`;
-    setLoading(true);
+    setPhoneLoading(true);
     setError(null);
     try {
       const id = await sendPhoneOtp(formatted);
@@ -43,14 +55,14 @@ export function AuthScreen(): React.JSX.Element {
       const message = err instanceof Error ? err.message : 'Failed to send OTP';
       setError(message);
     } finally {
-      setLoading(false);
+      setPhoneLoading(false);
     }
   };
 
   const handleVerifyOtp = async (): Promise<void> => {
     if (!verificationId || otp.length < 6) return;
 
-    setLoading(true);
+    setPhoneLoading(true);
     setError(null);
     try {
       await confirmPhoneOtp(verificationId, otp);
@@ -59,13 +71,16 @@ export function AuthScreen(): React.JSX.Element {
       setError(message);
       Alert.alert('Error', message);
     } finally {
-      setLoading(false);
+      setPhoneLoading(false);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <KeyboardAvoidingView
+        style={styles.content}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.heroSection}>
           <Text style={styles.appName}>Samvaad</Text>
           <Text style={styles.tagline}>Your personal meeting prep companion</Text>
@@ -77,13 +92,9 @@ export function AuthScreen(): React.JSX.Element {
           <TouchableOpacity
             style={styles.googleButton}
             onPress={handleGoogleSignIn}
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? (
-              <ActivityIndicator size="small" color={colors.textPrimary} />
-            ) : (
-              <Text style={styles.googleButtonText}>Continue with Google</Text>
-            )}
+            <Text style={styles.googleButtonText}>Continue with Google</Text>
           </TouchableOpacity>
 
           <View style={styles.divider}>
@@ -101,34 +112,45 @@ export function AuthScreen(): React.JSX.Element {
                 value={phone}
                 onChangeText={setPhone}
                 keyboardType="phone-pad"
-                editable={!loading}
+                editable={!isLoading}
               />
               <TouchableOpacity
-                style={[styles.sendOtpButton, !phone.trim() && styles.sendOtpButtonDisabled]}
+                style={[
+                  styles.sendOtpButton,
+                  (!phone.trim() || isLoading) && styles.sendOtpButtonDisabled,
+                ]}
                 onPress={handleSendOtp}
-                disabled={!phone.trim() || loading}
+                disabled={!phone.trim() || isLoading}
               >
-                <Text style={styles.sendOtpText}>Send OTP</Text>
+                {phoneLoading ? (
+                  <ActivityIndicator size="small" color={colors.textLight} />
+                ) : (
+                  <Text style={styles.sendOtpText}>Send OTP</Text>
+                )}
               </TouchableOpacity>
             </View>
           ) : (
             <>
               <TextInput
                 style={styles.otpInput}
-                placeholder="Enter OTP"
-                placeholderTextColor={colors.textSecondary}
+                placeholder="- - - - - -"
+                placeholderTextColor={colors.border}
                 value={otp}
                 onChangeText={setOtp}
                 keyboardType="number-pad"
                 maxLength={6}
-                editable={!loading}
+                editable={!isLoading}
+                autoFocus
               />
               <TouchableOpacity
-                style={[styles.verifyButton, otp.length < 6 && styles.verifyButtonDisabled]}
+                style={[
+                  styles.verifyButton,
+                  (otp.length < 6 || isLoading) && styles.verifyButtonDisabled,
+                ]}
                 onPress={handleVerifyOtp}
-                disabled={otp.length < 6 || loading}
+                disabled={otp.length < 6 || isLoading}
               >
-                {loading ? (
+                {phoneLoading ? (
                   <ActivityIndicator size="small" color={colors.textLight} />
                 ) : (
                   <Text style={styles.verifyButtonText}>Verify</Text>
@@ -137,7 +159,7 @@ export function AuthScreen(): React.JSX.Element {
             </>
           )}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

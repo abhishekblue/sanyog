@@ -1,15 +1,17 @@
 /**
  * Global app state context
  * Manages language, user info, assessment data, and priority profile
+ * Uses Firestore for persistence when user is authenticated
  * Action logic lives in context/actions/
  */
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Language } from '../locales';
+import { createFirestoreStorage, loadAllUserData } from '../utils/firestore';
+import { IFirestoreStorage } from '../utils/firestore.types';
 import { createTranslator } from '../utils/i18n';
 import { ITranslator } from '../utils/i18n.types';
-import { storage } from '../utils/storage';
 import {
   IAssessmentAnswers,
   IBasicInfo,
@@ -20,6 +22,7 @@ import {
 import { createAppActions, IAppActions } from './actions/app.actions';
 import { createChatActions, IChatActions } from './actions/chat.actions';
 import { createProfileActions, IProfileActions } from './actions/profile.actions';
+import { useAuth } from './AuthContext';
 
 /** App context state */
 interface IAppState extends IAppActions, IChatActions, IProfileActions {
@@ -34,6 +37,9 @@ interface IAppState extends IAppActions, IChatActions, IProfileActions {
   isPremium: boolean;
   guideSummary: string | null;
   retakeCount: number;
+  canSendMessage: () => Promise<boolean>;
+  getRemainingMessages: () => Promise<number>;
+  incrementDailyMessageCount: () => Promise<void>;
 }
 
 const AppContext = createContext<IAppState | undefined>(undefined);
@@ -43,6 +49,9 @@ interface IAppProviderProps {
 }
 
 export function AppProvider({ children }: IAppProviderProps): React.JSX.Element {
+  const { user } = useAuth();
+  const uid = user?.uid ?? null;
+
   const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguageState] = useState<Language>('en');
   const [basicInfo, setBasicInfoState] = useState<IBasicInfo | null>(null);
@@ -56,41 +65,33 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
 
   const translator = createTranslator(language);
 
-  // Load data from storage on mount
-  useEffect(() => {
-    async function loadData(): Promise<void> {
-      try {
-        const [
-          storedLanguage,
-          storedBasicInfo,
-          storedAnswers,
-          storedComplete,
-          storedProfile,
-          storedChat,
-          storedPremium,
-          storedSummary,
-          storedRetakeCount,
-        ] = await Promise.all([
-          storage.getLanguage(),
-          storage.getBasicInfo(),
-          storage.getAssessmentAnswers(),
-          storage.getAssessmentComplete(),
-          storage.getPriorityProfile(),
-          storage.getChatHistory(),
-          storage.getIsPremium(),
-          storage.getGuideSummary(),
-          storage.getRetakeCount(),
-        ]);
+  // Create Firestore storage instance tied to the user
+  const firestoreStorage: IFirestoreStorage | null = useMemo(
+    () => (uid ? createFirestoreStorage(uid) : null),
+    [uid]
+  );
 
-        setLanguageState(storedLanguage);
-        setBasicInfoState(storedBasicInfo);
-        setAssessmentAnswersState(storedAnswers);
-        setAssessmentCompleteState(storedComplete);
-        setPriorityProfileState(storedProfile);
-        setChatHistoryState(storedChat);
-        setIsPremiumState(storedPremium);
-        setGuideSummaryState(storedSummary);
-        setRetakeCountState(storedRetakeCount);
+  // Load data from Firestore when user logs in
+  useEffect(() => {
+    if (!uid) {
+      setIsLoading(false);
+      return;
+    }
+
+    async function loadData(): Promise<void> {
+      setIsLoading(true);
+      try {
+        const data = await loadAllUserData(uid as string);
+
+        setLanguageState(data.language);
+        setBasicInfoState(data.basicInfo);
+        setAssessmentAnswersState(data.assessmentAnswers);
+        setAssessmentCompleteState(data.assessmentComplete);
+        setPriorityProfileState(data.priorityProfile);
+        setChatHistoryState(data.chatHistory);
+        setIsPremiumState(data.isPremium);
+        setGuideSummaryState(data.guideSummary);
+        setRetakeCountState(data.retakeCount);
       } catch (error) {
         console.error('Error loading app data:', error);
       } finally {
@@ -99,38 +100,60 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     }
 
     loadData();
-  }, []);
+  }, [uid]);
 
-  // Create actions (memoized to avoid recreating on every render)
+  // Create actions (memoized, pass Firestore storage)
   const appActions = useMemo(
     () =>
-      createAppActions({
-        setLanguageState,
-        setBasicInfoState,
-        setAssessmentAnswersState,
-        setAssessmentCompleteState,
-        setPriorityProfileState,
-        setChatHistoryState,
-        setGuideSummaryState,
-      }),
-    []
+      createAppActions(
+        {
+          setLanguageState,
+          setBasicInfoState,
+          setAssessmentAnswersState,
+          setAssessmentCompleteState,
+          setPriorityProfileState,
+          setChatHistoryState,
+          setGuideSummaryState,
+        },
+        firestoreStorage
+      ),
+    [firestoreStorage]
   );
 
   const chatActions = useMemo(
-    () => createChatActions({ setChatHistoryState, setGuideSummaryState }),
-    []
+    () => createChatActions({ setChatHistoryState, setGuideSummaryState }, firestoreStorage),
+    [firestoreStorage]
   );
 
   const profileActions = useMemo(
     () =>
-      createProfileActions({
-        setBasicInfoState,
-        setAssessmentAnswersState,
-        setAssessmentCompleteState,
-        setPriorityProfileState,
-        setRetakeCountState,
-      }),
-    []
+      createProfileActions(
+        {
+          setBasicInfoState,
+          setAssessmentAnswersState,
+          setAssessmentCompleteState,
+          setPriorityProfileState,
+          setRetakeCountState,
+        },
+        firestoreStorage
+      ),
+    [firestoreStorage]
+  );
+
+  // Daily message limit functions
+  const canSendMessage = useMemo(
+    () => (firestoreStorage ? firestoreStorage.canSendMessage : async () => true),
+    [firestoreStorage]
+  );
+
+  const getRemainingMessages = useMemo(
+    () => (firestoreStorage ? firestoreStorage.getRemainingMessages : async () => 7),
+    [firestoreStorage]
+  );
+
+  const incrementDailyMessageCount = useMemo(
+    () => (firestoreStorage ? firestoreStorage.incrementDailyMessageCount : async () => {}),
+    [firestoreStorage]
   );
 
   const value: IAppState = {
@@ -145,6 +168,9 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     isPremium,
     guideSummary,
     retakeCount,
+    canSendMessage,
+    getRemainingMessages,
+    incrementDailyMessageCount,
     ...appActions,
     ...chatActions,
     ...profileActions,

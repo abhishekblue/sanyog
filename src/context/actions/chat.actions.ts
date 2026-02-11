@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { storage } from '../../utils/storage';
+import { IFirestoreStorage } from '../../utils/firestore.types';
 import { IChatMessage } from '../../utils/storage.types';
 
 interface IChatSetters {
@@ -14,24 +14,27 @@ export interface IChatActions {
   setGuideSummary: (summary: string | null) => Promise<void>;
 }
 
-export function createChatActions(setters: IChatSetters): IChatActions {
+export function createChatActions(
+  setters: IChatSetters,
+  store: IFirestoreStorage | null
+): IChatActions {
   const addChatMessage = async (message: IChatMessage): Promise<void> => {
     let newHistory: IChatMessage[] = [];
     setters.setChatHistoryState((prev) => {
       newHistory = [...prev, message];
       return newHistory;
     });
-    await storage.setChatHistory(newHistory);
+    await store?.setChatHistory(newHistory);
   };
 
   const clearChatHistory = async (): Promise<void> => {
     setters.setChatHistoryState([]);
-    await storage.setChatHistory([]);
+    await store?.setChatHistory([]);
   };
 
   const setGuideSummary = async (summary: string | null): Promise<void> => {
     setters.setGuideSummaryState(summary);
-    await storage.setGuideSummary(summary);
+    await store?.setGuideSummary(summary);
   };
 
   return { addChatMessage, clearChatHistory, setGuideSummary };

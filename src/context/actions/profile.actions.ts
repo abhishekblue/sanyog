@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { storage } from '../../utils/storage';
+import { IFirestoreStorage } from '../../utils/firestore.types';
 import { IAssessmentAnswers, IBasicInfo, IPriorityProfile } from '../../utils/storage.types';
 
 interface IProfileSetters {
@@ -19,32 +19,33 @@ export interface IProfileActions {
   incrementRetakeCount: () => Promise<void>;
 }
 
-export function createProfileActions(setters: IProfileSetters): IProfileActions {
+export function createProfileActions(
+  setters: IProfileSetters,
+  store: IFirestoreStorage | null
+): IProfileActions {
   const setBasicInfo = async (info: IBasicInfo): Promise<void> => {
     setters.setBasicInfoState(info);
-    await storage.setBasicInfo(info);
+    await store?.setBasicInfo(info);
   };
 
   const setAssessmentAnswer = async (
     questionId: string,
     answer: 'A' | 'B' | 'C' | 'D'
   ): Promise<void> => {
-    let newAnswers: IAssessmentAnswers = {};
-    setters.setAssessmentAnswersState((prev) => {
-      newAnswers = { ...prev, [questionId]: answer };
-      return newAnswers;
-    });
-    await storage.setAssessmentAnswers(newAnswers);
+    setters.setAssessmentAnswersState((prev) => ({
+      ...prev,
+      [questionId]: answer,
+    }));
   };
 
   const setAssessmentComplete = async (complete: boolean): Promise<void> => {
+    await store?.setAssessmentComplete(complete);
     setters.setAssessmentCompleteState(complete);
-    await storage.setAssessmentComplete(complete);
   };
 
   const setPriorityProfile = async (profile: IPriorityProfile): Promise<void> => {
     setters.setPriorityProfileState(profile);
-    await storage.setPriorityProfile(profile);
+    await store?.setPriorityProfile(profile);
   };
 
   const incrementRetakeCount = async (): Promise<void> => {
@@ -53,7 +54,7 @@ export function createProfileActions(setters: IProfileSetters): IProfileActions 
       newCount = prev + 1;
       return newCount;
     });
-    await storage.setRetakeCount(newCount);
+    await store?.setRetakeCount(newCount);
   };
 
   return {

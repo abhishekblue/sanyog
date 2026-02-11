@@ -51,6 +51,9 @@ export function AuthProvider({ children }: IAuthProviderProps): React.JSX.Elemen
 
   const sendPhoneOtp = async (phoneNumber: string): Promise<string> => {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    if (!confirmation.verificationId) {
+      throw new Error('Phone OTP failed: no verification ID');
+    }
     return confirmation.verificationId;
   };
 
@@ -60,6 +63,7 @@ export function AuthProvider({ children }: IAuthProviderProps): React.JSX.Elemen
   };
 
   const signOut = async (): Promise<void> => {
+    await GoogleSignin.signOut();
     await auth().signOut();
   };
 

@@ -36,11 +36,6 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     color: colors.textSecondary,
   },
-  icon: {
-    fontSize: 48,
-    textAlign: 'center',
-    marginBottom: spacing.md,
-  },
   title: {
     ...typography.h2,
     color: colors.textPrimary,
@@ -70,20 +65,54 @@ export const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textPrimary,
   },
-  unlockButton: {
+  planCards: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  planCard: {
+    flex: 1,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    borderRadius: spacing.borderRadius,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  planCardSelected: {
+    borderColor: colors.primary,
+    backgroundColor: colors.selectedBackground,
+  },
+  planDuration: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
+  },
+  planDurationSelected: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  planPrice: {
+    ...typography.h3,
+    color: colors.textPrimary,
+  },
+  planPriceSelected: {
+    color: colors.primary,
+  },
+  subscribeButton: {
     backgroundColor: colors.primary,
     paddingVertical: spacing.buttonVertical,
     borderRadius: spacing.borderRadius,
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
-  unlockButtonText: {
+  subscribeButtonText: {
     ...typography.button,
     color: colors.textLight,
   },
-  comingSoonText: {
+  restoreText: {
     ...typography.captionSmall,
     color: colors.textSecondary,
     textAlign: 'center',
+    paddingVertical: spacing.sm,
   },
 });

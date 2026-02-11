@@ -27,6 +27,7 @@ const DEFAULTS: IStorageData = {
   savedGuide: [],
   chatHistory: [],
   isPremium: false,
+  subscriptionTier: 'free',
   guideSummary: null,
   retakeCount: 0,
 };
@@ -93,6 +94,7 @@ export async function loadAllUserData(uid: string): Promise<IStorageData> {
       savedGuide: data.savedGuide ?? DEFAULTS.savedGuide,
       chatHistory: data.chatHistory ?? DEFAULTS.chatHistory,
       isPremium: data.isPremium ?? DEFAULTS.isPremium,
+      subscriptionTier: data.subscriptionTier ?? DEFAULTS.subscriptionTier,
       guideSummary: data.guideSummary ?? DEFAULTS.guideSummary,
       retakeCount: data.retakeCount ?? DEFAULTS.retakeCount,
     };
@@ -161,6 +163,9 @@ export function createFirestoreStorage(uid: string): IFirestoreStorage {
     getIsPremium: () => getField(uid, 'isPremium') as Promise<boolean>,
     setIsPremium: (value: boolean) => setField(uid, 'isPremium', value),
 
+    getSubscriptionTier: () => getField(uid, 'subscriptionTier'),
+    setSubscriptionTier: (value) => setField(uid, 'subscriptionTier', value),
+
     getGuideSummary: () => getField(uid, 'guideSummary') as Promise<string | null>,
     setGuideSummary: (value: string | null) => setField(uid, 'guideSummary', value),
 
@@ -169,12 +174,12 @@ export function createFirestoreStorage(uid: string): IFirestoreStorage {
 
     canSendMessage: async (): Promise<boolean> => {
       const daily = await getCachedDailyCount();
-      return daily.count < 7;
+      return daily.count < 5;
     },
 
     getRemainingMessages: async (): Promise<number> => {
       const daily = await getCachedDailyCount();
-      return Math.max(0, 7 - daily.count);
+      return Math.max(0, 5 - daily.count);
     },
 
     incrementDailyMessageCount: async (): Promise<void> => {

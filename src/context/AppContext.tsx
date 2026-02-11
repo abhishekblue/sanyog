@@ -8,10 +8,11 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Language } from '../locales';
+import { initializeSubscriptions } from '../services/subscription/subscription';
+import { SubscriptionTier } from '../services/subscription/subscription.types';
 import { createFirestoreStorage, loadAllUserData } from '../utils/firestore';
 import { IFirestoreStorage } from '../utils/firestore.types';
 import { createTranslator } from '../utils/i18n';
-import { ITranslator } from '../utils/i18n.types';
 import {
   IAssessmentAnswers,
   IBasicInfo,
@@ -19,34 +20,14 @@ import {
   IPriorityProfile,
 } from '../utils/storage.types';
 
-import { createAppActions, IAppActions } from './actions/app.actions';
-import { createChatActions, IChatActions } from './actions/chat.actions';
-import { createProfileActions, IProfileActions } from './actions/profile.actions';
+import { createAppActions } from './actions/app.actions';
+import { createChatActions } from './actions/chat.actions';
+import { createProfileActions } from './actions/profile.actions';
+import { createSubscriptionActions } from './actions/subscription.actions';
+import { IAppProviderProps, IAppState } from './AppContext.types';
 import { useAuth } from './AuthContext';
 
-/** App context state */
-interface IAppState extends IAppActions, IChatActions, IProfileActions {
-  isLoading: boolean;
-  language: Language;
-  translator: ITranslator;
-  basicInfo: IBasicInfo | null;
-  assessmentAnswers: IAssessmentAnswers;
-  assessmentComplete: boolean;
-  priorityProfile: IPriorityProfile | null;
-  chatHistory: IChatMessage[];
-  isPremium: boolean;
-  guideSummary: string | null;
-  retakeCount: number;
-  canSendMessage: () => Promise<boolean>;
-  getRemainingMessages: () => Promise<number>;
-  incrementDailyMessageCount: () => Promise<void>;
-}
-
 const AppContext = createContext<IAppState | undefined>(undefined);
-
-interface IAppProviderProps {
-  children: React.ReactNode;
-}
 
 export function AppProvider({ children }: IAppProviderProps): React.JSX.Element {
   const { user } = useAuth();
@@ -60,6 +41,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
   const [priorityProfile, setPriorityProfileState] = useState<IPriorityProfile | null>(null);
   const [chatHistory, setChatHistoryState] = useState<IChatMessage[]>([]);
   const [isPremium, setIsPremiumState] = useState(false);
+  const [subscriptionTier, setSubscriptionTierState] = useState<SubscriptionTier>('free');
   const [guideSummary, setGuideSummaryState] = useState<string | null>(null);
   const [retakeCount, setRetakeCountState] = useState(0);
 
@@ -90,8 +72,10 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
         setPriorityProfileState(data.priorityProfile);
         setChatHistoryState(data.chatHistory);
         setIsPremiumState(data.isPremium);
+        setSubscriptionTierState(data.subscriptionTier);
         setGuideSummaryState(data.guideSummary);
         setRetakeCountState(data.retakeCount);
+        await initializeSubscriptions(uid as string);
       } catch (error) {
         console.error('Error loading app data:', error);
       } finally {
@@ -140,6 +124,15 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     [firestoreStorage]
   );
 
+  const subscriptionActions = useMemo(
+    () =>
+      createSubscriptionActions(
+        { setSubscriptionTierState, setIsPremiumState },
+        firestoreStorage
+      ),
+    [firestoreStorage]
+  );
+
   // Daily message limit functions
   const canSendMessage = useMemo(
     () => (firestoreStorage ? firestoreStorage.canSendMessage : async () => true),
@@ -147,7 +140,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
   );
 
   const getRemainingMessages = useMemo(
-    () => (firestoreStorage ? firestoreStorage.getRemainingMessages : async () => 7),
+    () => (firestoreStorage ? firestoreStorage.getRemainingMessages : async () => 5),
     [firestoreStorage]
   );
 
@@ -166,6 +159,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     priorityProfile,
     chatHistory,
     isPremium,
+    subscriptionTier,
     guideSummary,
     retakeCount,
     canSendMessage,
@@ -174,6 +168,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     ...appActions,
     ...chatActions,
     ...profileActions,
+    ...subscriptionActions,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

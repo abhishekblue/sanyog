@@ -1,6 +1,6 @@
 module.exports = {
-  extends: ['expo', 'plugin:@typescript-eslint/recommended'],
-  plugins: ['import', 'tsdoc', '@typescript-eslint', 'local-rules'],
+  extends: ['expo', 'plugin:@typescript-eslint/recommended', 'plugin:react-native-a11y/all'],
+  plugins: ['import', 'tsdoc', '@typescript-eslint', 'local-rules', 'react-native-a11y'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -112,6 +112,18 @@ module.exports = {
     // TSDOC
     // ============================================
     'tsdoc/syntax': 'warn',
+
+    // ============================================
+    // ACCESSIBILITY (warn for now, promote to error once fixed)
+    // ============================================
+    'react-native-a11y/has-accessibility-props': 'warn',
+    'react-native-a11y/has-valid-accessibility-role': 'warn',
+    'react-native-a11y/has-valid-accessibility-state': 'warn',
+    'react-native-a11y/has-valid-accessibility-value': 'warn',
+    'react-native-a11y/no-nested-touchables': 'warn',
+    'react-native-a11y/has-valid-accessibility-descriptors': 'warn',
+    'react-native-a11y/has-valid-accessibility-ignores-invert-colors': 'off',
+    'react-native-a11y/has-valid-important-for-accessibility': 'warn',
 
     // ============================================
     // GENERAL BEST PRACTICES

@@ -1,4 +1,5 @@
 import { Language } from '../locales';
+import { SubscriptionTier } from '../services/subscription/subscription.types';
 
 /** User's basic info from onboarding */
 export interface IBasicInfo {
@@ -46,6 +47,7 @@ export interface IStorageData {
   savedGuide: string[];
   chatHistory: IChatMessage[];
   isPremium: boolean;
+  subscriptionTier: SubscriptionTier;
   guideSummary: string | null;
   retakeCount: number;
 }

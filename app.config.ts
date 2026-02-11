@@ -32,11 +32,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/favicon.png',
   },
   extra: {
-    geminiApiKey: process.env.GEMINI_API_KEY || '',
+    revenueCatApiKey: process.env.REVENUECAT_API_KEY || '',
   },
   plugins: [
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
     '@react-native-google-signin/google-signin',
+    'react-native-purchases',
   ],
 });

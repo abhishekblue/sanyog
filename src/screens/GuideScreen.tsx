@@ -4,6 +4,7 @@ import { BackHandler, ScrollView, Text, ToastAndroid, TouchableOpacity, View } f
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedAccordion } from '../components/AnimatedAccordion';
+import { PaywallModal } from '../components/PaywallModal';
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { IOutputQuestion } from '../data/outputQuestions';
@@ -11,10 +12,15 @@ import { selectQuestionsByProfile } from '../utils/questionSelector';
 
 import { styles } from './GuideScreen.styles';
 
+const FREE_QUESTION_LIMIT = 7;
+
 export function GuideScreen(): React.JSX.Element {
-  const { translator, language, priorityProfile, guideSummary } = useApp();
+  const { translator, language, priorityProfile, guideSummary, subscriptionTier } = useApp();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [paywallVisible, setPaywallVisible] = useState(false);
   const lastBackPress = useRef(0);
+
+  const isPremium = subscriptionTier === 'premium';
 
   useFocusEffect(
     useCallback(() => {
@@ -43,11 +49,33 @@ export function GuideScreen(): React.JSX.Element {
   };
 
   const renderQuestion = (question: IOutputQuestion, index: number): React.JSX.Element => {
-    const isExpanded = expandedId === question.id;
+    const isLocked = !isPremium && index >= FREE_QUESTION_LIMIT;
+    const isExpanded = !isLocked && expandedId === question.id;
     const questionText = language === 'hi' ? question.question_hi : question.question_en;
     const whyItMatters = language === 'hi' ? question.whyItMatters_hi : question.whyItMatters_en;
     const whatToListenFor =
       language === 'hi' ? question.whatToListenFor_hi : question.whatToListenFor_en;
+
+    if (isLocked) {
+      return (
+        <TouchableOpacity
+          key={question.id}
+          style={styles.questionCard}
+          onPress={() => setPaywallVisible(true)}
+          activeOpacity={0.7}
+        >
+          <View style={styles.questionHeader}>
+            <View style={[styles.questionNumber, styles.lockedQuestionNumber]}>
+              <Text style={styles.questionNumberText}>{index + 1}</Text>
+            </View>
+            <Text style={styles.lockedQuestionText} numberOfLines={1}>
+              {questionText}
+            </Text>
+            <Text style={styles.lockIcon}>🔒</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
 
     return (
       <TouchableOpacity
@@ -104,6 +132,8 @@ export function GuideScreen(): React.JSX.Element {
         ) : null}
         {questions.map((question, index) => renderQuestion(question, index))}
       </ScrollView>
+
+      <PaywallModal visible={paywallVisible} onClose={() => setPaywallVisible(false)} />
     </SafeAreaView>
   );
 }

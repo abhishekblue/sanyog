@@ -7,7 +7,7 @@ import {
 } from '../api.types';
 import { IChatMessage } from '../storage.types';
 
-import { callGemini, getApiKey } from './gemini';
+import { callGemini } from './gemini';
 
 function buildSystemPrompt(context: ICoachContext): string {
   const { basicInfo, priorityProfile, language } = context;
@@ -75,15 +75,6 @@ function formatMessagesForGemini(messages: IChatMessage[]): IGeminiContent[] {
 }
 
 export async function sendChatMessage(request: IChatRequest): Promise<IChatResponse> {
-  const apiKey = getApiKey();
-
-  if (!apiKey) {
-    return {
-      message: '',
-      error: 'API key not configured. Please add API_KEY to your environment.',
-    };
-  }
-
   const systemPrompt = buildSystemPrompt(request.context);
   const contents = formatMessagesForGemini(request.messages);
 

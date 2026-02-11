@@ -95,19 +95,20 @@
     "placeholder": "Type your message...",
     "remaining": "{{count}} conversations left today",
     "limitReached": "Daily limit reached",
-    "resetsIn": "Resets at midnight"
+    "resetsIn": "Resets at midnight",
+    "upgradePremium": "Upgrade to Premium"
   },
   "paywall": {
-    "title": "Unlock AI Conversation Coach",
-    "description": "Get personalized advice for your specific situation. Ask about sensitive topics, evaluate meetings, and prepare with confidence.",
+    "title": "Unlock Premium",
+    "description": "Get unlimited AI coaching, access all guide questions, and prepare with full confidence.",
     "features": {
-      "unlimited": "Unlimited questions",
-      "cultural": "Culturally sensitive guidance",
-      "analysis": "Post-meeting analysis",
-      "followup": "Follow-up suggestions"
+      "unlimitedChat": "Unlimited AI coach conversations",
+      "allQuestions": "All guide questions unlocked",
+      "analysis": "Post-meeting analysis"
     },
-    "unlock": "Unlock for ₹499",
-    "comingSoon": "Coming Soon - we'll notify you when ready"
+    "subscribe": "Subscribe Now",
+    "restore": "Restore Purchases",
+    "restoring": "Restoring..."
   },
   "settings": {
     "title": "Settings",
@@ -120,6 +121,12 @@
     "about": "About the App",
     "privacy": "Privacy",
     "privacyText": "Your personal information is stored securely on your device. AI Coach conversations are sent to our AI provider for processing.",
+    "subscription": "Subscription",
+    "currentPlan": "Current Plan",
+    "planFree": "Free",
+    "planPremium": "Premium",
+    "upgradePremium": "Upgrade to Premium",
+    "manageSubscription": "Manage Subscription",
     "confirmClear": "Are you sure you want to clear all data? This will reset the app.",
     "confirmRetake": "Are you sure you want to retake the assessment? Your current results will be cleared."
   }

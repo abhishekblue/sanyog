@@ -1,10 +1,19 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
-import { Alert, BackHandler, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  BackHandler,
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PaywallModal } from '../components/PaywallModal';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { Language } from '../locales';
@@ -25,11 +34,18 @@ export function SettingsScreen(): React.JSX.Element {
     clearAssessmentData,
     retakeCount,
     incrementRetakeCount,
+    subscriptionTier,
   } = useApp();
   const { user, signOut } = useAuth();
+  const [paywallVisible, setPaywallVisible] = useState(false);
 
+  const isPremium = subscriptionTier === 'premium';
   const retakesRemaining = MAX_RETAKES - retakeCount;
   const canRetake = retakesRemaining > 0;
+
+  const handleManageSubscription = (): void => {
+    Linking.openURL('https://play.google.com/store/account/subscriptions');
+  };
 
   useEffect(() => {
     const onBackPress = (): boolean => {
@@ -113,7 +129,7 @@ export function SettingsScreen(): React.JSX.Element {
               <Text style={styles.settingLabel}>{translator.t('settings.language')}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.settingValue}>{language === 'en' ? 'English' : 'हिंदी'}</Text>
-                <Text style={styles.settingChevron}>›</Text>
+                <Feather name="chevron-right" size={16} color={colors.textSecondary} />
               </View>
             </TouchableOpacity>
 
@@ -134,8 +150,43 @@ export function SettingsScreen(): React.JSX.Element {
                     : translator.t('settings.noRetakesLeft')}
                 </Text>
               </View>
-              {canRetake && <Text style={styles.settingChevron}>›</Text>}
+              {canRetake && <Feather name="chevron-right" size={16} color={colors.textSecondary} />}
             </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{translator.t('settings.subscription')}</Text>
+          <View style={styles.card}>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingLabel}>{translator.t('settings.currentPlan')}</Text>
+              <Text style={isPremium ? styles.premiumBadge : styles.settingValue}>
+                {isPremium
+                  ? translator.t('settings.planPremium')
+                  : translator.t('settings.planFree')}
+              </Text>
+            </View>
+            {isPremium ? (
+              <TouchableOpacity
+                style={[styles.settingItem, styles.settingItemLast]}
+                onPress={handleManageSubscription}
+              >
+                <Text style={styles.settingLabel}>
+                  {translator.t('settings.manageSubscription')}
+                </Text>
+                <Feather name="chevron-right" size={16} color={colors.textSecondary} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={[styles.settingItem, styles.settingItemLast]}
+                onPress={() => setPaywallVisible(true)}
+              >
+                <Text style={styles.upgradeLinkText}>
+                  {translator.t('settings.upgradePremium')}
+                </Text>
+                <Feather name="chevron-right" size={16} color={colors.textSecondary} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 
@@ -165,6 +216,8 @@ export function SettingsScreen(): React.JSX.Element {
           <Text style={styles.versionText}>{user.email || user.phoneNumber || user.uid}</Text>
         )}
       </ScrollView>
+
+      <PaywallModal visible={paywallVisible} onClose={() => setPaywallVisible(false)} />
     </SafeAreaView>
   );
 }

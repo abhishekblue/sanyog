@@ -120,4 +120,15 @@ export const styles = StyleSheet.create({
     ...typography.captionSmall,
     color: colors.textSecondary,
   },
+  upgradeButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderRadius: spacing.borderRadius,
+    marginTop: spacing.xs,
+  },
+  upgradeButtonText: {
+    ...typography.button,
+    color: colors.textLight,
+  },
 });

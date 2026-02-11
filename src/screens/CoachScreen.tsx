@@ -3,6 +3,7 @@ import { FlatList, Keyboard, KeyboardAvoidingView, Platform, Text, View } from '
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChatInput, MessageBubble, SuggestedChips } from '../components/coach';
+import { PaywallModal } from '../components/PaywallModal';
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
 import { sendChatMessage } from '../utils/api';
@@ -20,15 +21,19 @@ export function CoachScreen(): React.JSX.Element {
     language,
     basicInfo,
     priorityProfile,
+    subscriptionTier,
     canSendMessage,
     getRemainingMessages,
     incrementDailyMessageCount,
   } = useApp();
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [remaining, setRemaining] = useState(7);
+  const [remaining, setRemaining] = useState(5);
   const [limitReached, setLimitReached] = useState(false);
+  const [paywallVisible, setPaywallVisible] = useState(false);
   const flatListRef = useRef<FlatList>(null);
+
+  const isPremium = subscriptionTier === 'premium';
 
   const suggestedChips = [
     { key: 'prepare', label: translator.t('coach.chips.prepare') },
@@ -173,10 +178,14 @@ export function CoachScreen(): React.JSX.Element {
           canSend={canSendNow}
           remaining={remaining}
           limitReached={limitReached}
+          isPremium={isPremium}
+          onUpgrade={() => setPaywallVisible(true)}
           translator={translator}
           onFocus={scrollToBottom}
         />
       </KeyboardAvoidingView>
+
+      <PaywallModal visible={paywallVisible} onClose={() => setPaywallVisible(false)} />
     </SafeAreaView>
   );
 }

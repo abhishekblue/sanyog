@@ -72,10 +72,6 @@ export const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.textSecondary,
   },
-  settingChevron: {
-    color: colors.textSecondary,
-    marginLeft: spacing.sm,
-  },
   destructiveText: {
     ...typography.body,
     color: colors.error,
@@ -96,6 +92,16 @@ export const styles = StyleSheet.create({
     ...typography.captionSmall,
     color: colors.textSecondary,
     lineHeight: 18,
+  },
+  premiumBadge: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
+  },
+  upgradeLinkText: {
+    ...typography.body,
+    color: colors.primary,
+    fontWeight: '600',
   },
   versionText: {
     ...typography.captionSmall,

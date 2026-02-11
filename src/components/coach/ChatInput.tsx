@@ -14,26 +14,33 @@ export function ChatInput({
   canSend,
   remaining,
   limitReached,
+  isPremium,
+  onUpgrade,
   translator,
   onFocus,
 }: IChatInputProps): React.JSX.Element {
-  if (limitReached) {
+  if (limitReached && !isPremium) {
     return (
       <View style={styles.limitBanner}>
         <Feather name="moon" size={28} color={colors.primary} />
         <Text style={styles.limitTitle}>{translator.t('coach.limitReached')}</Text>
         <Text style={styles.countdownText}>{translator.t('coach.resetsIn')}</Text>
+        <TouchableOpacity style={styles.upgradeButton} onPress={onUpgrade} activeOpacity={0.7}>
+          <Text style={styles.upgradeButtonText}>{translator.t('coach.upgradePremium')}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
   return (
     <>
-      <View style={styles.remainingBar}>
-        <Text style={styles.remainingText}>
-          {translator.t('coach.remaining', { count: remaining })}
-        </Text>
-      </View>
+      {!isPremium && (
+        <View style={styles.remainingBar}>
+          <Text style={styles.remainingText}>
+            {translator.t('coach.remaining', { count: remaining })}
+          </Text>
+        </View>
+      )}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}

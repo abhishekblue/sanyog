@@ -92,6 +92,19 @@ export const styles = StyleSheet.create({
     marginLeft: spacing.sm,
     color: colors.textSecondary,
   },
+  lockedQuestionNumber: {
+    backgroundColor: colors.textSecondary,
+  },
+  lockedQuestionText: {
+    ...typography.body,
+    color: colors.textSecondary,
+    flex: 1,
+    opacity: 0.5,
+  },
+  lockIcon: {
+    marginLeft: spacing.sm,
+    fontSize: 16,
+  },
   expandedContent: {
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.md,

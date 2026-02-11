@@ -1,3 +1,5 @@
+import { SubscriptionTier } from '../services/subscription/subscription.types';
+
 import {
   IAssessmentAnswers,
   IBasicInfo,
@@ -24,6 +26,8 @@ export interface IFirestoreStorage {
   setChatHistory: (value: IChatMessage[]) => Promise<void>;
   getIsPremium: () => Promise<boolean>;
   setIsPremium: (value: boolean) => Promise<void>;
+  getSubscriptionTier: () => Promise<SubscriptionTier>;
+  setSubscriptionTier: (value: SubscriptionTier) => Promise<void>;
   getGuideSummary: () => Promise<string | null>;
   setGuideSummary: (value: string | null) => Promise<void>;
   getRetakeCount: () => Promise<number>;

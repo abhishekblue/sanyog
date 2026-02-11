@@ -23,6 +23,8 @@ export interface IChatInputProps {
   canSend: boolean;
   remaining: number;
   limitReached: boolean;
+  isPremium: boolean;
+  onUpgrade: () => void;
   translator: ITranslator;
   onFocus: () => void;
 }

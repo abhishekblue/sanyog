@@ -1,37 +1,34 @@
-import Constants from 'expo-constants';
+import functions from '@react-native-firebase/functions';
 
 import { IGeminiRequestBody, IGeminiResponse } from '../api.types';
 
-const MODEL = 'gemini-2.5-flash';
-
-function getApiKey(): string {
-  return Constants.expoConfig?.extra?.geminiApiKey || '';
-}
-
-function getApiUrl(apiKey: string): string {
-  return `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`;
-}
-
-export { getApiKey, getApiUrl };
+const callable = functions().httpsCallable('callGemini');
 
 export async function callGemini(body: IGeminiRequestBody): Promise<IGeminiResponse> {
-  const apiKey = getApiKey();
+  try {
+    const result = await callable({
+      contents: body.contents,
+      systemInstruction: body.systemInstruction,
+    });
 
-  const response = await fetch(getApiUrl(apiKey), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
+    const data = result.data as { message: string };
+    return {
+      candidates: [
+        {
+          content: {
+            parts: [{ text: data.message }],
+            role: 'model',
+          },
+        },
+      ],
+    };
+  } catch (error: unknown) {
+    const firebaseError = error as { code?: string; message?: string };
     return {
       error: {
-        message: errorData.error?.message || `API error: ${response.status}`,
-        code: response.status,
+        message: firebaseError.message || 'Cloud Function error',
+        code: firebaseError.code === 'functions/resource-exhausted' ? 429 : 500,
       },
     };
   }
-
-  return response.json();
 }

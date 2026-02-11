@@ -2,7 +2,7 @@ import { assessmentQuestions } from '../../data/assessmentQuestions';
 import { IGeminiRequestBody } from '../api.types';
 import { IAssessmentAnswers, IBasicInfo, IPriorityProfile } from '../storage.types';
 
-import { callGemini, getApiKey } from './gemini';
+import { callGemini } from './gemini';
 
 export async function generateGuideSummary(
   basicInfo: IBasicInfo | null,
@@ -10,9 +10,6 @@ export async function generateGuideSummary(
   language: 'en' | 'hi',
   answers: IAssessmentAnswers
 ): Promise<string | null> {
-  const apiKey = getApiKey();
-  if (!apiKey) return null;
-
   const langKey = language === 'hi' ? 'text_hi' : 'text_en';
 
   const answerLines = assessmentQuestions

@@ -7,6 +7,8 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { scheduleDeletion } from '../utils/account-deletion';
+
 interface IAuthState {
   user: FirebaseAuthTypes.User | null;
   isAuthLoading: boolean;
@@ -14,6 +16,7 @@ interface IAuthState {
   sendPhoneOtp: (phoneNumber: string) => Promise<string>;
   confirmPhoneOtp: (verificationId: string, code: string) => Promise<void>;
   signOut: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<IAuthState | undefined>(undefined);
@@ -67,6 +70,14 @@ export function AuthProvider({ children }: IAuthProviderProps): React.JSX.Elemen
     await auth().signOut();
   };
 
+  const deleteAccount = async (): Promise<void> => {
+    const currentUser = auth().currentUser;
+    if (!currentUser) return;
+    await scheduleDeletion(currentUser.uid);
+    await GoogleSignin.signOut();
+    await auth().signOut();
+  };
+
   const value: IAuthState = {
     user,
     isAuthLoading,
@@ -74,6 +85,7 @@ export function AuthProvider({ children }: IAuthProviderProps): React.JSX.Elemen
     sendPhoneOtp,
     confirmPhoneOtp,
     signOut,
+    deleteAccount,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

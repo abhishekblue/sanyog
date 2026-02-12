@@ -52,6 +52,15 @@ export const styles = StyleSheet.create({
   textInputError: {
     borderColor: colors.error,
   },
+  textInputDisabled: {
+    backgroundColor: colors.border,
+    color: colors.textSecondary,
+  },
+  changeLink: {
+    ...typography.captionSmall,
+    color: colors.primary,
+    marginTop: spacing.xs,
+  },
   errorText: {
     ...typography.captionSmall,
     color: colors.error,

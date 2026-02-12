@@ -36,7 +36,7 @@ export function SettingsScreen(): React.JSX.Element {
     incrementRetakeCount,
     subscriptionTier,
   } = useApp();
-  const { user, signOut } = useAuth();
+  const { user, signOut, deleteAccount } = useAuth();
   const [paywallVisible, setPaywallVisible] = useState(false);
 
   const isPremium = subscriptionTier === 'premium';
@@ -90,6 +90,39 @@ export function SettingsScreen(): React.JSX.Element {
         },
       },
     ]);
+  };
+
+  const handleDeleteAccount = (): void => {
+    // First confirmation
+    Alert.alert(
+      translator.t('settings.deleteAccount'),
+      translator.t('settings.deleteConfirm1'),
+      [
+        { text: translator.common('buttons.cancel'), style: 'cancel' },
+        {
+          text: translator.t('settings.deleteButton'),
+          style: 'destructive',
+          onPress: () => {
+            // Second confirmation
+            Alert.alert(
+              translator.t('settings.deleteAccount'),
+              translator.t('settings.deleteConfirm2'),
+              [
+                { text: translator.common('buttons.cancel'), style: 'cancel' },
+                {
+                  text: translator.t('settings.deleteButton'),
+                  style: 'destructive',
+                  onPress: async () => {
+                    navigation.goBack();
+                    await deleteAccount();
+                  },
+                },
+              ]
+            );
+          },
+        },
+      ]
+    );
   };
 
   const handleSignOut = (): void => {
@@ -191,9 +224,22 @@ export function SettingsScreen(): React.JSX.Element {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{translator.t('settings.privacy')}</Text>
-          <View style={styles.privacyCard}>
-            <Text style={styles.privacyText}>{translator.t('settings.privacyText')}</Text>
+          <Text style={styles.sectionTitle}>{translator.t('settings.legal')}</Text>
+          <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.settingItem}
+              onPress={() => navigation.navigate('Terms')}
+            >
+              <Text style={styles.settingLabel}>{translator.t('legal.termsTitle')}</Text>
+              <Feather name="chevron-right" size={16} color={colors.textSecondary} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.settingItem, styles.settingItemLast]}
+              onPress={() => navigation.navigate('PrivacyPolicy')}
+            >
+              <Text style={styles.settingLabel}>{translator.t('legal.privacyTitle')}</Text>
+              <Feather name="chevron-right" size={16} color={colors.textSecondary} />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -203,10 +249,18 @@ export function SettingsScreen(): React.JSX.Element {
               <Text style={styles.destructiveText}>Sign Out</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.settingItem, styles.settingItemLast]}
+              style={styles.settingItem}
               onPress={handleClearData}
             >
               <Text style={styles.destructiveText}>{translator.t('settings.clearData')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.settingItem, styles.settingItemLast]}
+              onPress={handleDeleteAccount}
+            >
+              <Text style={styles.destructiveText}>
+                {translator.t('settings.deleteAccount')}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

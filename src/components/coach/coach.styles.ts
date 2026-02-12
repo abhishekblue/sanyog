@@ -36,6 +36,16 @@ export const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontStyle: 'italic',
   },
+  dotsRow: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.textSecondary,
+  },
   errorBubble: {
     alignSelf: 'flex-start',
     backgroundColor: '#FDF2F2',

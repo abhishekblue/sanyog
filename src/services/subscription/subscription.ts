@@ -10,15 +10,15 @@ import { ISubscriptionInfo, ISubscriptionPackage } from './subscription.types';
 const ENTITLEMENT_ID = 'premium';
 
 const PRODUCT_DURATIONS: Record<string, ISubscriptionPackage['duration']> = {
-  samvaad_1_month: '1_month',
-  samvaad_6_months: '6_months',
-  samvaad_3_years: '3_years',
+  samvaad_1month: '1_month',
+  samvaad_6month: '6_months',
+  samvaad_lifetime: 'lifetime',
 };
 
 const DURATION_LABELS: Record<ISubscriptionPackage['duration'], string> = {
   '1_month': '1 Month',
   '6_months': '6 Months',
-  '3_years': '3 Years',
+  lifetime: 'Lifetime',
 };
 
 export async function initializeSubscriptions(uid: string): Promise<void> {

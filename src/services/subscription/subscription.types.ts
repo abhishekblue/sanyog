@@ -11,6 +11,6 @@ export interface ISubscriptionInfo {
 
 export interface ISubscriptionPackage {
   label: string;
-  duration: '1_month' | '6_months' | '3_years';
+  duration: '1_month' | '6_months' | 'lifetime';
   pkg: PurchasesPackage;
 }

@@ -16,4 +16,6 @@ export type RootStackParamList = {
   Onboarding: undefined;
   Main: undefined;
   Settings: undefined;
+  Terms: undefined;
+  PrivacyPolicy: undefined;
 };

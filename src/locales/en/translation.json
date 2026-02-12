@@ -15,11 +15,13 @@
     },
     "email": {
       "label": "Email",
-      "placeholder": "Enter your email"
+      "placeholder": "Enter your email",
+      "changeEmail": "Change email"
     },
     "phone": {
       "label": "Phone number",
-      "placeholder": "Enter your phone number"
+      "placeholder": "Enter your phone number",
+      "changeNumber": "Change number"
     },
     "gender": {
       "label": "I am",
@@ -116,7 +118,14 @@
     "restore": "Restore Purchases",
     "restoring": "Restoring..."
   },
+  "legal": {
+    "termsTitle": "Terms & Conditions",
+    "privacyTitle": "Privacy Policy",
+    "termsPlaceholder": "Terms and conditions content will be added here before launch. This will include user agreements, service terms, subscription policies, and other legal information relevant to using Samvaad.",
+    "privacyPlaceholder": "Privacy policy content will be added here before launch. This will cover data collection, storage practices, AI processing disclosure, third-party services, and your rights regarding personal data."
+  },
   "settings": {
+    "legal": "Legal",
     "title": "Settings",
     "language": "Change Language",
     "viewProfile": "View My Profile",
@@ -134,6 +143,10 @@
     "upgradePremium": "Upgrade to Premium",
     "manageSubscription": "Manage Subscription",
     "confirmClear": "Are you sure you want to clear all data? This will reset the app.",
-    "confirmRetake": "Are you sure you want to retake the assessment? Your current results will be cleared."
+    "confirmRetake": "Are you sure you want to retake the assessment? Your current results will be cleared.",
+    "deleteAccount": "Delete Account",
+    "deleteConfirm1": "Your account and all data will be permanently deleted after 30 days. You can cancel by logging back in.",
+    "deleteConfirm2": "Are you absolutely sure? This cannot be undone after 30 days.",
+    "deleteButton": "Delete My Account"
   }
 }

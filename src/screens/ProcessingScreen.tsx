@@ -9,7 +9,7 @@ import { calculatePriorityProfile } from '../utils/scoring';
 import { styles } from './ProcessingScreen.styles';
 import { IProcessingScreenProps } from './screens.types';
 
-const STEP_DURATION = 1100;
+const STEP_DURATION = 1425;
 const STEP_KEYS = ['step1', 'step2', 'step3', 'step4'] as const;
 const PROGRESS_TARGETS = [0.25, 0.55, 0.85, 1.0];
 

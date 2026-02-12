@@ -5,14 +5,17 @@
  * Action logic lives in context/actions/
  */
 
+import auth from '@react-native-firebase/auth';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Language } from '../locales';
 import { initializeSubscriptions } from '../services/subscription/subscription';
 import { SubscriptionTier } from '../services/subscription/subscription.types';
+import { checkAndExecuteDeletion } from '../utils/account-deletion';
 import { createFirestoreStorage, loadAllUserData } from '../utils/firestore';
 import { IFirestoreStorage } from '../utils/firestore.types';
 import { createTranslator } from '../utils/i18n';
+import { requestNotificationPermission } from '../utils/permissions';
 import {
   IAssessmentAnswers,
   IBasicInfo,
@@ -63,6 +66,15 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     async function loadData(): Promise<void> {
       setIsLoading(true);
       try {
+        // Check if account was scheduled for deletion
+        const shouldDelete = await checkAndExecuteDeletion(uid as string);
+        if (shouldDelete) {
+          // Grace period expired — Firestore doc already deleted, now delete Auth + sign out
+          await auth().currentUser?.delete();
+          await auth().signOut();
+          return;
+        }
+
         const data = await loadAllUserData(uid as string);
 
         setLanguageState(data.language);
@@ -76,6 +88,7 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
         setGuideSummaryState(data.guideSummary);
         setRetakeCountState(data.retakeCount);
         await initializeSubscriptions(uid as string);
+        requestNotificationPermission();
       } catch (error) {
         console.error('Error loading app data:', error);
       } finally {

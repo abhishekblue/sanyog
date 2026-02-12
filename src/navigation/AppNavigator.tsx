@@ -13,9 +13,11 @@ import { AuthScreen } from '../screens/AuthScreen';
 import { BasicInfoScreen } from '../screens/BasicInfoScreen';
 import { CoachScreen } from '../screens/CoachScreen';
 import { GuideScreen } from '../screens/GuideScreen';
+import { PrivacyPolicyScreen } from '../screens/PrivacyPolicyScreen';
 import { ProcessingScreen } from '../screens/ProcessingScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { TermsScreen } from '../screens/TermsScreen';
 import { WelcomeScreen } from '../screens/WelcomeScreen';
 import { colors } from '../theme/colors';
 
@@ -156,6 +158,16 @@ export function AppNavigator(): React.JSX.Element {
           name="Settings"
           component={SettingsScreen}
           options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
+        />
+        <RootStack.Screen
+          name="Terms"
+          component={TermsScreen}
+          options={{ animation: 'slide_from_right' }}
+        />
+        <RootStack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicyScreen}
+          options={{ animation: 'slide_from_right' }}
         />
       </RootStack.Navigator>
     </NavigationContainer>

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SettingsButton } from '../components/SettingsButton';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { colors } from '../theme/colors';
 import { IBasicInfo } from '../utils/storage.types';
 
@@ -16,13 +17,18 @@ const TIMELINE_OPTIONS: IBasicInfo['timeline'][] = ['thisWeek', 'withinMonth', '
 
 export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JSX.Element {
   const { translator, setBasicInfo } = useApp();
+  const { user, signOut } = useAuth();
+
+  const authEmail = user?.email ?? '';
+  const authPhone = user?.phoneNumber?.replace('+91', '') ?? '';
+  const authName = user?.displayName ?? '';
 
   const emailRef = useRef<TextInput>(null);
   const phoneRef = useRef<TextInput>(null);
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState(authName);
+  const [email, setEmail] = useState(authEmail);
+  const [phone, setPhone] = useState(authPhone);
   const [gender, setGender] = useState<IBasicInfo['gender'] | null>(null);
   const [ageRange, setAgeRange] = useState<IBasicInfo['ageRange'] | null>(null);
   const [isFirstMeeting, setIsFirstMeeting] = useState<boolean | null>(null);
@@ -89,7 +95,11 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
           <Text style={styles.label}>{translator.t('basicInfo.email.label')}</Text>
           <TextInput
             ref={emailRef}
-            style={[styles.textInput, emailError && styles.textInputError]}
+            style={[
+              styles.textInput,
+              emailError && styles.textInputError,
+              !!authEmail && styles.textInputDisabled,
+            ]}
             value={email}
             onChangeText={setEmail}
             placeholder={translator.t('basicInfo.email.placeholder')}
@@ -99,9 +109,17 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
             returnKeyType="next"
             onSubmitEditing={() => phoneRef.current?.focus()}
             blurOnSubmit={false}
+            editable={!authEmail}
           />
           {emailError && (
             <Text style={styles.errorText}>{translator.t('basicInfo.errors.invalidEmail')}</Text>
+          )}
+          {!!authEmail && (
+            <TouchableOpacity onPress={signOut} accessibilityRole="link">
+              <Text style={styles.changeLink}>
+                {translator.t('basicInfo.email.changeEmail')}
+              </Text>
+            </TouchableOpacity>
           )}
         </View>
 
@@ -109,7 +127,11 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
           <Text style={styles.label}>{translator.t('basicInfo.phone.label')}</Text>
           <TextInput
             ref={phoneRef}
-            style={[styles.textInput, phoneError && styles.textInputError]}
+            style={[
+              styles.textInput,
+              phoneError && styles.textInputError,
+              !!authPhone && styles.textInputDisabled,
+            ]}
             value={phone}
             onChangeText={setPhone}
             placeholder={translator.t('basicInfo.phone.placeholder')}
@@ -117,9 +139,17 @@ export function BasicInfoScreen({ onContinue }: IBasicInfoScreenProps): React.JS
             keyboardType="phone-pad"
             maxLength={10}
             returnKeyType="done"
+            editable={!authPhone}
           />
           {phoneError && (
             <Text style={styles.errorText}>{translator.t('basicInfo.errors.invalidPhone')}</Text>
+          )}
+          {!!authPhone && (
+            <TouchableOpacity onPress={signOut} accessibilityRole="link">
+              <Text style={styles.changeLink}>
+                {translator.t('basicInfo.phone.changeNumber')}
+              </Text>
+            </TouchableOpacity>
           )}
         </View>
 

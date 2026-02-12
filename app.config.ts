@@ -33,11 +33,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   extra: {
     revenueCatApiKey: process.env.REVENUECAT_API_KEY || '',
+    eas: {
+      projectId: '671762d6-5bac-4874-bacf-b3a13c490c35',
+    },
   },
   plugins: [
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
     '@react-native-google-signin/google-signin',
-    'react-native-purchases',
   ],
 });

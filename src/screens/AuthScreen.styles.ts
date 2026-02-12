@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: spacing.screenHorizontal,
     paddingVertical: spacing.screenVertical,
   },
@@ -47,6 +50,10 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     gap: spacing.sm,
     ...shadows.subtle,
+  },
+  googleLogo: {
+    width: 24,
+    height: 24,
   },
   googleButtonText: {
     ...typography.button,
@@ -123,6 +130,12 @@ export const styles = StyleSheet.create({
   verifyButtonText: {
     ...typography.button,
     color: colors.textLight,
+  },
+  verifyingText: {
+    ...typography.h3,
+    color: colors.primary,
+    textAlign: 'center',
+    paddingVertical: spacing.lg,
   },
   errorText: {
     ...typography.captionSmall,

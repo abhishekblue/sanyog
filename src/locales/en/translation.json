@@ -116,7 +116,13 @@
     },
     "subscribe": "Subscribe Now",
     "restore": "Restore Purchases",
-    "restoring": "Restoring..."
+    "restoring": "Restoring...",
+    "purchaseErrorTitle": "Purchase Failed",
+    "purchaseError": "Something went wrong with your purchase. Please try again.",
+    "restoreNoneTitle": "No Subscription Found",
+    "restoreNone": "We couldn't find an active subscription for your account.",
+    "restoreErrorTitle": "Restore Failed",
+    "restoreError": "Something went wrong while restoring. Please try again."
   },
   "legal": {
     "termsTitle": "Terms & Conditions",

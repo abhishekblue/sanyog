@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Modal,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { PURCHASES_ERROR_CODE, PurchasesError } from 'react-native-purchases';
 
 import { useApp } from '../context/AppContext';
 import { ISubscriptionPackage } from '../services/subscription/subscription.types';
@@ -45,8 +47,14 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
     try {
       await purchase(selected.pkg);
       onClose();
-    } catch {
-      // RevenueCat handles user-cancel silently
+    } catch (error: unknown) {
+      const purchaseError = error as PurchasesError;
+      if (purchaseError.code !== PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
+        Alert.alert(
+          translator.t('paywall.purchaseErrorTitle'),
+          translator.t('paywall.purchaseError')
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -58,9 +66,11 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
       const info = await restore();
       if (info.tier === 'premium') {
         onClose();
+      } else {
+        Alert.alert(translator.t('paywall.restoreNoneTitle'), translator.t('paywall.restoreNone'));
       }
     } catch {
-      // ignore
+      Alert.alert(translator.t('paywall.restoreErrorTitle'), translator.t('paywall.restoreError'));
     } finally {
       setRestoring(false);
     }
@@ -68,13 +78,17 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableWithoutFeedback onPress={onClose}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={onClose}>
         <View style={styles.overlay}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback accessibilityRole="button">
             <View style={styles.container}>
               <View style={styles.handle} />
 
-              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <TouchableOpacity
+                accessibilityRole="button"
+                style={styles.closeButton}
+                onPress={onClose}
+              >
                 <Text style={styles.closeButtonText}>×</Text>
               </TouchableOpacity>
 
@@ -105,11 +119,9 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
               <View style={styles.planCards}>
                 {packages.map((pkg, index) => (
                   <TouchableOpacity
+                    accessibilityRole="button"
                     key={pkg.duration}
-                    style={[
-                      styles.planCard,
-                      selectedIndex === index && styles.planCardSelected,
-                    ]}
+                    style={[styles.planCard, selectedIndex === index && styles.planCardSelected]}
                     onPress={() => setSelectedIndex(index)}
                   >
                     <Text
@@ -133,6 +145,7 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
               </View>
 
               <TouchableOpacity
+                accessibilityRole="button"
                 style={styles.subscribeButton}
                 onPress={handlePurchase}
                 disabled={loading || packages.length === 0}
@@ -146,11 +159,13 @@ export function PaywallModal({ visible, onClose }: IPaywallModalProps): React.JS
                 )}
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={handleRestore} disabled={restoring}>
+              <TouchableOpacity
+                accessibilityRole="button"
+                onPress={handleRestore}
+                disabled={restoring}
+              >
                 <Text style={styles.restoreText}>
-                  {restoring
-                    ? translator.t('paywall.restoring')
-                    : translator.t('paywall.restore')}
+                  {restoring ? translator.t('paywall.restoring') : translator.t('paywall.restore')}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -7,9 +7,14 @@
 
 import auth from '@react-native-firebase/auth';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import Purchases, { CustomerInfo } from 'react-native-purchases';
 
 import { Language } from '../locales';
-import { initializeSubscriptions } from '../services/subscription/subscription';
+import {
+  deriveSubscriptionInfo,
+  getCustomerInfo,
+  initializeSubscriptions,
+} from '../services/subscription/subscription';
 import { SubscriptionTier } from '../services/subscription/subscription.types';
 import { checkAndExecuteDeletion } from '../utils/account-deletion';
 import { createFirestoreStorage, loadAllUserData } from '../utils/firestore';
@@ -88,6 +93,9 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
         setGuideSummaryState(data.guideSummary);
         setRetakeCountState(data.retakeCount);
         await initializeSubscriptions(uid as string);
+        const subInfo = await getCustomerInfo();
+        setIsPremiumState(subInfo.tier !== 'free');
+        setSubscriptionTierState(subInfo.tier);
         requestNotificationPermission();
       } catch (error) {
         console.error('Error loading app data:', error);
@@ -97,7 +105,23 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
     }
 
     loadData();
-  }, [uid]);
+  }, [uid, firestoreStorage]);
+
+  // Listen for real-time subscription changes (renewal, expiry, etc.)
+  useEffect(() => {
+    if (!uid) return;
+
+    const listener = (info: CustomerInfo): void => {
+      const subInfo = deriveSubscriptionInfo(info);
+      setIsPremiumState(subInfo.tier !== 'free');
+      setSubscriptionTierState(subInfo.tier);
+    };
+
+    Purchases.addCustomerInfoUpdateListener(listener);
+    return () => {
+      Purchases.removeCustomerInfoUpdateListener(listener);
+    };
+  }, [uid, firestoreStorage]);
 
   // Create actions (memoized, pass Firestore storage)
   const appActions = useMemo(
@@ -138,12 +162,8 @@ export function AppProvider({ children }: IAppProviderProps): React.JSX.Element 
   );
 
   const subscriptionActions = useMemo(
-    () =>
-      createSubscriptionActions(
-        { setSubscriptionTierState, setIsPremiumState },
-        firestoreStorage
-      ),
-    [firestoreStorage]
+    () => createSubscriptionActions({ setSubscriptionTierState, setIsPremiumState }),
+    []
   );
 
   // Daily message limit functions

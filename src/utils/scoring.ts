@@ -60,7 +60,14 @@ function scoreToPriority(score: number): PriorityLevel {
  * @returns Priority profile for all dimensions
  */
 export function calculatePriorityProfile(answers: IAssessmentAnswers): IPriorityProfile {
-  const dimensions: Dimension[] = ['family', 'career', 'finances', 'lifestyle', 'values'];
+  const dimensions: Dimension[] = [
+    'family',
+    'career',
+    'finances',
+    'lifestyle',
+    'values',
+    'intimacy',
+  ];
 
   const profile: IPriorityProfile = {
     family: 'flexible',
@@ -68,6 +75,7 @@ export function calculatePriorityProfile(answers: IAssessmentAnswers): IPriority
     finances: 'flexible',
     lifestyle: 'flexible',
     values: 'flexible',
+    intimacy: 'flexible',
   };
 
   for (const dimension of dimensions) {
@@ -90,5 +98,6 @@ export function getDimensionScores(answers: IAssessmentAnswers): Record<Dimensio
     finances: calculateDimensionScore('finances', answers),
     lifestyle: calculateDimensionScore('lifestyle', answers),
     values: calculateDimensionScore('values', answers),
+    intimacy: calculateDimensionScore('intimacy', answers),
   };
 }

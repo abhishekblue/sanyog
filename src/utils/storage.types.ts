@@ -27,6 +27,7 @@ export interface IPriorityProfile {
   finances: PriorityLevel;
   lifestyle: PriorityLevel;
   values: PriorityLevel;
+  intimacy: PriorityLevel;
 }
 
 /** Chat message in AI Coach */

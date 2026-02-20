@@ -37,6 +37,7 @@ Priority Profile (what matters most to them):
 - Financial Values: ${priorityProfile.finances.toUpperCase()} priority
 - Lifestyle & Daily Life: ${priorityProfile.lifestyle.toUpperCase()} priority
 - Values & Communication: ${priorityProfile.values.toUpperCase()} priority
+- Intimacy & Family Planning: ${priorityProfile.intimacy.toUpperCase()} priority
 `
     : '';
 

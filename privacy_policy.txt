@@ -1,0 +1,84 @@
+﻿PRIVACY POLICY
+Vivaahik Samvaad
+Effective Date: February 7, 2026
+1. Introduction
+Welcome to Vivaahik Samvaad (the "App"), a mobile application designed to assist individuals in the Indian arranged marriage process through self-assessment tools, personalized question generation, and AI-powered coaching. The App is developed and operated by Siddharth Jain, an individual developer operating under the brand name Pristine Blocks ("we", "us", or "our").
+This Privacy Policy explains how we collect, use, store, protect, and share your personal information when you use our App. By accessing or using Vivaahik Samvaad, you agree to the practices described in this Privacy Policy. If you do not agree with this policy, please do not use the App.
+This Privacy Policy is published in compliance with the Information Technology Act, 2000, the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011, and the Digital Personal Data Protection Act, 2023, as applicable.
+2. Information We Collect
+2.1 Information You Provide Directly
+When you register and use the App, we collect the following personal information:
+• Full name
+• Email address
+• Phone number
+• Gender
+• Age range
+• Self-assessment responses (personality traits, lifestyle preferences, family values, relationship priorities, and partner preferences)
+• Responses to generated questions and AI coach interactions
+2.2 Information Collected Automatically
+When you use the App, we may automatically collect:
+• Device information (device type, operating system, unique device identifiers)
+• Approximate location data (derived from IP address or device-level location services, if permitted)
+• App usage data (features used, session duration, interaction patterns)
+• Log data (access times, error logs, crash reports)
+2.3 Payment Information
+All payment transactions are processed through Google Play Store. We do not collect, store, or process any payment card details, bank account information, or UPI credentials. Google Play handles all billing and payment processing in accordance with its own privacy policy.
+3. How We Use Your Information
+We use the information we collect for the following purposes:
+• To create and manage your user account
+• To generate your personality and priority assessment results
+• To generate personalized questions tailored to your assessment profile
+• To power the AI Coach feature and provide contextually relevant guidance
+• To improve and optimize the App experience
+• To communicate with you regarding updates, support, or policy changes
+• To detect and prevent fraud, abuse, or security threats
+• To comply with applicable legal obligations
+4. AI Coach and Data Processing
+The AI Coach feature in Vivaahik Samvaad is powered by Google Gemini. When you interact with the AI Coach:
+• Your conversation data is transmitted to Google's Gemini API for processing and response generation.
+• Your AI Coach conversations are stored on our servers to maintain conversation continuity and improve the quality of guidance provided.
+• Conversation data sent to Google Gemini is processed in accordance with Google's API terms of service and data handling policies.
+• We do not use your AI Coach conversations for advertising purposes or share them with third parties beyond what is necessary for the AI processing.
+You may request deletion of your AI Coach conversation history at any time by contacting us or using the account deletion feature within the App.
+5. Data Storage and Security
+Your data is stored on Google Firebase servers. We implement industry-standard security measures to protect your personal information, including:
+• Encrypted data transmission using HTTPS/TLS protocols
+• Firebase security rules and authentication mechanisms
+• Access controls limiting data access to authorized processes only
+• Regular security reviews and updates
+While we take reasonable measures to protect your information, no method of electronic storage or transmission over the internet is 100% secure. We cannot guarantee absolute security of your data.
+6. Data Sharing and Disclosure
+We do not sell, rent, or trade your personal information to any third parties. We may share your information only in the following limited circumstances:
+• Service Providers: With Google (Firebase for hosting, Gemini for AI processing, Play Store for payments) as necessary to operate the App.
+• Legal Requirements: If required by law, regulation, legal process, or government request.
+• Safety: To protect the rights, property, or safety of our users or the public.
+• Business Transfers: In the event of a merger, acquisition, or sale of assets, your data may be transferred to the successor entity, subject to this Privacy Policy.
+7. Data Retention
+We retain your personal information for as long as your account is active or as needed to provide you with our services. If you delete your account, we will delete or anonymize your personal data within 90 days, except where we are required to retain it for legal, regulatory, or legitimate business purposes (such as resolving disputes or enforcing our terms).
+AI Coach conversation logs are retained for the duration of your active account and are deleted upon account deletion.
+8. Your Rights
+Under applicable Indian data protection laws, you have the following rights:
+• Right to Access: You may request a copy of the personal data we hold about you.
+• Right to Correction: You may update or correct inaccurate personal information through the App or by contacting us.
+• Right to Deletion: You may request deletion of your account and all associated data at any time through the App settings.
+• Right to Withdraw Consent: You may withdraw your consent to data processing at any time. This may limit your ability to use certain features of the App.
+• Right to Grievance Redressal: You may raise a complaint regarding data processing by contacting our Grievance Officer.
+To exercise any of these rights, please contact us at sid@pristineblocks.com.
+9. Age Requirements and Minors
+Vivaahik Samvaad is intended for adults who are of marriageable age under Indian law. The minimum age requirements for using this App are:
+• Female users: 18 years of age or older
+• Male users: 21 years of age or older
+We do not knowingly collect personal information from individuals below these age thresholds. If we become aware that we have collected data from an underage user, we will take prompt steps to delete such information and terminate the associated account.
+10. Third-Party Links and Services
+The App may contain links to third-party websites, services, or resources that are not operated by us. We are not responsible for the privacy practices of these third parties. We encourage you to review the privacy policies of any third-party services you interact with.
+11. Changes to This Privacy Policy
+We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. We will notify you of material changes through the App or via email. The "Effective Date" at the top of this policy indicates when it was last updated. Your continued use of the App after any changes constitutes your acceptance of the updated policy.
+12. Grievance Officer
+In accordance with the Information Technology Act, 2000 and the rules made thereunder, the details of the Grievance Officer are as follows:
+Name: Siddharth Jain
+Email: sid@pristineblocks.com
+The Grievance Officer shall address your concerns within 30 days of receiving a written complaint.
+13. Contact Us
+If you have any questions, concerns, or feedback regarding this Privacy Policy or our data practices, please contact us at:
+Developer: Siddharth Jain (Pristine Blocks)
+Email: sid@pristineblocks.com

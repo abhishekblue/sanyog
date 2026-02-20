@@ -16,4 +16,5 @@ export const mockPriorityProfile: IPriorityProfile = {
   finances: 'flexible',
   lifestyle: 'high',
   values: 'medium',
+  intimacy: 'flexible',
 };

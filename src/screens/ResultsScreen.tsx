@@ -11,7 +11,7 @@ import { PriorityLevel } from '../utils/storage.types';
 import { styles } from './ResultsScreen.styles';
 import { IResultsScreenProps } from './screens.types';
 
-const DIMENSIONS: Dimension[] = ['family', 'career', 'finances', 'lifestyle', 'values'];
+const DIMENSIONS: Dimension[] = ['family', 'career', 'finances', 'lifestyle', 'values', 'intimacy'];
 
 const PRIORITY_COLORS: Record<PriorityLevel, string> = {
   high: colors.priorityHigh,

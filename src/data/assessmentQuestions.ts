@@ -1,7 +1,7 @@
 // Assessment question types and data
-// 17 questions across 5 dimensions
+// 20 questions across 6 dimensions
 
-export type Dimension = 'family' | 'career' | 'finances' | 'lifestyle' | 'values';
+export type Dimension = 'family' | 'career' | 'finances' | 'lifestyle' | 'values' | 'intimacy';
 
 export interface IAssessmentOption {
   id: 'A' | 'B' | 'C' | 'D';
@@ -42,9 +42,15 @@ export const dimensions: IDimensionInfo[] = [
     icon: 'sun',
   },
   { id: 'values', name_en: 'Values & Communication', name_hi: 'मूल्य और संवाद', icon: 'heart' },
+  {
+    id: 'intimacy',
+    name_en: 'Intimacy & Family Planning',
+    name_hi: 'अंतरंगता और परिवार नियोजन',
+    icon: 'users',
+  },
 ];
 
-// All 17 assessment questions
+// All 20 assessment questions
 export const assessmentQuestions: IAssessmentQuestion[] = [
   // ============================================
   // FAMILY & RELATIONSHIPS (3 questions)
@@ -569,6 +575,109 @@ export const assessmentQuestions: IAssessmentQuestion[] = [
       { id: 'D', text_en: 'Flexible', text_hi: 'लचीला', points: 0 },
     ],
   },
+
+  // ============================================
+  // INTIMACY & FAMILY PLANNING (3 questions)
+  // ============================================
+  {
+    id: 'intimacy_01',
+    dimension: 'intimacy',
+    question_en: 'When do you see yourself having children?',
+    question_hi: 'आप कब बच्चे चाहते हैं?',
+    options: [
+      {
+        id: 'A',
+        text_en: 'Soon after marriage (1-2 years)',
+        text_hi: 'शादी के जल्दी बाद (1-2 साल)',
+        points: 3,
+      },
+      {
+        id: 'B',
+        text_en: 'After settling down (3-5 years)',
+        text_hi: 'सेटल होने के बाद (3-5 साल)',
+        points: 2,
+      },
+      {
+        id: 'C',
+        text_en: 'Not sure / open to discussion',
+        text_hi: 'पक्का नहीं / बात करके तय करेंगे',
+        points: 1,
+      },
+      {
+        id: 'D',
+        text_en: 'May not want children',
+        text_hi: 'शायद बच्चे नहीं चाहिए',
+        points: 0,
+      },
+    ],
+  },
+  {
+    id: 'intimacy_02',
+    dimension: 'intimacy',
+    question_en:
+      'How important is it to discuss physical compatibility expectations before marriage?',
+    question_hi: 'शादी से पहले शारीरिक अनुकूलता की उम्मीदों पर बात करना कितना ज़रूरी है?',
+    options: [
+      {
+        id: 'A',
+        text_en: 'Very — we should discuss openly before deciding',
+        text_hi: 'बहुत — फैसले से पहले खुलकर बात होनी चाहिए',
+        points: 3,
+      },
+      {
+        id: 'B',
+        text_en: 'Somewhat — general comfort level is enough',
+        text_hi: 'कुछ हद तक — सामान्य सहजता काफ़ी है',
+        points: 2,
+      },
+      {
+        id: 'C',
+        text_en: "Not much — it'll work out after marriage",
+        text_hi: 'ज़्यादा नहीं — शादी के बाद हो जाएगा',
+        points: 1,
+      },
+      {
+        id: 'D',
+        text_en: 'Uncomfortable discussing this',
+        text_hi: 'इस बारे में बात करने में असहज',
+        points: 0,
+      },
+    ],
+  },
+  {
+    id: 'intimacy_03',
+    dimension: 'intimacy',
+    question_en:
+      'How comfortable are you discussing sensitive topics like intimacy with a prospective partner?',
+    question_hi:
+      'अंतरंगता जैसे संवेदनशील विषयों पर संभावित जीवनसाथी से बात करने में कितने सहज हैं?',
+    options: [
+      {
+        id: 'A',
+        text_en: 'Very — these conversations are essential',
+        text_hi: 'बहुत — ये बातचीत ज़रूरी है',
+        points: 3,
+      },
+      {
+        id: 'B',
+        text_en: 'Somewhat — with the right person, I can',
+        text_hi: 'कुछ हद तक — सही इंसान के साथ कर सकता/सकती हूँ',
+        points: 2,
+      },
+      {
+        id: 'C',
+        text_en: "Difficult — but I know it's important",
+        text_hi: 'मुश्किल — पर पता है ज़रूरी है',
+        points: 1,
+      },
+      {
+        id: 'D',
+        text_en: 'Would rather not until after engagement',
+        text_hi: 'सगाई के बाद ही बात करूँगा/करूँगी',
+        points: 0,
+      },
+    ],
+  },
 ];
 
 // Helper to get questions by dimension
@@ -582,4 +691,4 @@ export function getDimensionInfo(dimension: Dimension): IDimensionInfo | undefin
 }
 
 // Total questions count
-export const TOTAL_QUESTIONS = assessmentQuestions.length; // 17
+export const TOTAL_QUESTIONS = assessmentQuestions.length; // 20

@@ -10,6 +10,7 @@ describe('calculatePriorityProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     });
   });
 
@@ -32,6 +33,9 @@ describe('calculatePriorityProfile', () => {
       values_02: 'A',
       values_03: 'A',
       values_04: 'A',
+      intimacy_01: 'A',
+      intimacy_02: 'A',
+      intimacy_03: 'A',
     };
 
     const profile = calculatePriorityProfile(answers);
@@ -41,6 +45,7 @@ describe('calculatePriorityProfile', () => {
       finances: 'high',
       lifestyle: 'high',
       values: 'high',
+      intimacy: 'high',
     });
   });
 
@@ -63,6 +68,9 @@ describe('calculatePriorityProfile', () => {
       values_02: 'D',
       values_03: 'D',
       values_04: 'D',
+      intimacy_01: 'D',
+      intimacy_02: 'D',
+      intimacy_03: 'D',
     };
 
     const profile = calculatePriorityProfile(answers);
@@ -72,6 +80,7 @@ describe('calculatePriorityProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     });
   });
 
@@ -155,6 +164,7 @@ describe('calculatePriorityProfile', () => {
     expect(profile.finances).toBe('flexible');
     expect(profile.lifestyle).toBe('flexible');
     expect(profile.values).toBe('flexible');
+    expect(profile.intimacy).toBe('flexible');
   });
 
   it('handles single question answered per dimension', () => {
@@ -183,6 +193,7 @@ describe('calculatePriorityProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     });
   });
 
@@ -205,6 +216,9 @@ describe('calculatePriorityProfile', () => {
       values_02: 'C',
       values_03: 'C',
       values_04: 'C',
+      intimacy_01: 'C',
+      intimacy_02: 'C',
+      intimacy_03: 'C',
     };
 
     const profile = calculatePriorityProfile(answers);
@@ -214,6 +228,7 @@ describe('calculatePriorityProfile', () => {
       finances: 'medium',
       lifestyle: 'medium',
       values: 'medium',
+      intimacy: 'medium',
     });
   });
 
@@ -330,6 +345,7 @@ describe('calculatePriorityProfile', () => {
     expect(profile.finances).toBe('flexible');
     expect(profile.lifestyle).toBe('high');
     expect(profile.values).toBe('medium');
+    expect(profile.intimacy).toBe('flexible');
   });
 });
 
@@ -342,6 +358,7 @@ describe('getDimensionScores', () => {
       finances: 0,
       lifestyle: 0,
       values: 0,
+      intimacy: 0,
     });
   });
 
@@ -466,7 +483,7 @@ describe('getDimensionScores', () => {
     expect(scores.family).toBe(2);
   });
 
-  it('scores all 5 dimensions independently with full answers', () => {
+  it('scores all 6 dimensions independently with full answers', () => {
     const answers: IAssessmentAnswers = {
       family_01: 'A',
       family_02: 'A',
@@ -485,6 +502,9 @@ describe('getDimensionScores', () => {
       values_02: 'B',
       values_03: 'C',
       values_04: 'D', // 1.5
+      intimacy_01: 'B',
+      intimacy_02: 'B',
+      intimacy_03: 'B', // 2.0
     };
 
     const scores = getDimensionScores(answers);
@@ -493,5 +513,6 @@ describe('getDimensionScores', () => {
     expect(scores.finances).toBe(1);
     expect(scores.lifestyle).toBe(0);
     expect(scores.values).toBe(1.5);
+    expect(scores.intimacy).toBe(2);
   });
 });

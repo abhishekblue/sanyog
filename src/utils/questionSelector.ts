@@ -49,7 +49,14 @@ function selectQuestionsForDimension(
  * @returns Selected questions ordered by priority
  */
 export function selectQuestionsByProfile(profile: IPriorityProfile): IOutputQuestion[] {
-  const dimensions: Dimension[] = ['family', 'career', 'finances', 'lifestyle', 'values'];
+  const dimensions: Dimension[] = [
+    'family',
+    'career',
+    'finances',
+    'lifestyle',
+    'values',
+    'intimacy',
+  ];
   const selectedQuestions: IOutputQuestion[] = [];
 
   // Sort dimensions by priority (HIGH first, then MEDIUM, then FLEXIBLE)

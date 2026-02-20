@@ -9,10 +9,11 @@ describe('selectQuestionsByProfile', () => {
       finances: 'high',
       lifestyle: 'high',
       values: 'high',
+      intimacy: 'high',
     };
 
     const questions = selectQuestionsByProfile(profile);
-    // HIGH = all questions for each dimension (6+5+5+6+6 = 28)
+    // HIGH = all questions for each dimension (6+5+5+6+6+0 = 28, intimacy has no output questions yet)
     expect(questions.length).toBe(28);
   });
 
@@ -23,6 +24,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -41,6 +43,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -56,6 +59,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const mediumProfile: IPriorityProfile = {
@@ -64,6 +68,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const highQuestions = selectQuestionsByProfile(highProfile);
@@ -82,6 +87,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const flexibleProfile: IPriorityProfile = {
@@ -90,6 +96,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const mediumQuestions = selectQuestionsByProfile(mediumProfile);
@@ -108,6 +115,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'high',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -122,6 +130,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'high',
       lifestyle: 'high',
       values: 'high',
+      intimacy: 'high',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -138,6 +147,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'high',
       values: 'medium',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -164,6 +174,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -185,6 +196,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'flexible',
       values: 'flexible',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -211,6 +223,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'high',
       lifestyle: 'high',
       values: 'high',
+      intimacy: 'high',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -229,6 +242,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'high',
       lifestyle: 'flexible',
       values: 'medium',
+      intimacy: 'flexible',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -253,6 +267,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'flexible',
       lifestyle: 'medium',
       values: 'high',
+      intimacy: 'high',
     };
 
     const questions = selectQuestionsByProfile(profile);
@@ -267,6 +282,7 @@ describe('selectQuestionsByProfile', () => {
       finances: 'high',
       lifestyle: 'high',
       values: 'high',
+      intimacy: 'high',
     };
 
     const questions = selectQuestionsByProfile(profile);
